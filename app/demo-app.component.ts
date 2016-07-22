@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { DualListComponent } from './dual-list.component';
 
@@ -8,19 +8,16 @@ import { DualListComponent } from './dual-list.component';
 	template: `
 <div class="container-fluid">
 	<p></p>
-	<dual-list [sort]="keepSorted" [source]="xyz" [(destination)]="confirmed" height="265px"></dual-list>
-	<p></p>
-
-	<dual-list [sort]="keepSorted" [source]="abc" [(destination)]="yup" height="265px"></dual-list>
+	<dual-list [sort]="keepSorted" [source]="stations" [(destination)]="confirmed" height="265px"></dual-list>
 </div>
 `
 })
 
-export class DemoAppComponent implements OnInit {
+export class DemoAppComponent {
 
 	private keepSorted:boolean = true;
 	
-	private xyz:Array<any> = [ 
+	private stations:Array<any> = [ 
 		{ _id: 1, _name: 'Antonito' },
 		{ _id: 2, _name: 'Big Horn' },
 		{ _id: 3, _name: 'Sublette' },
@@ -53,24 +50,9 @@ export class DemoAppComponent implements OnInit {
 		{ _id: 30, _name: 'Elk Park' },
 		{ _id: 31, _name: 'Silverton' },
 		{ _id: 32, _name: 'Eureka' }
+	 ];
 
-		 ];
 	private confirmed:Array<any> = [];
 
-	private abc:Array<any> = [ 
-		{ _id: 1, _name: 'Mercury' }, 
-		{ _id: 2, _name: 'Venus' },
-		{ _id: 3, _name: 'Earth' }, 
-		{ _id: 4, _name: 'Mars' }, 
-		{ _id: 5, _name: 'Jupiter' }, 
-		{ _id: 6, _name: 'Saturn' }, 
-		{ _id: 7, _name: 'Neptune' }, 
-		{ _id: 8, _name: 'Uranus' }
-	]; 
-
-	private yup:Array<any> = [];
-
-	ngOnInit() {
-	}
 
 }
