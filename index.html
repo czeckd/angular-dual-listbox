@@ -1,0 +1,36 @@
+<html>
+<head>
+	<title>Angular 2 Simple Modal Demo</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">	
+
+	<base href="">
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" />
+	<link rel="stylesheet" href="css/record-picker.css">
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" 
+		integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+	<script>
+		if (window.location.href.indexOf('github.io') !== -1 && window.location.href.indexOf('demo') === -1) {
+			window.location.href = window.location.href + 'demo/';
+		}
+	</script>
+
+	<!-- Polyfill(s) for older browsers -->
+	<script src="node_modules/core-js/client/shim.min.js"></script>
+
+	<script src="node_modules/zone.js/dist/zone.js"></script>
+	<script src="node_modules/reflect-metadata/Reflect.js"></script>
+	<script src="node_modules/systemjs/dist/system.src.js"></script>
+
+	<script src="systemjs.config.js"></script>
+	<script>
+		System.import('app').catch(function(err){ console.error(err); });
+	</script>
+</head>
+  
+<body>
+	<demo-app><div style="margin:30px;">Loading...</div></demo-app>
+</body>
+</html>
