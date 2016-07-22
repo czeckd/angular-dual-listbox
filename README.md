@@ -13,7 +13,7 @@ sheet (`css/record-picker.css`) for presentation.
 ## Demo
 
 A [working demo](http://czeckd.github.io/angular2-dual-listbox/demo/) shows
-the modal in action.
+the dual listbox in action.
 
 
 ## Usage
