@@ -1,6 +1,6 @@
 {
   "name": "angular2-dual-listbox",
-  "description": "Angular 2 component for a dual listbox.",
+  "description": "Angular 2 component for a dual listbox control.",
   "version": "1.0.0",
   "repository": {
     "type": "git",
