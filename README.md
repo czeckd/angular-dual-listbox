@@ -64,4 +64,4 @@ MIT
 
 
 ## Author
-- David Czeck [@czeckd](https://github/czeckd)
+- David Czeck [@czeckd](https://github.com/czeckd)

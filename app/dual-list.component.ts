@@ -1,6 +1,4 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChange } from '@angular/core';
-import { NgClass, NgStyle } from '@angular/common';
-
 
 type compareFunction = (a:any, b:any) => number;
 
@@ -30,7 +28,6 @@ class BasicList {
 
 @Component({
 	selector: 'dual-list',
-	directives: [ NgClass, NgStyle ],
 	template: `
 <div style="display:-webkit-box;display:flex;flex-direction:row;align-content:flex-start;">
 	<form style="width:50%;margin:0px;">
