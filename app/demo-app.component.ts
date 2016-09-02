@@ -4,7 +4,6 @@ import { DualListComponent } from './dual-list.component';
 
 @Component({
 	selector: 'demo-app',
-	directives: [ DualListComponent ],
 	template: `
 <div class="container-fluid">
 	<p></p>
