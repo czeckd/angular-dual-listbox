@@ -5,8 +5,8 @@
   // map tells the System loader where to look for things
   var map = {
     'app':  'app', // 'dist',
-    'rxjs': 'https://npmcdn.com/rxjs@5.0.0-beta.11',
-    '@angular': 'https://npmcdn.com/@angular'
+    'rxjs': 'https://unpkg.com/rxjs@5.0.0-beta.11',
+    '@angular': 'https://unpkg.com/@angular'
   };
 
   // packages tells the System loader how to load when no filename and/or no extension
@@ -25,7 +25,7 @@
   ];
 
   ngPackageNames.forEach(function(pkgName) {
-    map['@angular/'+pkgName] = 'https://npmcdn.com/@angular/' + pkgName + ngVer;
+    map['@angular/'+pkgName] = 'https://unpkg.com/@angular/' + pkgName + ngVer;
   });
 
   // Add package entries for angular packages
