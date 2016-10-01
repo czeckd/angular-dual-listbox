@@ -8,15 +8,18 @@ import { DualListComponent } from './dual-list.component';
 <div class="container-fluid">
 	<p></p>
 	<dual-list [sort]="keepSorted" [source]="stations" [(destination)]="confirmed" height="265px"></dual-list>
+	<div style="margin-top:32px;"><h4>Confirmed</h4><pre>{{confirmed|json}}</pre></div>
 </div>
+
+
 `
 })
 
 export class DemoAppComponent {
 
 	private keepSorted:boolean = true;
-	
-	private stations:Array<any> = [ 
+
+	private stations:Array<any> = [
 		{ _id: 1, _name: 'Antonito' },
 		{ _id: 2, _name: 'Big Horn' },
 		{ _id: 3, _name: 'Sublette' },
@@ -51,7 +54,9 @@ export class DemoAppComponent {
 		{ _id: 32, _name: 'Eureka' }
 	 ];
 
-	private confirmed:Array<any> = [];
+	private confirmed:Array<any> = [
+		{ _id: 32, _name: 'Eureka' }
+	];
 
 
 }
