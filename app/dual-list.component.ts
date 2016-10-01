@@ -115,6 +115,7 @@ export class DualListComponent implements OnChanges {
 		}
 
 		if (changeRecord['source']) {
+            this.available = new BasicList(DualListComponent.AVAILABLE_LIST_NAME);
 			if (this.source !== undefined) {
 				this.source.filter( (e:any) => {
 					this.available.list.push( { _id: e[this.key], _name: this.makeName(e) });
