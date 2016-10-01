@@ -186,6 +186,7 @@ export class DualListComponent implements OnChanges {
 	}
 
 	trueUp() {
+
 		// Clear removed items.
 		let pos = this.destination.length;
 		while ((pos -= 1) >= 0) {
@@ -299,8 +300,6 @@ export class DualListComponent implements OnChanges {
 					if (idx !== -1) {
 						source.list.splice(idx, 1);
 					}
-				} else {
-					moved = false;
 				}
 			}
 
@@ -310,10 +309,8 @@ export class DualListComponent implements OnChanges {
 
 			source.pick.length = 0;
 
-			// Need to update vm.destination
-			if (moved) {
-				this.trueUp();
-			}
+			// Update destination
+			this.trueUp();
 		}
 	}
 
