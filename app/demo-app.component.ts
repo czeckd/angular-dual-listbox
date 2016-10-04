@@ -9,8 +9,9 @@ import { DualListComponent } from './dual-list.component';
 	<p></p>
 	<dual-list [sort]="keepSorted" [source]="stations" [(destination)]="confirmed" height="265px"></dual-list>
 	<div style="margin-top:32px;"><h4>Confirmed</h4><pre>{{confirmed|json}}</pre></div>
-</div>
 
+<button type="button" class="btn" (click)="add()">hi</button>
+</div>
 
 `
 })
@@ -18,6 +19,8 @@ import { DualListComponent } from './dual-list.component';
 export class DemoAppComponent {
 
 	private keepSorted:boolean = true;
+
+	private count:number = 1;
 
 	private stations:Array<any> = [
 		{ _id: 1, _name: 'Antonito' },
@@ -58,5 +61,29 @@ export class DemoAppComponent {
 		{ _id: 32, _name: 'Eureka' }
 	];
 
+
+	add() {
+console.log(this.count);
+		switch(this.count) {
+		case 1:
+			this.confirmed.push({ _id: 1, _name: 'Antonito'});
+			break;
+		case 2:
+			this.confirmed.push({ _id: 24, _name: 'Home Ranch'});
+//			this.confirmed.push({ _id: 34, _name: 'Mojo'});
+			break;
+		case 3:
+			this.confirmed.push({ _id: 5, _name: 'Osier'});
+//console.log('x');
+//console.log(this.confirmed);
+//console.log('^');
+			break;
+		case 4:
+			this.confirmed.push({ _id: 34, _name: 'Mojo'});
+			this.count = 0;
+			break;
+		}
+		this.count += 1;
+	}
 
 }

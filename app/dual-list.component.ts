@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChange } from '@angular/core';
+import { Component, DoCheck, EventEmitter, Input, IterableDiffers, OnChanges, Output, SimpleChange } from '@angular/core';
 
 type compareFunction = (a:any, b:any) => number;
 
@@ -86,7 +86,7 @@ class BasicList {
 `
 })
 
-export class DualListComponent implements OnChanges {
+export class DualListComponent implements DoCheck, OnChanges {
 	static AVAILABLE_LIST_NAME = 'available';
 	static CONFIRMED_LIST_NAME = 'confirmed';
 
@@ -105,6 +105,13 @@ export class DualListComponent implements OnChanges {
 
 	private sorter = (a:any,b:any) => { return (a._name < b._name) ? -1 : ((a._name > b._name) ? 1 : 0); };
 
+	// https://teropa.info/blog/2016/03/06/writing-an-angular-2-template-directive.html
+	private sourceDiffer:any;
+	private destinationDiffer:any;
+
+	constructor(private differs:IterableDiffers) {
+	}
+
 	ngOnChanges(changeRecord: {[key:string]:SimpleChange}) {
 		if (changeRecord['sort']) {
 			if (changeRecord['sort'].currentValue === true && this.compare === undefined) {
@@ -115,22 +122,58 @@ export class DualListComponent implements OnChanges {
 		}
 
 		if (changeRecord['source']) {
-			if (this.source !== undefined) {
-				this.source.filter( (e:any) => {
-					this.available.list.push( { _id: e[this.key], _name: this.makeName(e) });
-					return true;
-				});
-			}
-			if (this.compare !== undefined) {
-				this.available.list.sort(this.compare);
-			}
+console.log('SOURCE changed');
+//			this.updateSource();
+			this.sourceDiffer = this.differs.find(this.source).create(null);
 		}
 
 		if (changeRecord['destination']) {
+console.log('DESTINATION changed');
 			// Slightly delay update to avoid loop.
-			setTimeout( () => { this.updateConfirmed(); }, 100);
+//			setTimeout( () => { this.updateConfirmed(); }, 100);
+			this.destinationDiffer = this.differs.find(this.destination).create(null);
+
+		}
+	}
+
+
+	ngDoCheck() {
+		let schanges = this.sourceDiffer.diff(this.source);
+		if (schanges) {
+//		if (this.sourceDiffer.diff(this.source)) {
+console.log('WHAT');
+
+      schanges.forEachAddedItem((r:any) => console.log('added ' + r.item._name) );
+      schanges.forEachRemovedItem((r:any) => console.log('removed ' + r.item._name) );
+
+			this.updateSource();
+			// http://stackoverflow.com/questions/36247016/angular2-refreshing-view-on-array-push
+
 		}
 
+		let dchanges = this.destinationDiffer.diff(this.destination);
+		if (dchanges) {
+//		if (this.destinationDiffer.diff(this.destination)) {
+console.log('CHANGE');
+
+			dchanges.forEachAddedItem((r:any) => {
+					console.log('added ' + r.item._name);
+					this.selectItem(this.available.pick, r.item);
+				}
+			);
+			this.moveItem(this.available, this.confirmed);
+
+
+			dchanges.forEachRemovedItem((r:any) => {
+					console.log('removed ' + r.item._name);
+					this.selectItem(this.confirmed.pick, r.item);
+				}
+			);
+			this.moveItem(this.confirmed, this.available);
+
+
+//			this.updateConfirmed();
+		}
 	}
 
 	dragEnd(list:BasicList = null) {
@@ -217,6 +260,21 @@ export class DualListComponent implements OnChanges {
 		this.destinationChange.emit(this.destination);
 	}
 
+	updateSource() {
+		if (this.source !== undefined) {
+			this.source.filter( (e:any) => {
+				let entry = { _id: e[this.key], _name: this.makeName(e) };
+				if (!this.available.list.find( el => { return el._id === entry._id; })) {
+					this.available.list.push( { _id: e[this.key], _name: this.makeName(e) });
+					return true;
+				}
+				return false;
+			});
+		}
+		if (this.compare !== undefined) {
+			this.available.list.sort(this.compare);
+		}
+	}
 
 	updateConfirmed() {
 		if (this.destination.length === 0) {
@@ -254,7 +312,6 @@ export class DualListComponent implements OnChanges {
 		if (this.compare !== undefined) {
 			this.available.list.sort(this.compare);
 		}
-
 	}
 
 	moveItem(source:BasicList, target:BasicList, item:any = null) {
@@ -272,6 +329,7 @@ export class DualListComponent implements OnChanges {
 			});
 
 			if (mv.length === 0) {
+console.log('moveItem is false');
 				moved = false;
 			}
 		}
@@ -338,7 +396,7 @@ export class DualListComponent implements OnChanges {
 		source.last = item;
 	}
 
-	selectItem(list:any, item:any) {
+	selectItem(list:Array<any>, item:any) {
 		let pk = list.filter( (e:any) => { return Object.is(e, item); });
 		if (pk.length > 0) {
 			// Already in list, so deselect.
