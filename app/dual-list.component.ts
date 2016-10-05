@@ -105,8 +105,6 @@ export class DualListComponent implements DoCheck, OnChanges {
 
 	private sorter = (a:any,b:any) => { return (a._name < b._name) ? -1 : ((a._name > b._name) ? 1 : 0); };
 
-	// http://stackoverflow.com/questions/36247016/angular2-refreshing-view-on-array-push
-	// https://teropa.info/blog/2016/03/06/writing-an-angular-2-template-directive.html
 	private sourceDiffer:any;
 	private destinationDiffer:any;
 
@@ -123,12 +121,10 @@ export class DualListComponent implements DoCheck, OnChanges {
 		}
 
 		if (changeRecord['source']) {
-console.log('SRC');
 			this.updatedSource();
 		}
 
 		if (changeRecord['destination']) {
-console.log('DEST');
 			this.updatedDestination();
 		}
 	}
@@ -136,10 +132,8 @@ console.log('DEST');
 	ngDoCheck() {
 		let sourceChanges = this.sourceDiffer.diff(this.source);
 		if (sourceChanges) {
-console.log('srcChanges');
 			sourceChanges.forEachRemovedItem((r:any) => {
 					let idx = this.findItemIndex(this.available.list, r.item);
-console.log('s-remove ' + r.item._name + ' idx:' + idx);
 					if (idx !== -1) {
 						this.available.list.splice(idx, 1);
 					}
@@ -147,8 +141,7 @@ console.log('s-remove ' + r.item._name + ' idx:' + idx);
 			);
 
 			sourceChanges.forEachAddedItem((r:any) => {
-console.log('s-add ' + r.item._name);
-					// Do not add duplicates even if source list has duplicates.
+					// Do not add duplicates even if source has duplicates.
 					if (this.findItemIndex(this.available.list, r.item) === -1) {
 						this.available.list.push( { _id: r.item[this.key], _name: this.makeName(r.item) });
 					}
@@ -162,11 +155,8 @@ console.log('s-add ' + r.item._name);
 
 		let destChanges = this.destinationDiffer.diff(this.destination);
 		if (destChanges) {
-console.log('destChanges');
-console.log(destChanges);
 			destChanges.forEachRemovedItem((r:any) => {
 					let idx = this.findItemIndex(this.confirmed.list, r.item);
-console.log('d-remove ' + r.item._name + ' idx:' + idx);
 					if (idx !== -1) {
 						if (!this.isItemSelected(this.confirmed.pick, this.confirmed.list[idx])) {
 							this.selectItem(this.confirmed.pick, this.confirmed.list[idx]);
@@ -178,7 +168,6 @@ console.log('d-remove ' + r.item._name + ' idx:' + idx);
 
 			destChanges.forEachAddedItem((r:any) => {
 					let idx = this.findItemIndex(this.available.list, r.item);
-console.log('d-add ' + r.item._name + ' idx:' + idx);
 					if (idx !== -1) {
 						if (!this.isItemSelected(this.available.pick, this.available.list[idx])) {
 							this.selectItem(this.available.pick, this.available.list[idx]);
@@ -205,12 +194,6 @@ console.log('d-add ' + r.item._name + ' idx:' + idx);
 
 	updatedDestination() {
 		if (this.destination !== undefined) {
-//			if (this.destination.length === 0) {
-//				// Clear the confirmed.
-//				this.selectAll(this.confirmed);
-//				this.moveItem(this.confirmed, this.available);
-//			}
-
 			this.destinationDiffer = this.differs.find(this.destination).create(this.cdr);
 		}
 	}
@@ -268,6 +251,8 @@ console.log('d-add ' + r.item._name + ' idx:' + idx);
 	}
 
 	trueUp() {
+		let changed = false;
+
 		// Clear removed items.
 		let pos = this.destination.length;
 		while ((pos -= 1) >= 0) {
@@ -278,6 +263,7 @@ console.log('d-add ' + r.item._name + ' idx:' + idx);
 			if (mv.length === 0) {
 				// Not found so remove.
 				this.destination.splice(pos, 1);
+				changed = true;
 			}
 		}
 
@@ -291,11 +277,14 @@ console.log('d-add ' + r.item._name + ' idx:' + idx);
 
 				if (mv.length > 0) {
 					this.destination.push(mv[0]);
+					changed = true;
 				}
 			}
 		}
 
-		this.destinationChange.emit(this.destination);
+		if (changed) {
+			this.destinationChange.emit(this.destination);
+		}
 	}
 
 	findItemIndex(list:Array<any>, item:any) {
@@ -314,98 +303,56 @@ console.log('d-add ' + r.item._name + ' idx:' + idx);
 	}
 
 	moveItem(source:BasicList, target:BasicList, item:any = null) {
-		let move = true;
-
-/*
-		if (item) {
-console.log(item);
-			// Remove from the source.
-			let idx = source.list.indexOf(item);
-console.log('moveItem idx: ' + idx);
-			if (idx !== -1) {
-				source.list.splice(idx, 1);
-			}
-
-			// Was the item actually moved to the target?
-			let mv = target.list.filter( e => {
-				return (e[this.key] === item[this.key]);
-			});
-
-console.log('moveItem mv.len: ' + mv.length);
-			if (mv.length === 0) {
-				move = false;
-			}
-		}
-*/
-
 		let i = 0;
 		let len = source.pick.length;
 
 		if (item) {
 			i = source.list.indexOf(item);
-console.log('source idx: ' + i);
-console.log('item name: ' + source.list[i]._name);
 			len = i + 1;
 		}
 
+		for (; i < len; i += 1) {
+			// Is the pick still in list?
+			let mv:Array<any> = [];
+			if (item) {
+				let idx = this.findItemIndex(source.pick, item);
+				if (idx !== -1) {
+					mv[0] = source.pick[idx];
+				}
+			} else {
+				mv = source.list.filter( src => {
+					return (src[this.key] === source.pick[i][this.key]);
+				});
+			}
 
-
-console.log('MOVE: ' + move + ' i: ' + i + ' len: ' + len);
-console.trace();
-//		if (move) {
-//			for (let i = 0, len = source.pick.length; i < len; i += 1) {
-			for (; i < len; i += 1) {
-console.log('HERE');
-				// Is the pick still in list?
-				let mv:Array<any> = [];
-				if (item) {
-					let idx = this.findItemIndex(source.pick, item);
-console.log('finding idx:' + idx);
-					if (idx !== -1) {
-						mv[0] = source.pick[idx];
-					}
+			// Should only ever be 1
+			if (mv.length === 1) {
+				// Move if item wasn't already moved by drag-and-drop.
+				if (item && item[this.key] === mv[0][this.key]) {
+					target.list.push( mv[0] );
 				} else {
-					mv = source.list.filter( src => {
-console.log(src[this.key]);
-console.log(source.pick[i]);
-console.log(source.pick[i][this.key]);
-						return (src[this.key] === source.pick[i][this.key]);
-					});
-				}
-
-console.log('mv.length :' + mv.length);
-				// Should only ever be 1
-				if (mv.length === 1) {
-					// Move if item wasn't already moved by drag-and-drop.
-					if (item && item[this.key] === mv[0][this.key]) {
+					// see if it is already in target?
+					if ( target.list.filter( trg => { return trg[this.key] === mv[0][this.key]; }).length === 0) {
 						target.list.push( mv[0] );
-console.log('PUSH a');
-					} else {
-						// see if it is already in target?
-						if ( target.list.filter( trg => { return trg[this.key] === mv[0][this.key]; }).length === 0) {
-							target.list.push( mv[0] );
-console.log('PUSH b');
-						}
-					}
-
-					// Make unavailable.
-					let idx = source.list.indexOf( mv[0] );
-console.log('move unav idx: ' + idx);
-					if (idx !== -1) {
-						source.list.splice(idx, 1);
 					}
 				}
+
+				// Make unavailable.
+				let idx = source.list.indexOf( mv[0] );
+				if (idx !== -1) {
+					source.list.splice(idx, 1);
+				}
 			}
+		}
 
-			if (this.compare !== undefined) {
-				target.list.sort(this.compare);
-			}
+		if (this.compare !== undefined) {
+			target.list.sort(this.compare);
+		}
 
-			source.pick.length = 0;
+		source.pick.length = 0;
 
-			// Update destination
-			this.trueUp();
-//		}
+		// Update destination
+		this.trueUp();
 	}
 
 
@@ -470,6 +417,8 @@ console.log('move unav idx: ' + idx);
 		return false;
 	}
 
+	// Allow for complex names by passing an array of strings.
+	// Example: [display]="[ '_type.substring(0,1)', '_name' ]"
 	makeName(item:any) : string {
 		let str = '';
 
