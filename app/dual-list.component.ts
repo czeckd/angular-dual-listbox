@@ -1,4 +1,5 @@
-import { Component, ChangeDetectorRef, DoCheck, EventEmitter, Input, IterableDiffers, OnChanges, Output, SimpleChange } from '@angular/core';
+import { Component, ChangeDetectorRef, DoCheck, EventEmitter, Input, IterableDiffers, OnChanges,
+	Output, SimpleChange } from '@angular/core';
 
 type compareFunction = (a:any, b:any) => number;
 
@@ -95,18 +96,18 @@ export class DualListComponent implements DoCheck, OnChanges {
 	@Input() height:string = typeof this.height !== 'undefined' ? this.height : '100px';
 	@Input() sort:boolean = typeof this.sort !== 'undefined' ? this.sort : false;
 	@Input() compare:compareFunction = typeof this.compare !== 'undefined' ? this.compare : undefined;
-	@Input() source:Array<any>;// = typeof this.source !== 'undefined' ? this.source : [];
+	@Input() source:Array<any>; // = typeof this.source !== 'undefined' ? this.source : [];
 	@Input() destination:Array<any>;
 	@Output() destinationChange = new EventEmitter();
-	private  destinationCache:Array<any>;
 
 	private available:BasicList = new BasicList(DualListComponent.AVAILABLE_LIST_NAME);
 	private confirmed:BasicList = new BasicList(DualListComponent.CONFIRMED_LIST_NAME);
 
-	private sorter = (a:any,b:any) => { return (a._name < b._name) ? -1 : ((a._name > b._name) ? 1 : 0); };
-
 	private sourceDiffer:any;
 	private destinationDiffer:any;
+
+	private sorter = (a:any, b:any) => { return (a._name < b._name) ? -1 : ((a._name > b._name) ? 1 : 0); };
+
 
 	constructor(private differs:IterableDiffers, private cdr:ChangeDetectorRef) {
 	}
@@ -236,8 +237,10 @@ export class DualListComponent implements DoCheck, OnChanges {
 
 		let id = event.dataTransfer.getData('text');
 
+		/* tslint:disable triple-equals */
 		// Use coercion to filter.
 		let mv = list.list.filter( (e:any) => e[this.key] == id );
+		/* tslint:enable triple-equals */
 		if (mv.length > 0) {
 			for (let i = 0, len = mv.length; i < len; i += 1) {
 				list.pick.push( mv[i] );
@@ -442,7 +445,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 						if (s) {
 							// Use brute force
 							if (parts[1].indexOf('substring') !== -1) {
-								let nums = (parts[1].substring(parts[1].indexOf('(')+1, parts[1].indexOf(')'))).split(',');
+								let nums = (parts[1].substring(parts[1].indexOf('(') + 1, parts[1].indexOf(')'))).split(',');
 
 								switch (nums.length) {
 								case 1:
