@@ -1,4 +1,4 @@
-import { Component, DoCheck, EventEmitter, Input, IterableDiffers, OnChanges, Output, SimpleChange } from '@angular/core';
+import { Component, ChangeDetectorRef, DoCheck, EventEmitter, Input, IterableDiffers, OnChanges, Output, SimpleChange } from '@angular/core';
 
 type compareFunction = (a:any, b:any) => number;
 
@@ -105,11 +105,12 @@ export class DualListComponent implements DoCheck, OnChanges {
 
 	private sorter = (a:any,b:any) => { return (a._name < b._name) ? -1 : ((a._name > b._name) ? 1 : 0); };
 
+	// http://stackoverflow.com/questions/36247016/angular2-refreshing-view-on-array-push
 	// https://teropa.info/blog/2016/03/06/writing-an-angular-2-template-directive.html
 	private sourceDiffer:any;
 	private destinationDiffer:any;
 
-	constructor(private differs:IterableDiffers) {
+	constructor(private differs:IterableDiffers, private cdr:ChangeDetectorRef) {
 	}
 
 	ngOnChanges(changeRecord: {[key:string]:SimpleChange}) {
@@ -122,57 +123,95 @@ export class DualListComponent implements DoCheck, OnChanges {
 		}
 
 		if (changeRecord['source']) {
-console.log('SOURCE changed');
-//			this.updateSource();
-			this.sourceDiffer = this.differs.find(this.source).create(null);
+console.log('SRC');
+			this.updatedSource();
 		}
 
 		if (changeRecord['destination']) {
-console.log('DESTINATION changed');
-			// Slightly delay update to avoid loop.
-//			setTimeout( () => { this.updateConfirmed(); }, 100);
-			this.destinationDiffer = this.differs.find(this.destination).create(null);
-
+console.log('DEST');
+			this.updatedDestination();
 		}
 	}
 
-
 	ngDoCheck() {
-		let schanges = this.sourceDiffer.diff(this.source);
-		if (schanges) {
-//		if (this.sourceDiffer.diff(this.source)) {
-console.log('WHAT');
+		let sourceChanges = this.sourceDiffer.diff(this.source);
+		if (sourceChanges) {
+console.log('srcChanges');
+			sourceChanges.forEachRemovedItem((r:any) => {
+					let idx = this.findItemIndex(this.available.list, r.item);
+console.log('s-remove ' + r.item._name + ' idx:' + idx);
+					if (idx !== -1) {
+						this.available.list.splice(idx, 1);
+					}
+				}
+			);
 
-      schanges.forEachAddedItem((r:any) => console.log('added ' + r.item._name) );
-      schanges.forEachRemovedItem((r:any) => console.log('removed ' + r.item._name) );
+			sourceChanges.forEachAddedItem((r:any) => {
+console.log('s-add ' + r.item._name);
+					// Do not add duplicates even if source list has duplicates.
+					if (this.findItemIndex(this.available.list, r.item) === -1) {
+						this.available.list.push( { _id: r.item[this.key], _name: this.makeName(r.item) });
+					}
+				}
+			);
 
-			this.updateSource();
-			// http://stackoverflow.com/questions/36247016/angular2-refreshing-view-on-array-push
-
+			if (this.compare !== undefined) {
+				this.available.list.sort(this.compare);
+			}
 		}
 
-		let dchanges = this.destinationDiffer.diff(this.destination);
-		if (dchanges) {
-//		if (this.destinationDiffer.diff(this.destination)) {
-console.log('CHANGE');
-
-			dchanges.forEachAddedItem((r:any) => {
-					console.log('added ' + r.item._name);
-					this.selectItem(this.available.pick, r.item);
+		let destChanges = this.destinationDiffer.diff(this.destination);
+		if (destChanges) {
+console.log('destChanges');
+console.log(destChanges);
+			destChanges.forEachRemovedItem((r:any) => {
+					let idx = this.findItemIndex(this.confirmed.list, r.item);
+console.log('d-remove ' + r.item._name + ' idx:' + idx);
+					if (idx !== -1) {
+						if (!this.isItemSelected(this.confirmed.pick, this.confirmed.list[idx])) {
+							this.selectItem(this.confirmed.pick, this.confirmed.list[idx]);
+						}
+						this.moveItem(this.confirmed, this.available, this.confirmed.list[idx]);
+					}
 				}
 			);
-			this.moveItem(this.available, this.confirmed);
 
-
-			dchanges.forEachRemovedItem((r:any) => {
-					console.log('removed ' + r.item._name);
-					this.selectItem(this.confirmed.pick, r.item);
+			destChanges.forEachAddedItem((r:any) => {
+					let idx = this.findItemIndex(this.available.list, r.item);
+console.log('d-add ' + r.item._name + ' idx:' + idx);
+					if (idx !== -1) {
+						if (!this.isItemSelected(this.available.pick, this.available.list[idx])) {
+							this.selectItem(this.available.pick, this.available.list[idx]);
+						}
+						this.moveItem(this.available, this.confirmed, this.available.list[idx]);
+					}
 				}
 			);
-			this.moveItem(this.confirmed, this.available);
 
+			if (this.compare !== undefined) {
+				this.available.list.sort(this.compare);
+			}
+		}
+	}
 
-//			this.updateConfirmed();
+	updatedSource() {
+		this.available.list.length = 0;
+		this.available.pick.length = 0;
+
+		if (this.source !== undefined) {
+			this.sourceDiffer = this.differs.find(this.source).create(this.cdr);
+		}
+	}
+
+	updatedDestination() {
+		if (this.destination !== undefined) {
+//			if (this.destination.length === 0) {
+//				// Clear the confirmed.
+//				this.selectAll(this.confirmed);
+//				this.moveItem(this.confirmed, this.available);
+//			}
+
+			this.destinationDiffer = this.differs.find(this.destination).create(this.cdr);
 		}
 	}
 
@@ -229,7 +268,6 @@ console.log('CHANGE');
 	}
 
 	trueUp() {
-
 		// Clear removed items.
 		let pos = this.destination.length;
 		while ((pos -= 1) >= 0) {
@@ -260,65 +298,30 @@ console.log('CHANGE');
 		this.destinationChange.emit(this.destination);
 	}
 
-	updateSource() {
-		if (this.source !== undefined) {
-			this.source.filter( (e:any) => {
-				let entry = { _id: e[this.key], _name: this.makeName(e) };
-				if (!this.available.list.find( el => { return el._id === entry._id; })) {
-					this.available.list.push( { _id: e[this.key], _name: this.makeName(e) });
-					return true;
-				}
-				return false;
-			});
-		}
-		if (this.compare !== undefined) {
-			this.available.list.sort(this.compare);
-		}
-	}
+	findItemIndex(list:Array<any>, item:any) {
+		let idx = -1;
 
-	updateConfirmed() {
-		if (this.destination.length === 0) {
-			// Clear the confirmed.
-			this.selectAll(this.confirmed);
-			this.moveItem(this.confirmed, this.available);
-		} else {
-
-			if (this.confirmed.list.length > 0) {
-				// See if all the items in confirmed are still in the destination.
-				for (let i = 0, len = this.confirmed.list.length; i < len; i += 1) {
-					let m = this.destination.filter( (e:any) => {
-						return (e[this.key] === this.confirmed.list[i][this.key]);
-					});
-
-					// Item not found.
-					if (m.length === 0) {
-						this.confirmed.pick.push( this.confirmed.list[i] );
-					}
-				}
-			}
-
-			this.destination.filter( (e:any) => {
-				this.available.pick.push({ _id: e[this.key], _name: this.makeName(e) });
+		// Assumption is that the arrays do not have duplicates.
+		list.filter( (e:any) => {
+			if (e._id === item[this.key]) {
+				idx = list.indexOf(e);
 				return true;
-			});
-
-			this.moveItem(this.available, this.confirmed);
-
-			if (this.confirmed.pick.length > 0) {
-				this.moveItem(this.confirmed, this.available);
 			}
-		}
+			return false;
+		});
 
-		if (this.compare !== undefined) {
-			this.available.list.sort(this.compare);
-		}
+		return idx;
 	}
 
 	moveItem(source:BasicList, target:BasicList, item:any = null) {
-		let moved = true;
+		let move = true;
 
+/*
 		if (item) {
+console.log(item);
+			// Remove from the source.
 			let idx = source.list.indexOf(item);
+console.log('moveItem idx: ' + idx);
 			if (idx !== -1) {
 				source.list.splice(idx, 1);
 			}
@@ -328,33 +331,66 @@ console.log('CHANGE');
 				return (e[this.key] === item[this.key]);
 			});
 
+console.log('moveItem mv.len: ' + mv.length);
 			if (mv.length === 0) {
-console.log('moveItem is false');
-				moved = false;
+				move = false;
 			}
 		}
+*/
 
-		if (moved) {
-			for (let i = 0, len = source.pick.length; i < len; i += 1) {
+		let i = 0;
+		let len = source.pick.length;
+
+		if (item) {
+			i = source.list.indexOf(item);
+console.log('source idx: ' + i);
+console.log('item name: ' + source.list[i]._name);
+			len = i + 1;
+		}
+
+
+
+console.log('MOVE: ' + move + ' i: ' + i + ' len: ' + len);
+console.trace();
+//		if (move) {
+//			for (let i = 0, len = source.pick.length; i < len; i += 1) {
+			for (; i < len; i += 1) {
+console.log('HERE');
 				// Is the pick still in list?
-				let mv = source.list.filter( src => {
-					return (src[this.key] === source.pick[i][this.key]);
-				});
+				let mv:Array<any> = [];
+				if (item) {
+					let idx = this.findItemIndex(source.pick, item);
+console.log('finding idx:' + idx);
+					if (idx !== -1) {
+						mv[0] = source.pick[idx];
+					}
+				} else {
+					mv = source.list.filter( src => {
+console.log(src[this.key]);
+console.log(source.pick[i]);
+console.log(source.pick[i][this.key]);
+						return (src[this.key] === source.pick[i][this.key]);
+					});
+				}
 
+console.log('mv.length :' + mv.length);
 				// Should only ever be 1
 				if (mv.length === 1) {
-					// Move if item wasn't already moved by dnd-list.
+					// Move if item wasn't already moved by drag-and-drop.
 					if (item && item[this.key] === mv[0][this.key]) {
 						target.list.push( mv[0] );
+console.log('PUSH a');
 					} else {
 						// see if it is already in target?
 						if ( target.list.filter( trg => { return trg[this.key] === mv[0][this.key]; }).length === 0) {
 							target.list.push( mv[0] );
+console.log('PUSH b');
 						}
 					}
 
 					// Make unavailable.
 					let idx = source.list.indexOf( mv[0] );
+console.log('move unav idx: ' + idx);
 					if (idx !== -1) {
 						source.list.splice(idx, 1);
 					}
@@ -369,7 +405,7 @@ console.log('moveItem is false');
 
 			// Update destination
 			this.trueUp();
-		}
+//		}
 	}
 
 
