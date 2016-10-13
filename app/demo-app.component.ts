@@ -10,8 +10,6 @@ import { DualListComponent } from './dual-list.component';
 	<dual-list [sort]="keepSorted" [source]="stations" [(destination)]="confirmed" height="265px"></dual-list>
 	<div style="margin-top:32px;"><h4>Confirmed</h4><pre>{{confirmed|json}}</pre></div>
 </div>
-
-
 `
 })
 
@@ -57,6 +55,5 @@ export class DemoAppComponent {
 	private confirmed:Array<any> = [
 		{ _id: 32, _name: 'Eureka' }
 	];
-
 
 }
