@@ -1,7 +1,7 @@
 {
   "name": "angular2-dual-listbox",
   "description": "Angular 2 component for a dual listbox control.",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/czeckd/angular2-dual-listbox.git"
@@ -18,12 +18,12 @@
     "typings": "typings"
   },
   "dependencies": {
-    "@angular/common": "~2.0.1",
-    "@angular/compiler": "~2.0.1",
-    "@angular/core": "~2.0.1",
-    "@angular/forms": "~2.0.1",
-    "@angular/platform-browser":  "~2.0.1",
-    "@angular/platform-browser-dynamic":  "~2.0.1",
+    "@angular/common": "~2.1.0",
+    "@angular/compiler": "~2.1.0",
+    "@angular/core": "~2.1.0",
+    "@angular/forms": "~2.1.0",
+    "@angular/platform-browser": "~2.1.0",
+    "@angular/platform-browser-dynamic": "~2.1.0",
     
     "core-js": "^2.4.1",
     "systemjs": "0.19.39",
