@@ -17,8 +17,6 @@ export class DemoAppComponent {
 
 	private keepSorted:boolean = true;
 
-	private count:number = 1;
-
 	private stations:Array<any> = [
 		{ _id: 1, _name: 'Antonito' },
 		{ _id: 2, _name: 'Big Horn' },
