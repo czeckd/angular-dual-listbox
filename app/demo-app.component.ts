@@ -7,7 +7,7 @@ import { DualListComponent } from './dual-list.component';
 	template: `
 <div class="container-fluid">
 	<p></p>
-	<dual-list [sort]="keepSorted" [source]="stations" [(destination)]="confirmed" height="265px"></dual-list>
+	<dual-list [sort]="keepSorted" [source]="stations" key="key" display="station" [(destination)]="confirmed" height="265px"></dual-list>
 	<div style="margin-top:32px;"><h4>Confirmed</h4><pre>{{confirmed|json}}</pre></div>
 </div>
 `
@@ -18,42 +18,42 @@ export class DemoAppComponent {
 	private keepSorted:boolean = true;
 
 	private stations:Array<any> = [
-		{ _id: 1, _name: 'Antonito' },
-		{ _id: 2, _name: 'Big Horn' },
-		{ _id: 3, _name: 'Sublette' },
-		{ _id: 4, _name: 'Toltec' },
-		{ _id: 5, _name: 'Osier' },
-		{ _id: 6, _name: 'Chama' },
-		{ _id: 7, _name: 'Monero' },
-		{ _id: 8, _name: 'Lumberton' },
-		{ _id: 9, _name: 'Duice' },
-		{ _id: 10, _name: 'Navajo' },
-		{ _id: 11, _name: 'Juanita' },
-		{ _id: 12, _name: 'Pagosa Jct' },
-		{ _id: 13, _name: 'Carracha' },
-		{ _id: 14, _name: 'Arboles' },
-		{ _id: 15, _name: 'Allison' },
-		{ _id: 16, _name: 'Tiffany' },
-		{ _id: 17, _name: 'La Boca' },
-		{ _id: 18, _name: 'Ignacio' },
-		{ _id: 19, _name: 'Oxford' },
-		{ _id: 20, _name: 'Florida' },
-		{ _id: 21, _name: 'Bocea' },
-		{ _id: 22, _name: 'Carbon Jct' },
-		{ _id: 23, _name: 'Durango' },
-		{ _id: 24, _name: 'Home Ranch' },
-		{ _id: 25, _name: 'Trimble' },
-		{ _id: 26, _name: 'Hermosa' },
-		{ _id: 27, _name: 'Rockwood' },
-		{ _id: 28, _name: 'Tacoma' },
-		{ _id: 29, _name: 'Needleton' },
-		{ _id: 30, _name: 'Elk Park' },
-		{ _id: 31, _name: 'Silverton' },
-		{ _id: 32, _name: 'Eureka' }
+		{ key: 1, station: 'Antonito', state: 'CO' },
+		{ key: 2, station: 'Big Horn', state: 'NM' },
+		{ key: 3, station: 'Sublette', state: 'NM' },
+		{ key: 4, station: 'Toltec', state: 'NM' },
+		{ key: 5, station: 'Osier', state: 'CO' },
+		{ key: 6, station: 'Chama', state: 'NM'},
+		{ key: 7, station: 'Monero', state: 'NM' },
+		{ key: 8, station: 'Lumberton', state: 'NM' },
+		{ key: 9, station: 'Duice', state: 'NM' },
+		{ key: 10, station: 'Navajo', state: 'NM' },
+		{ key: 11, station: 'Juanita', state: 'CO' },
+		{ key: 12, station: 'Pagosa Jct', state: 'CO' },
+		{ key: 13, station: 'Carracha', state: 'CO' },
+		{ key: 14, station: 'Arboles', state: 'CO' },
+		{ key: 15, station: 'Solidad', state: 'CO' },
+		{ key: 16, station: 'Tiffany', state: 'CO' },
+		{ key: 17, station: 'La Boca', state: 'CO' },
+		{ key: 18, station: 'Ignacio', state: 'CO' },
+		{ key: 19, station: 'Oxford', state: 'CO' },
+		{ key: 20, station: 'Florida', state: 'CO' },
+		{ key: 21, station: 'Bocea', state: 'CO' },
+		{ key: 22, station: 'Carbon Jct', state: 'CO' },
+		{ key: 23, station: 'Durango', state: 'CO' },
+		{ key: 24, station: 'Home Ranch', state: 'CO' },
+		{ key: 25, station: 'Trimble Springs', state: 'CO' },
+		{ key: 26, station: 'Hermosa', state: 'CO' },
+		{ key: 27, station: 'Rockwood', state: 'CO' },
+		{ key: 28, station: 'Tacoma', state: 'CO' },
+		{ key: 29, station: 'Needleton', state: 'CO' },
+		{ key: 30, station: 'Elk Park', state: 'CO' },
+		{ key: 31, station: 'Silverton', state: 'CO' },
+		{ key: 32, station: 'Eureka', state: 'CO' }
 	 ];
 
 	private confirmed:Array<any> = [
-		{ _id: 32, _name: 'Eureka' }
+		{ key: 32, station: 'Eureka', state: 'CO' }
 	];
 
 }
