@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { DualListComponent } from './dual-list.component';
 
@@ -7,15 +7,73 @@ import { DualListComponent } from './dual-list.component';
 	template: `
 <div class="container-fluid">
 	<p></p>
-	<dual-list [sort]="keepSorted" [source]="stations" key="key" display="station" [(destination)]="confirmed" height="265px"></dual-list>
-	<div style="margin-top:32px;"><h4>Confirmed</h4><pre>{{confirmed|json}}</pre></div>
+	<dual-list [sort]="keepSorted" [source]="source" [key]="key" [display]="display" [(destination)]="confirmed" height="265px"></dual-list>
+
+	<ul class="nav nav-tabs" style="margin-top:50px;">
+		<li [class.active]="tab===1"><a (click)="tab=1">Arrays</a><li>
+		<li [class.active]="tab===2"><a (click)="tab=2">Progmmatic changes</a></li>
+	</ul>
+
+	<div class="tab-content">
+		<div class="tab-pane" [class.active]="tab===1">
+			<div class="row">
+				<div class="col-sm-6" style="margin-top:32px;"><h4>Source</h4><pre><small>{{source|json}}</small></pre></div>
+				<div class="col-sm-6" style="margin-top:32px;"><h4>Confirmed</h4><pre><small>{{confirmed|json}}</small></pre></div>
+			</div>
+		</div>
+
+		<div class="tab-pane" [class.active]="tab===2">
+			<div class="row" style="margin-top:20px;">
+				<div class="col-sm-6">
+					<label>Modify parent's source</label>
+					<form class="form-inline well">
+						<input class="form-control col-sm-1" style="margin-right:4px;" [(ngModel)]="userAdd" name="userAdd">
+						<button class="btn btn-success" (click)="doCreate()" [disabled]="!userAdd.length">Create</button>
+						<button class="btn btn-danger" (click)="doDelete()">Delete</button>
+					</form>
+				</div>
+				<div class="col-sm-6">
+					<label>Modify parent's confirmed</label>
+					<form class="form-inline well">
+					<button class="btn btn-default" (click)="doAdd()">Add</button>
+					<button class="btn btn-default" (click)="doRemove()">Remove</button>
+				</form>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<label>General</label><br/>
+				<form class="form-inline well">
+					<button class="btn btn-default" (click)="doSwap()">Swap source</button>
+					<button class="btn btn-primary" (click)="doReset()">Reset</button>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
 `
 })
 
-export class DemoAppComponent {
+export class DemoAppComponent implements OnInit{
+
+	private tab:number = 1;
 
 	private keepSorted:boolean = true;
+
+	private key:string;
+	private display:string;
+	private source:Array<any>;
+	private confirmed:Array<any>;
+
+	private sourceStations:Array<any>;
+	private sourceChessmen:Array<any>;
+
+	private confirmedStations:Array<any>;
+	private confirmedChessmen:Array<any>;
+
+	private toggle:boolean = true;
+
+	private userAdd:string = '';
 
 	private stations:Array<any> = [
 		{ key: 1, station: 'Antonito', state: 'CO' },
@@ -52,8 +110,88 @@ export class DemoAppComponent {
 		{ key: 32, station: 'Eureka', state: 'CO' }
 	 ];
 
-	private confirmed:Array<any> = [
-		{ key: 32, station: 'Eureka', state: 'CO' }
+	private chessmen:Array<any> = [
+		{ _id: 1, name: "Pawn" },
+		{ _id: 2, name: "Rook" },
+		{ _id: 3, name: "Knight" },
+		{ _id: 4, name: "Bishop" },
+		{ _id: 5, name: "Queen" },
+		{ _id: 6, name: "King" }
 	];
+
+	ngOnInit() {
+		this.doReset();
+	}
+
+	private useStations() {
+		this.toggle = true;
+		this.key = 'key';
+		this.display = 'station';
+		this.keepSorted = true;
+		this.source = this.sourceStations;;
+		this.confirmed = this.confirmedStations;
+	}
+
+	private useChessmen() {
+		this.toggle = false;
+		this.key = '_id';
+		this.display = 'name';
+		this.keepSorted = false;
+		this.source = this.sourceChessmen;
+		this.confirmed = this.confirmedChessmen;
+	}
+
+	doSwap() {
+		if (this.toggle) {
+			this.useChessmen();
+		} else {
+			this.useStations();
+		}
+	}
+
+	doReset() {
+		this.sourceChessmen = JSON.parse(JSON.stringify(this.chessmen));
+		this.sourceStations = JSON.parse(JSON.stringify(this.stations));
+		this.confirmedChessmen = new Array<any>();
+		this.confirmedStations = new Array<any>();
+
+		if (this.toggle) {
+			this.useStations();
+			this.confirmedStations.push( { key: 32, station: 'Eureka', state: 'CO' } );
+		} else {
+			this.useChessmen();
+		}
+	}
+
+	doDelete() {
+		if (this.source.length > 0) {
+			this.source.splice(0, 1);
+		}
+	}
+
+	doCreate() {
+		let o:any = {};
+		o[this.key] = this.source.length + 1;
+		o[this.display] = this.userAdd;
+		this.source.push( o );
+		this.userAdd = '';
+	}
+
+	doAdd() {
+		for (let i = 0, len = this.source.length; i < len; i += 1) {
+			let o = this.source[i];
+			let found = this.confirmed.find( (e:any) => e[this.key] === o[this.key] );
+			if (!found) {
+				this.confirmed.push(o);
+				break;
+			}
+		}
+	}
+
+	doRemove() {
+		if (this.confirmed.length > 0) {
+			this.confirmed.splice(0, 1);
+		}
+	}
 
 }
