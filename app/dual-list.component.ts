@@ -100,8 +100,8 @@ export class DualListComponent implements DoCheck, OnChanges {
 	@Input() destination:Array<any>;
 	@Output() destinationChange = new EventEmitter();
 
-	private available:BasicList = new BasicList(DualListComponent.AVAILABLE_LIST_NAME);
-	private confirmed:BasicList = new BasicList(DualListComponent.CONFIRMED_LIST_NAME);
+	private available:BasicList;
+	private confirmed:BasicList;
 
 	private sourceDiffer:any;
 	private destinationDiffer:any;
@@ -122,11 +122,15 @@ export class DualListComponent implements DoCheck, OnChanges {
 		}
 
 		if (changeRecord['source']) {
+			this.available = new BasicList(DualListComponent.AVAILABLE_LIST_NAME);
 			this.updatedSource();
+			this.updatedDestination();
 		}
 
 		if (changeRecord['destination']) {
+			this.confirmed = new BasicList(DualListComponent.CONFIRMED_LIST_NAME);
 			this.updatedDestination();
+			this.updatedSource();
 		}
 	}
 

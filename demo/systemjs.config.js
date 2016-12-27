@@ -1,11 +1,11 @@
 (function(global) {
 
-  var ngVer = '@2.1.0';
+  var ngVer = '@2.4.0';
 
   // map tells the System loader where to look for things
   var map = {
     'app':  'app', // 'dist',
-    'rxjs': 'https://unpkg.com/rxjs@5.0.0-beta.12',
+    'rxjs': 'https://unpkg.com/rxjs@5.0.1',
     '@angular': 'https://unpkg.com/@angular'
   };
 
