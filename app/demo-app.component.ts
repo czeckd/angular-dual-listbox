@@ -11,7 +11,7 @@ import { DualListComponent } from './dual-list.component';
 
 	<ul class="nav nav-tabs" style="margin-top:50px;">
 		<li [class.active]="tab===1"><a (click)="tab=1">Arrays</a><li>
-		<li [class.active]="tab===2"><a (click)="tab=2">Progmmatic changes</a></li>
+		<li [class.active]="tab===2"><a (click)="tab=2">Programmatic changes</a></li>
 	</ul>
 
 	<div class="tab-content">
