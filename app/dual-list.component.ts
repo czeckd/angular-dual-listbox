@@ -12,14 +12,18 @@ class BasicList {
 
 	pick:Array<any>;
 	list:Array<any>;
+	sift:Array<any>;
 
 	constructor(name:string) {
 		this._name = name;
 		this.last = null;
 		this.dragStart = false;
 		this.dragOver = false;
-		this.pick = new Array<any>();
+
+		// Lists contain objects like { _id, _name }.
+		this.pick = []; // new Array<any>();
 		this.list = [];
+		this.sift = [];
 	}
 
 	get name() : string {
@@ -37,10 +41,14 @@ class BasicList {
 			(click)="moveItem(available, confirmed)"
 			[disabled]="available.pick.length === 0">Add&nbsp;&nbsp;&nbsp;&nbsp;&#9654;</button>
 
+		<div *ngIf="filter" class="filter">
+			<input class="form-control" name="filterSource" [(ngModel)]="pickerFilterSource" (ngModelChange)="onFilterSource()">
+		</div>
+
 		<div class="record-picker">
 			<ul [ngStyle]="{'max-height': height, 'min-height': height}" [ngClass]="{over:available.dragOver}"
 				(drop)="drop($event, confirmed)" (dragover)="allowDrop($event, available)" (dragleave)="dragLeave()">
-				<li *ngFor="let item of available.list; let idx=index;"
+				<li *ngFor="let item of available.sift; let idx=index;"
 					(click)="selectItem(available.pick, item); shiftClick($event, idx, available, item)"
 					[ngClass]="{selected: isItemSelected(available.pick, item)}"
 					draggable="true" (dragstart)="drag($event, item, available)" (dragend)="dragEnd(available)"
@@ -64,10 +72,14 @@ class BasicList {
 			(click)="moveItem(confirmed, available)"
 			[disabled]="confirmed.pick.length === 0">&#9664;&nbsp;&nbsp;&nbsp;&nbsp;Remove</button>
 
+		<div *ngIf="filter" class="filter">
+			<input class="form-control" name="filterDestination" [(ngModel)]="pickerFilterDestination" (ngModelChange)="onFilterDestination()">
+		</div>
+
 		<div class="record-picker">
 			<ul [ngStyle]="{'max-height': height, 'min-height': height}" [ngClass]="{over:confirmed.dragOver}"
 				(drop)="drop($event, available)" (dragover)="allowDrop($event, confirmed)" (dragleave)="dragLeave()">
-				<li *ngFor="let item of confirmed.list; let idx=index;"
+				<li *ngFor="let item of confirmed.sift; let idx=index;"
 					(click)="selectItem(confirmed.pick, item); shiftClick($event, idx, confirmed, item)"
 					[ngClass]="{selected: isItemSelected(confirmed.pick, item)}"
 					draggable="true" (dragstart)="drag($event, item, confirmed)" (dragend)="dragEnd(confirmed)"
@@ -94,17 +106,22 @@ export class DualListComponent implements DoCheck, OnChanges {
 	@Input() key:string = typeof this.key !== 'undefined' ? this.key : '_id';
 	@Input() display:string = typeof this.display !== 'undefined' ? this.display : '_name';
 	@Input() height:string = typeof this.height !== 'undefined' ? this.height : '100px';
+	@Input() filter:boolean = typeof this.filter !== 'undefined' ? this.filter : false;
 	@Input() sort:boolean = typeof this.sort !== 'undefined' ? this.sort : false;
 	@Input() compare:compareFunction = typeof this.compare !== 'undefined' ? this.compare : undefined;
 	@Input() source:Array<any>; // = typeof this.source !== 'undefined' ? this.source : [];
 	@Input() destination:Array<any>;
 	@Output() destinationChange = new EventEmitter();
 
-	private available:BasicList;
-	private confirmed:BasicList;
+	available:BasicList;
+	confirmed:BasicList;
 
-	private sourceDiffer:any;
-	private destinationDiffer:any;
+	showFilter = true;
+	pickerFilterSource = '';
+	pickerFilterDestination = '';
+
+	sourceDiffer:any;
+	destinationDiffer:any;
 
 	private sorter = (a:any, b:any) => { return (a._name < b._name) ? -1 : ((a._name > b._name) ? 1 : 0); };
 
@@ -113,6 +130,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 	}
 
 	ngOnChanges(changeRecord: {[key:string]:SimpleChange}) {
+console.log(this.filter);
 		if (changeRecord['sort']) {
 			if (changeRecord['sort'].currentValue === true && this.compare === undefined) {
 				this.compare = this.sorter;
@@ -135,7 +153,16 @@ export class DualListComponent implements DoCheck, OnChanges {
 	}
 
 	ngDoCheck() {
-		let sourceChanges = this.sourceDiffer.diff(this.source);
+//console.log('ngDoCheck');
+		this.buildAvailable(this.source);
+//		this.onFilterSource();
+		this.buildConfirmed(this.destination);
+//		this.onFilterDestination();
+		this.doFilter();
+	}
+
+	buildAvailable(source:Array<any>) {
+		let sourceChanges = this.sourceDiffer.diff(source);
 		if (sourceChanges) {
 			sourceChanges.forEachRemovedItem((r:any) => {
 					let idx = this.findItemIndex(this.available.list, r.item, this.key);
@@ -156,9 +183,12 @@ export class DualListComponent implements DoCheck, OnChanges {
 			if (this.compare !== undefined) {
 				this.available.list.sort(this.compare);
 			}
+			this.available.sift = this.available.list;
 		}
+	}
 
-		let destChanges = this.destinationDiffer.diff(this.destination);
+	buildConfirmed(destination:Array<any>) {
+		let destChanges = this.destinationDiffer.diff(destination);
 		if (destChanges) {
 			destChanges.forEachRemovedItem((r:any) => {
 					let idx = this.findItemIndex(this.confirmed.list, r.item, this.key);
@@ -183,10 +213,13 @@ export class DualListComponent implements DoCheck, OnChanges {
 			);
 
 			if (this.compare !== undefined) {
-				this.available.list.sort(this.compare);
+//				this.available.list.sort(this.compare);
+				this.confirmed.list.sort(this.compare);
 			}
+			this.confirmed.sift = this.confirmed.list;
 		}
 	}
+
 
 	updatedSource() {
 		this.available.list.length = 0;
@@ -407,7 +440,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 
 	selectAll(source:BasicList) {
 		source.pick.length = 0;
-		source.pick = source.list.slice(0);
+		source.pick = source.sift.slice(0);
 	}
 
 	selectNone(source:BasicList) {
@@ -490,4 +523,49 @@ export class DualListComponent implements DoCheck, OnChanges {
 			}
 		}
 	}
+
+	onFilterSource() {
+		if (this.pickerFilterSource.length > 0) {
+			let filtered = this.available.list.filter( (item:any) => {
+				if (Object.prototype.toString.call(item) === '[object Object]') {
+					if (item._name !== undefined) {
+						return item._name.toLowerCase().indexOf(this.pickerFilterSource.toLowerCase()) !== -1;
+					} else {
+						return JSON.stringify(item).toLowerCase().indexOf(this.pickerFilterSource.toLowerCase()) !== -1;
+					}
+				} else {
+					return item.toLowerCase().indexOf(this.pickerFilterSource.toLowerCase()) !== -1;
+				}
+			});
+			this.available.sift = filtered;
+
+		} else {
+			this.available.sift = this.available.list;
+		}
+	}
+
+	onFilterDestination() {
+		if (this.pickerFilterDestination.length > 0) {
+			let filtered = this.confirmed.list.filter( (item:any) => {
+				if (Object.prototype.toString.call(item) === '[object Object]') {
+					if (item._name !== undefined) {
+						return item._name.toLowerCase().indexOf(this.pickerFilterDestination.toLowerCase()) !== -1;
+					} else {
+						return JSON.stringify(item).toLowerCase().indexOf(this.pickerFilterDestination.toLowerCase()) !== -1;
+					}
+				} else {
+					return item.toLowerCase().indexOf(this.pickerFilterDestination.toLowerCase()) !== -1;
+				}
+			});
+			this.confirmed.sift = filtered;
+		} else {
+			this.confirmed.sift = this.confirmed.list;
+		}
+	}
+
+	doFilter() {
+		this.onFilterSource();
+		this.onFilterDestination();
+	}
+
 }

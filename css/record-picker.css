@@ -25,7 +25,6 @@ div.record-picker {
 	scrollbar-arrow-color: gray;
 	scrollbar-shadow-color: gray;
 	scrollbar-dark-shadow-color: gray;
-	
 }
 
 div.record-picker::-webkit-scrollbar-track {
@@ -68,13 +67,11 @@ div.record-picker::-webkit-scrollbar-thumb:hover {
 }
 
 .record-picker li.selected {
-/*	background-color: #ff9; */
 	background-color: #d9edf7;
 }
 
 .record-picker li.selected:hover {
 	background-color: #c4e3f3;
-/*	background-color: #d9edf7; */
 }
 
 .record-picker li.disabled {
@@ -111,5 +108,23 @@ div.record-picker::-webkit-scrollbar-thumb:hover {
 .record-picker ul.over
 {
 	background-color:lightgray;
+}
+
+.filter {
+	margin-bottom: -2.2em;
+}
+
+.filter::after {
+	content:"o";
+	width:40px;
+	color:transparent;
+	font-size:2em;
+	background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M0 64l192 192v192l128-32V256L512 64H0z"/></svg>');
+	background-repeat:no-repeat;
+	background-position:center center;
+	opacity:.2;
+	top: -36px;
+	left: calc(100% - 21px);
+	position:relative;
 }
 

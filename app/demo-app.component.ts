@@ -7,7 +7,7 @@ import { DualListComponent } from './dual-list.component';
 	template: `
 <div class="container-fluid">
 	<p></p>
-	<dual-list [sort]="keepSorted" [source]="source" [key]="key" [display]="display" [(destination)]="confirmed" height="265px"></dual-list>
+	<dual-list [sort]="keepSorted" [source]="source" [key]="key" [display]="display" [filter]="filter" [(destination)]="confirmed" height="265px"></dual-list>
 
 	<ul class="nav nav-tabs" style="margin-top:50px;">
 		<li [class.active]="tab===1"><a (click)="tab=1">Arrays</a><li>
@@ -44,6 +44,7 @@ import { DualListComponent } from './dual-list.component';
 			<div class="col-sm-12">
 				<label>General</label><br/>
 				<form class="form-inline well">
+					<button class="btn btn-default" (click)="doFilter()">{{filterBtn()}}</button>
 					<button class="btn btn-default" (click)="doSwap()">Swap source</button>
 					<button class="btn btn-primary" (click)="doReset()">Reset</button>
 				</form>
@@ -62,6 +63,7 @@ export class DemoAppComponent implements OnInit{
 
 	private key:string;
 	private display:string;
+	private filter:boolean = false;
 	private source:Array<any>;
 	private confirmed:Array<any>;
 
@@ -192,6 +194,14 @@ export class DemoAppComponent implements OnInit{
 		if (this.confirmed.length > 0) {
 			this.confirmed.splice(0, 1);
 		}
+	}
+
+	doFilter() {
+		this.filter = !this.filter;
+	}
+
+	filterBtn() {
+		return (this.filter ? 'Hide Filter' : 'Show Filter');
 	}
 
 }
