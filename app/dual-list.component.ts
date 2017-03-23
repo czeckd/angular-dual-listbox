@@ -4,8 +4,12 @@ import { Component, ChangeDetectorRef, DoCheck, EventEmitter, Input, IterableDif
 type compareFunction = (a:any, b:any) => number;
 
 class BasicList {
+	/** Name of the list */
 	private _name:string;
+	/** Last element touched */
 	last:any;
+	/** text filter */
+	picker:string;
 
 	dragStart:boolean;
 	dragOver:boolean;
@@ -17,11 +21,12 @@ class BasicList {
 	constructor(name:string) {
 		this._name = name;
 		this.last = null;
+		this.picker = '';
 		this.dragStart = false;
 		this.dragOver = false;
 
-		// Lists contain objects like { _id, _name }.
-		this.pick = []; // new Array<any>();
+		// Arrays will contain objects of { _id, _name }.
+		this.pick = [];
 		this.list = [];
 		this.sift = [];
 	}
@@ -42,7 +47,7 @@ class BasicList {
 			[disabled]="available.pick.length === 0">Add&nbsp;&nbsp;&nbsp;&nbsp;&#9654;</button>
 
 		<div *ngIf="filter" class="filter">
-			<input class="form-control" name="filterSource" [(ngModel)]="pickerFilterSource" (ngModelChange)="onFilterSource()">
+			<input class="form-control" name="filterSource" [(ngModel)]="available.picker" (ngModelChange)="onFilter(available)">
 		</div>
 
 		<div class="record-picker">
@@ -73,7 +78,7 @@ class BasicList {
 			[disabled]="confirmed.pick.length === 0">&#9664;&nbsp;&nbsp;&nbsp;&nbsp;Remove</button>
 
 		<div *ngIf="filter" class="filter">
-			<input class="form-control" name="filterDestination" [(ngModel)]="pickerFilterDestination" (ngModelChange)="onFilterDestination()">
+			<input class="form-control" name="filterDestination" [(ngModel)]="confirmed.picker" (ngModelChange)="onFilter(confirmed)">
 		</div>
 
 		<div class="record-picker">
@@ -116,21 +121,22 @@ export class DualListComponent implements DoCheck, OnChanges {
 	available:BasicList;
 	confirmed:BasicList;
 
-	showFilter = true;
-	pickerFilterSource = '';
-	pickerFilterDestination = '';
-
 	sourceDiffer:any;
 	destinationDiffer:any;
 
 	private sorter = (a:any, b:any) => { return (a._name < b._name) ? -1 : ((a._name > b._name) ? 1 : 0); };
 
-
 	constructor(private differs:IterableDiffers, private cdr:ChangeDetectorRef) {
 	}
 
 	ngOnChanges(changeRecord: {[key:string]:SimpleChange}) {
-console.log(this.filter);
+		if (changeRecord['filter']) {
+			if (changeRecord['filter'].currentValue === false) {
+				this.clearFilter(this.available);
+				this.clearFilter(this.confirmed);
+			}
+		}
+
 		if (changeRecord['sort']) {
 			if (changeRecord['sort'].currentValue === true && this.compare === undefined) {
 				this.compare = this.sorter;
@@ -153,73 +159,73 @@ console.log(this.filter);
 	}
 
 	ngDoCheck() {
-//console.log('ngDoCheck');
-		this.buildAvailable(this.source);
-//		this.onFilterSource();
-		this.buildConfirmed(this.destination);
-//		this.onFilterDestination();
-		this.doFilter();
+		if (this.buildAvailable(this.source)) {
+			this.onFilter(this.available);
+		}
+		if (this.buildConfirmed(this.destination)) {
+			this.onFilter(this.confirmed);
+		}
 	}
 
-	buildAvailable(source:Array<any>) {
+	buildAvailable(source:Array<any>) : boolean {
 		let sourceChanges = this.sourceDiffer.diff(source);
 		if (sourceChanges) {
 			sourceChanges.forEachRemovedItem((r:any) => {
-					let idx = this.findItemIndex(this.available.list, r.item, this.key);
-					if (idx !== -1) {
-						this.available.list.splice(idx, 1);
-					}
+				let idx = this.findItemIndex(this.available.list, r.item, this.key);
+				if (idx !== -1) {
+					this.available.list.splice(idx, 1);
 				}
-			);
+			});
 
 			sourceChanges.forEachAddedItem((r:any) => {
-					// Do not add duplicates even if source has duplicates.
-					if (this.findItemIndex(this.available.list, r.item, this.key) === -1) {
-						this.available.list.push( { _id: r.item[this.key], _name: this.makeName(r.item) });
-					}
+				// Do not add duplicates even if source has duplicates.
+				if (this.findItemIndex(this.available.list, r.item, this.key) === -1) {
+					this.available.list.push( { _id: r.item[this.key], _name: this.makeName(r.item) });
 				}
-			);
+			});
 
 			if (this.compare !== undefined) {
 				this.available.list.sort(this.compare);
 			}
 			this.available.sift = this.available.list;
+
+			return true;
 		}
+		return false;
 	}
 
-	buildConfirmed(destination:Array<any>) {
+	buildConfirmed(destination:Array<any>) : boolean {
 		let destChanges = this.destinationDiffer.diff(destination);
 		if (destChanges) {
 			destChanges.forEachRemovedItem((r:any) => {
-					let idx = this.findItemIndex(this.confirmed.list, r.item, this.key);
-					if (idx !== -1) {
-						if (!this.isItemSelected(this.confirmed.pick, this.confirmed.list[idx])) {
-							this.selectItem(this.confirmed.pick, this.confirmed.list[idx]);
-						}
-						this.moveItem(this.confirmed, this.available, this.confirmed.list[idx]);
+				let idx = this.findItemIndex(this.confirmed.list, r.item, this.key);
+				if (idx !== -1) {
+					if (!this.isItemSelected(this.confirmed.pick, this.confirmed.list[idx])) {
+						this.selectItem(this.confirmed.pick, this.confirmed.list[idx]);
 					}
+					this.moveItem(this.confirmed, this.available, this.confirmed.list[idx]);
 				}
-			);
+			});
 
 			destChanges.forEachAddedItem((r:any) => {
-					let idx = this.findItemIndex(this.available.list, r.item, this.key);
-					if (idx !== -1) {
-						if (!this.isItemSelected(this.available.pick, this.available.list[idx])) {
-							this.selectItem(this.available.pick, this.available.list[idx]);
-						}
-						this.moveItem(this.available, this.confirmed, this.available.list[idx]);
+				let idx = this.findItemIndex(this.available.list, r.item, this.key);
+				if (idx !== -1) {
+					if (!this.isItemSelected(this.available.pick, this.available.list[idx])) {
+						this.selectItem(this.available.pick, this.available.list[idx]);
 					}
+					this.moveItem(this.available, this.confirmed, this.available.list[idx]);
 				}
-			);
+			});
 
 			if (this.compare !== undefined) {
-//				this.available.list.sort(this.compare);
 				this.confirmed.list.sort(this.compare);
 			}
 			this.confirmed.sift = this.confirmed.list;
-		}
-	}
 
+			return true;
+		}
+		return false;
+	}
 
 	updatedSource() {
 		this.available.list.length = 0;
@@ -342,6 +348,13 @@ console.log(this.filter);
 		return idx;
 	}
 
+	private makeUnavailable(source:BasicList, item:any) {
+		let idx = source.list.indexOf(item);
+		if (idx !== -1) {
+			source.list.splice(idx, 1);
+		}
+	}
+
 	moveItem(source:BasicList, target:BasicList, item:any = null) {
 		let i = 0;
 		let len = source.pick.length;
@@ -368,22 +381,16 @@ console.log(this.filter);
 			// Should only ever be 1
 			if (mv.length === 1) {
 				// Move if item wasn't already moved by drag-and-drop.
-//				if (item && item[this.key] === mv[0][this.key]) {
 				if (item && item._id === mv[0]._id) {
 					target.list.push( mv[0] );
 				} else {
 					// see if it is already in target?
-//					if ( target.list.filter( trg => { return trg[this.key] === mv[0][this.key]; }).length === 0) {
 					if ( target.list.filter( trg => { return trg._id === mv[0]._id; }).length === 0) {
 						target.list.push( mv[0] );
 					}
 				}
 
-				// Make unavailable.
-				let idx = source.list.indexOf( mv[0] );
-				if (idx !== -1) {
-					source.list.splice(idx, 1);
-				}
+				this.makeUnavailable(source, mv[0]);
 			}
 		}
 
@@ -395,8 +402,13 @@ console.log(this.filter);
 
 		// Update destination
 		this.trueUp();
-	}
 
+		// Delay ever-so-slightly to prevent race condition.
+		setTimeout( () => {
+			this.onFilter(source);
+			this.onFilter(target);
+		}, 10);
+	}
 
 	isItemSelected(list:Array<any>, item:any) {
 		if (list.filter( e => { return Object.is(e, item); }).length > 0) {
@@ -407,14 +419,14 @@ console.log(this.filter);
 
 	shiftClick(event:MouseEvent, index:number, source:BasicList, item:any) {
 		if (event.shiftKey && source.last && !Object.is(item, source.last)) {
-			let idx = source.list.indexOf(source.last);
+			let idx = source.sift.indexOf(source.last);
 			if (index > idx) {
 				for (let i = (idx + 1); i < index; i += 1) {
-					this.selectItem(source.pick, source.list[i]);
+					this.selectItem(source.pick, source.sift[i]);
 				}
 			} else if (idx !== -1) {
 				for (let i = (index + 1); i < idx; i += 1)  {
-					this.selectItem(source.pick, source.list[i]);
+					this.selectItem(source.pick, source.sift[i]);
 				}
 			}
 		}
@@ -459,6 +471,41 @@ console.log(this.filter);
 			return true;
 		}
 		return false;
+	}
+
+	private unpick(source:BasicList) {
+		for (let i = source.pick.length - 1; i >= 0; i -= 1) {
+			if (source.sift.indexOf(source.pick[i]) === -1) {
+				source.pick.splice(i, 1);
+			}
+		}
+	}
+
+	clearFilter(source:BasicList) {
+		if (source) {
+			source.picker = '';
+			this.onFilter(source);
+		}
+	}
+
+	onFilter(source:BasicList) {
+		if (source.picker.length > 0) {
+			let filtered = source.list.filter( (item:any) => {
+				if (Object.prototype.toString.call(item) === '[object Object]') {
+					if (item._name !== undefined) {
+						return item._name.toLowerCase().indexOf(source.picker.toLowerCase()) !== -1;
+					} else {
+						return JSON.stringify(item).toLowerCase().indexOf(source.picker.toLowerCase()) !== -1;
+					}
+				} else {
+					return item.toLowerCase().indexOf(source.picker.toLowerCase()) !== -1;
+				}
+			});
+			source.sift = filtered;
+			this.unpick(source);
+		} else {
+			source.sift = source.list;
+		}
 	}
 
 	// Allow for complex names by passing an array of strings.
@@ -522,50 +569,6 @@ console.log(this.filter);
 				return item[this.display];
 			}
 		}
-	}
-
-	onFilterSource() {
-		if (this.pickerFilterSource.length > 0) {
-			let filtered = this.available.list.filter( (item:any) => {
-				if (Object.prototype.toString.call(item) === '[object Object]') {
-					if (item._name !== undefined) {
-						return item._name.toLowerCase().indexOf(this.pickerFilterSource.toLowerCase()) !== -1;
-					} else {
-						return JSON.stringify(item).toLowerCase().indexOf(this.pickerFilterSource.toLowerCase()) !== -1;
-					}
-				} else {
-					return item.toLowerCase().indexOf(this.pickerFilterSource.toLowerCase()) !== -1;
-				}
-			});
-			this.available.sift = filtered;
-
-		} else {
-			this.available.sift = this.available.list;
-		}
-	}
-
-	onFilterDestination() {
-		if (this.pickerFilterDestination.length > 0) {
-			let filtered = this.confirmed.list.filter( (item:any) => {
-				if (Object.prototype.toString.call(item) === '[object Object]') {
-					if (item._name !== undefined) {
-						return item._name.toLowerCase().indexOf(this.pickerFilterDestination.toLowerCase()) !== -1;
-					} else {
-						return JSON.stringify(item).toLowerCase().indexOf(this.pickerFilterDestination.toLowerCase()) !== -1;
-					}
-				} else {
-					return item.toLowerCase().indexOf(this.pickerFilterDestination.toLowerCase()) !== -1;
-				}
-			});
-			this.confirmed.sift = filtered;
-		} else {
-			this.confirmed.sift = this.confirmed.list;
-		}
-	}
-
-	doFilter() {
-		this.onFilterSource();
-		this.onFilterDestination();
 	}
 
 }
