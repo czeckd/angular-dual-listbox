@@ -1,4 +1,4 @@
-# angular2-dual-listbox
+# angular-dual-listbox
 
 The dual-listbox supplies two lists side-by-side that allows items in one
 list to be moved to the other list via drag-and-drop and/or a button-based
@@ -13,7 +13,7 @@ sheet (`css/record-picker.css`) for presentation.
 
 ## Demo
 
-A [working demo](http://czeckd.github.io/angular2-dual-listbox/demo/) shows
+A [working demo](http://czeckd.github.io/angular-dual-listbox/demo/) shows
 the dual listbox in action.
 
 

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, DoCheck, EventEmitter, Input, IterableDiffers, OnChanges,
+import { Component, DoCheck, EventEmitter, Input, IterableDiffers, OnChanges,
 	Output, SimpleChange } from '@angular/core';
 
 type compareFunction = (a:any, b:any) => number;
@@ -126,7 +126,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 
 	private sorter = (a:any, b:any) => { return (a._name < b._name) ? -1 : ((a._name > b._name) ? 1 : 0); };
 
-	constructor(private differs:IterableDiffers, private cdr:ChangeDetectorRef) {
+	constructor(private differs:IterableDiffers) {
 	}
 
 	ngOnChanges(changeRecord: {[key:string]:SimpleChange}) {
@@ -232,13 +232,13 @@ export class DualListComponent implements DoCheck, OnChanges {
 		this.available.pick.length = 0;
 
 		if (this.source !== undefined) {
-			this.sourceDiffer = this.differs.find(this.source).create(this.cdr);
+			this.sourceDiffer = this.differs.find(this.source).create(null);
 		}
 	}
 
 	updatedDestination() {
 		if (this.destination !== undefined) {
-			this.destinationDiffer = this.differs.find(this.destination).create(this.cdr);
+			this.destinationDiffer = this.differs.find(this.destination).create(null);
 		}
 	}
 
