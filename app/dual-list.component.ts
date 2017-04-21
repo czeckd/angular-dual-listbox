@@ -114,7 +114,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 	@Input() filter:boolean = typeof this.filter !== 'undefined' ? this.filter : false;
 	@Input() sort:boolean = typeof this.sort !== 'undefined' ? this.sort : false;
 	@Input() compare:compareFunction = typeof this.compare !== 'undefined' ? this.compare : undefined;
-	@Input() source:Array<any>; // = typeof this.source !== 'undefined' ? this.source : [];
+	@Input() source:Array<any>;
 	@Input() destination:Array<any>;
 	@Output() destinationChange = new EventEmitter();
 
@@ -127,6 +127,8 @@ export class DualListComponent implements DoCheck, OnChanges {
 	private sorter = (a:any, b:any) => { return (a._name < b._name) ? -1 : ((a._name > b._name) ? 1 : 0); };
 
 	constructor(private differs:IterableDiffers) {
+		this.available = new BasicList(DualListComponent.AVAILABLE_LIST_NAME);
+		this.confirmed = new BasicList(DualListComponent.CONFIRMED_LIST_NAME);
 	}
 
 	ngOnChanges(changeRecord: {[key:string]:SimpleChange}) {
@@ -159,10 +161,10 @@ export class DualListComponent implements DoCheck, OnChanges {
 	}
 
 	ngDoCheck() {
-		if (this.buildAvailable(this.source)) {
+		if (this.source && this.buildAvailable(this.source)) {
 			this.onFilter(this.available);
 		}
-		if (this.buildConfirmed(this.destination)) {
+		if (this.destination && this.buildConfirmed(this.destination)) {
 			this.onFilter(this.confirmed);
 		}
 	}
