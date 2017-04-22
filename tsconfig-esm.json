@@ -24,5 +24,8 @@
     "tmp/angular-dual-listbox.module.ts",
     "tmp/dual-list.component.ts",
     "tmp/index.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "skipTemplateCodegen": true
+  }
 }
