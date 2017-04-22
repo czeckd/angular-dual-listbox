@@ -21,5 +21,6 @@ if (!existsSync(dir)) {
 
 writeFileSync('tmp/dual-list.component.ts', component);
 createReadStream('lib/angular-dual-listbox.module.ts').pipe(createWriteStream('tmp/angular-dual-listbox.module.ts'));
+createReadStream('lib/basic-list.ts').pipe(createWriteStream('tmp/basic-list.ts'));
 createReadStream('lib/index.ts').pipe(createWriteStream('tmp/index.ts'));
 

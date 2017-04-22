@@ -22,6 +22,7 @@
   },
   "files": [
     "tmp/angular-dual-listbox.module.ts",
+    "tmp/basic-list.ts",
     "tmp/dual-list.component.ts",
     "tmp/index.ts"
   ],

@@ -9,7 +9,7 @@
   "author": "David Czeck",
   "license": "MIT",
   "scripts": {
-    "start": "npm run dist && rimraf runt && npm run dist && tsc && concurrently \"tsc -w\" \"lite-server\" ",
+    "start": "rimraf runt && npm run dist && tsc && concurrently \"tsc -w\" \"lite-server\" ",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "clean": "rimraf runt tmp dist",
