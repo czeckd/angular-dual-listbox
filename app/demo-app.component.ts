@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { DualListComponent } from './dual-list.component';
+import { DualListComponent } from 'angular-dual-listbox';
 
 @Component({
 	selector: 'demo-app',
