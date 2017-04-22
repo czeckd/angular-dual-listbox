@@ -21,7 +21,8 @@
   "module": "angular-dual-listbox.module.js",
   "types": "index.d.ts",
   "peerDependencies": {
-    "@angular/core": ">=4.0.0"
+    "@angular/core": ">=4.0.0",
+    "@angular/forms": ">=4.0.0"
   },
   "devDependencies": {
     "@angular/common": "^4.0.0",
