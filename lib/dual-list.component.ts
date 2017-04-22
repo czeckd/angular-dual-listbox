@@ -1,9 +1,9 @@
 import { Component, DoCheck, EventEmitter, Input, IterableDiffers, OnChanges,
 	Output, SimpleChange } from '@angular/core';
 
-type compareFunction = (a:any, b:any) => number;
+export type compareFunction = (a:any, b:any) => number;
 
-class BasicList {
+export class BasicList {
 	/** Name of the list */
 	private _name:string;
 	/** Last element touched */
@@ -38,8 +38,8 @@ class BasicList {
 
 @Component({
 	selector: 'dual-list',
-	styleUrls: ['app/dual-list.component.css'],
-	templateUrl: 'app/dual-list.component.html'
+	styleUrls: [ 'lib/dual-list.component.css' ],
+	templateUrl: 'lib/dual-list.component.html'
 })
 
 export class DualListComponent implements DoCheck, OnChanges {
