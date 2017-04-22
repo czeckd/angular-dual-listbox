@@ -3,7 +3,8 @@ export default {
 	moduleName: 'angular-dual-listbox',
 	external: [
 		'@angular/core',
-		'@angular/common'
+		'@angular/common',
+		'@angular/forms'
 	],
 	onwarn: ( warning ) => {
 		const skip_codes = [
