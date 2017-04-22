@@ -19,6 +19,7 @@
   },
   "main": "angular-dual-listbox.bundle.js",
   "module": "angular-dual-listbox.module.js",
+  "types": "index.d.ts",
   "peerDependencies": {
     "@angular/core": ">=4.0.0"
   },
