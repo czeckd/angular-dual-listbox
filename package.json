@@ -6,6 +6,9 @@
     "type": "git",
     "url": "https://github.com/czeckd/angular-dual-listbox.git"
   },
+  "bugs": {
+    "url": "https://github.com/czeckd/angular-dual-listbox/issues"
+  },
   "author": "David Czeck",
   "license": "MIT",
   "scripts": {
@@ -13,7 +16,7 @@
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "clean": "rimraf runt tmp dist",
-    "dist": "rimraf tmp dist && ts-node tools/inliner.ts && tsc -p tsconfig-esm.json && rollup -c rollup.config.js dist/index.js > dist/angular-dual-listbox.bundle.js && ngc -p tsconfig-esm.json && ts-node tools/packager.ts && cp README.md LICENSE dist",
+    "dist": "tools/mkdist",
     "lint": "tslint -c tslint.json app/**/*.ts -t verbose || true",
     "lite": "lite-server"
   },
