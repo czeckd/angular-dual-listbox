@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { DualListComponent } from './dual-list.component';
+import { DualListComponent } from 'angular-dual-listbox';
 
 @Component({
 	selector: 'demo-app',
@@ -57,15 +57,14 @@ import { DualListComponent } from './dual-list.component';
 
 export class DemoAppComponent implements OnInit{
 
-	private tab:number = 1;
-
-	private keepSorted:boolean = true;
-
-	private key:string;
-	private display:string;
-	private filter:boolean = false;
-	private source:Array<any>;
-	private confirmed:Array<any>;
+	tab = 1;
+	keepSorted = true;
+	key:string;
+	display:string;
+	filter = false;
+	source:Array<any>;
+	confirmed:Array<any>;
+	userAdd = '';
 
 	private sourceStations:Array<any>;
 	private sourceChessmen:Array<any>;
@@ -73,9 +72,7 @@ export class DemoAppComponent implements OnInit{
 	private confirmedStations:Array<any>;
 	private confirmedChessmen:Array<any>;
 
-	private toggle:boolean = true;
-
-	private userAdd:string = '';
+	private toggle = true;
 
 	private stations:Array<any> = [
 		{ key: 1, station: 'Antonito', state: 'CO' },
