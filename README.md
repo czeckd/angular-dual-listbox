@@ -1,4 +1,7 @@
-# Angular Dual-Listbox
+[![npm version](https://badge.fury.io/js/angular-dual-listbox.svg)](https://badge.fury.io/js/angular-dual-listbox)
+
+Angular Dual-Listbox
+=========
 
 The **angular-dual-listbox** is an Angular 2+ component that provides two lists controls side-by-side that allows items in one list to be moved to the other list via drag-and-drop and/or a button-based interface. The component supports multiple select options from the list and programatic setting of list sources. 
 
