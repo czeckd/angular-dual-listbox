@@ -1,29 +1,20 @@
-# angular-dual-listbox
+# Angular Dual-Listbox
 
-The dual-listbox supplies two lists side-by-side that allows items in one
-list to be moved to the other list via drag-and-drop and/or a button-based
-interface. It supports multiple select options from the list and programatic
-setting of list sources.
+The **angular-dual-listbox** is an Angular 2+ component that provides two lists controls side-by-side that allows items in one list to be moved to the other list via drag-and-drop and/or a button-based interface. The component supports multiple select options from the list and programatic setting of list sources. 
 
-The dual-listbox consists of a single file: (`app/dual-list.component.ts`)
-and can be used in conjuction with Bootstrap and the provided CSS style 
-sheet (`css/record-picker.css`) for presentation.
+A [working demo](http://czeckd.github.io/angular-dual-listbox/demo/) shows the dual listbox in action.
 
-![Dual ListBox](images/dual-listbox.png)
+![Dual ListBox](http://czeckd.github.io/angular-dual-listbox/images/dual-listbox.png)
 
-## Demo
-
-A [working demo](http://czeckd.github.io/angular-dual-listbox/demo/) shows
-the dual listbox in action.
-
-
+## How to use?
+```
+$ npm in angular-dual-listbox --save
+```
 ## Usage
-
-Copy `dual-list.component.ts` into your app and add ``DualListComponent`` to 
-the desired component's directives array. Additionally, add the 
-`record-picker.css` to your app's `index.html`.  See `index.html` for an 
-example.
-
+Basic usage is:
+```
+<dual-list [source]="source" [(destination)]="confirmed"></dual-list>
+```
 The following parameters can be set on a dual-list: 
 - **key** - The unique identifier field of each object in the `source` and 
 `destination` arrays, default is ``_id``.
@@ -36,35 +27,36 @@ default is ``false``.
 ``false``.
 - **compare** - A compare function to be used for sorting the lists. Note if
 sort is not set and compare is set, then sort will be set ``true``.
-- **source** - The source array of objects for the list.
+- **source** - The source array of objects for the list. This is the universal, master list of all possible objects.
 - **destination** The destination array of objects selected from the list.
 Note, the ``destination`` array can have prexisting elements.
 
-For a usage example, see `demo-app.component.ts`. 
+For more usage examples, see the [`demo-app.component.ts`](https://github.com/czeckd/angular-dual-listbox/blob/master/app/demo-app.component.ts).
 
-### Known issue
+## Extending
+The html template packaged with this component is based on Bootstap 3; however it can be overridden for customization. Here is an example:
 
-The drag-and-drop between multiple dual-listbox components may cause 
+```typescript
+import { Component } from '@angular/core';
+import { DualListComponent } from 'angular-dual-listbox/index';
+
+@Component({
+    selector: 'custom-dual-list',
+    templateUrl: './custom-dual-list.component.html',
+    styleUrls: [ './custom-dual-list.component.css' ]
+})
+export class CustomDualListComponent extends DualListComponent {
+}
+```
+See [`dual-list.component.html`](https://github.com/czeckd/angular-dual-listbox/blob/master/lib/dual-list.component.html) and [`dual-list.component.css`](https://github.com/czeckd/angular-dual-listbox/blob/master/lib/dual-list.component.css) for template and style guidance.
+
+## Known issue
+The drag-and-drop between multiple ``<dual-list>`` components may cause 
 undesired moves. For the time being, if the component is used, then it
-is recommended only have one dual-listbox visable to the user at a time.
-
-
-### Getting started
-
-1. Clone this repo
-1. Install the dependencies:
-	```
-    npm install
-	```
-1. Run the TypeScript transpiler and start the server:
-	```
-	npm start
-	```
+is recommended only have one ``<dual-list>`` visable to the user at a time.
 
 ## License
-
 MIT
-
 
 ## Author
 - David Czeck [@czeckd](https://github.com/czeckd)
