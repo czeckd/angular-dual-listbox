@@ -8,7 +8,7 @@ A [working demo](http://czeckd.github.io/angular-dual-listbox/demo/) shows the d
 
 ## How to use?
 ```
-$ npm in angular-dual-listbox --save
+$ npm i angular-dual-listbox --save
 ```
 
 ## Integration
