@@ -10,9 +10,22 @@ A [working demo](http://czeckd.github.io/angular-dual-listbox/demo/) shows the d
 ```
 $ npm in angular-dual-listbox --save
 ```
+
+## Integration
+The **angular-dual-listbox** should work as-is with webpack/angular-cli. Just add the ``AngularDualListBoxModule``:
+```typescript
+import { AngularDualListBoxModule } from 'angular-dual-listbox';
+
+@NgModule({
+    imports: [ AngularDualListBoxModule ],
+    ...
+})
+export class AppModule {}
+```
+
 ## Usage
 Basic usage is:
-```
+```html
 <dual-list [source]="source" [(destination)]="confirmed"></dual-list>
 ```
 The following parameters can be set on a dual-list: 
