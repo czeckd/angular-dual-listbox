@@ -2,7 +2,7 @@
 	<div class="listbox">
 		<button type="button" name="addBtn" class="btn btn-primary btn-block"
 			(click)="moveItem(available, confirmed)"
-			[disabled]="available.pick.length === 0">Add</button>
+			[disabled]="available.pick.length === 0"><span i18n="add button|Add to confirmed list.">Add</span></button>
 
 		<form *ngIf="filter" class="filter">
 			<input class="form-control" name="filterSource" [(ngModel)]="available.picker" (ngModelChange)="onFilter(available)">
@@ -21,16 +21,16 @@
 
 		<div class="button-bar">
 			<button type="button" class="btn btn-primary pull-left" (click)="selectAll(available)"
-				[disabled]="isAllSelected(available)">All</button>
+				[disabled]="isAllSelected(available)"><span i18n="all button|Select all in list.">All</span></button>
 			<button type="button" class="btn btn-default pull-right" (click)="selectNone(available)"
-				[disabled]="!isAnySelected(available)">None</button>
+				[disabled]="!isAnySelected(available)"><span i18n="none button|Deselect all in list.">None</span></button>
 		</div>
 	</div>
 
 	<div class="listbox" style="margin-left:10px;">
 		<button type="button" name="removeBtn" class="btn btn-primary btn-block"
 			(click)="moveItem(confirmed, available)"
-			[disabled]="confirmed.pick.length === 0">Remove</button>
+			[disabled]="confirmed.pick.length === 0"><span i18n="remove button|Remove from confirimed list.">Remove</span></button>
 
 		<form *ngIf="filter" class="filter">
 			<input class="form-control" name="filterDestination" [(ngModel)]="confirmed.picker" (ngModelChange)="onFilter(confirmed)">
@@ -49,9 +49,9 @@
 
 		<div class="button-bar">
 			<button type="button" class="btn btn-primary pull-left" (click)="selectAll(confirmed)"
-				[disabled]="isAllSelected(confirmed)">All</button>
+				[disabled]="isAllSelected(confirmed)"><span i18n="all button|Select all in list.">All</span></button>
 			<button type="button" class="btn btn-default pull-right" (click)="selectNone(confirmed)"
-				[disabled]="!isAnySelected(confirmed)">None</button>
+				[disabled]="!isAnySelected(confirmed)"><span i18n="none button|Deselect all in list.">None</span></button>
 		</div>
 	</div>
 </div>
