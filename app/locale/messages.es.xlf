@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="87f79aff82a5232d109e41d56aef22888726b4d1" datatype="html">
+        <source>Add</source>
+        <target>Añadir</target>
+        <note priority="1" from="description">Add to confirmed list.</note>
+        <note priority="1" from="meaning">add button</note>
+      </trans-unit>
+      <trans-unit id="0549d8dbf6b6a3f772e095a3e6efa556fb62d388" datatype="html">
+        <source>All</source>>
+        <target>Todas</target>
+        <note priority="1" from="description">Select all in list.</note>
+        <note priority="1" from="meaning">all button</note>
+      </trans-unit>
+      <trans-unit id="f255a8f80d2dbe8a191b8bb7a8e334f3a489f6a2" datatype="html">
+        <source>None</source>
+        <target>Nada</target>
+        <note priority="1" from="description">Deselect all in list.</note>
+        <note priority="1" from="meaning">none button</note>
+      </trans-unit>
+      <trans-unit id="8584bddcbc06daed5b2c452bd39d036f9c7cfdb0" datatype="html">
+        <source>Remove</source>
+        <target>Quitar</target>
+        <note priority="1" from="description">Remove from confirimed list.</note>
+        <note priority="1" from="meaning">remove button</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
