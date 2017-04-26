@@ -7,8 +7,8 @@ export type compareFunction = (a:any, b:any) => number;
 
 @Component({
 	selector: 'dual-list',
-	styleUrls: [ 'lib/dual-list.component.css' ],
-	templateUrl: 'lib/dual-list.component.html'
+	styleUrls: [ './dual-list.component.css' ],
+	templateUrl: './dual-list.component.html'
 })
 
 export class DualListComponent implements DoCheck, OnChanges {
