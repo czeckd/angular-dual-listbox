@@ -11,5 +11,8 @@
     "lib/angular-dual-listbox.module.ts",
     "lib/basic-list.ts",
     "lib/dual-list.component.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "genDir": "locale"
+  }
 }
