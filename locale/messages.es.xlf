@@ -22,7 +22,7 @@
       </trans-unit>
       <trans-unit id="8584bddcbc06daed5b2c452bd39d036f9c7cfdb0" datatype="html">
         <source>Remove</source>
-        <target>Quitar</target>
+        <target>Eliminar</target>
         <note priority="1" from="description">Remove from confirimed list.</note>
         <note priority="1" from="meaning">remove button</note>
       </trans-unit>
