@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
-import { DualListComponent } from 'angular-dual-listbox';
-
 @Component({
 	selector: 'demo-app',
 	template: `
 <div class="container-fluid">
 	<p></p>
-	<dual-list [sort]="keepSorted" [source]="source" [key]="key" [display]="display" [filter]="filter" [(destination)]="confirmed" height="265px"></dual-list>
+	<dual-list [sort]="keepSorted" [source]="source" [key]="key" [display]="display" [filter]="filter" 
+		[(destination)]="confirmed" height="265px"></dual-list>
 
 	<ul class="nav nav-tabs" style="margin-top:50px;">
 		<li [class.active]="tab===1"><a (click)="tab=1">Arrays</a><li>
@@ -55,7 +54,7 @@ import { DualListComponent } from 'angular-dual-listbox';
 `
 })
 
-export class DemoAppComponent implements OnInit{
+export class DemoAppComponent implements OnInit {
 
 	tab = 1;
 	keepSorted = true;
@@ -107,15 +106,15 @@ export class DemoAppComponent implements OnInit{
 		{ key: 30, station: 'Elk Park', state: 'CO' },
 		{ key: 31, station: 'Silverton', state: 'CO' },
 		{ key: 32, station: 'Eureka', state: 'CO' }
-	 ];
+	];
 
 	private chessmen:Array<any> = [
-		{ _id: 1, name: "Pawn" },
-		{ _id: 2, name: "Rook" },
-		{ _id: 3, name: "Knight" },
-		{ _id: 4, name: "Bishop" },
-		{ _id: 5, name: "Queen" },
-		{ _id: 6, name: "King" }
+		{ _id: 1, name: 'Pawn' },
+		{ _id: 2, name: 'Rook' },
+		{ _id: 3, name: 'Knight' },
+		{ _id: 4, name: 'Bishop' },
+		{ _id: 5, name: 'Queen' },
+		{ _id: 6, name: 'King' }
 	];
 
 	ngOnInit() {
@@ -127,7 +126,7 @@ export class DemoAppComponent implements OnInit{
 		this.key = 'key';
 		this.display = 'station';
 		this.keepSorted = true;
-		this.source = this.sourceStations;;
+		this.source = this.sourceStations;
 		this.confirmed = this.confirmedStations;
 	}
 
