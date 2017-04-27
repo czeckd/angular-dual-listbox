@@ -1,15 +1,14 @@
 rimraf tmp dist && \
-echo 'Inlining...' &&  ts-node tools/inliner.ts && \
+echo 'Inlining...' && ts-node tools/inliner.ts && \
 echo 'Sourcing...' && cp lib/angular-dual-listbox.module.ts lib/basic-list.ts lib/index.ts tmp/ && \
 echo 'Transpiling...' && tsc -p tsconfig-esm.json && \
 echo 'Rolling...' && rollup -c rollup.config.js dist/index.js > dist/angular-dual-listbox.bundle.js && \
 echo 'Angularizing...' && ngc -p tsconfig-esm.json && \
 
-echo 'Translating...' && cp lib/dual-list.component.* tmp/ && \
+echo 'Extracting...' && cp lib/dual-list.component.* tmp/ && ts-node tools/deliber.ts &&\
 	ng-xi18n --i18nFormat=xlf -p tsconfig-i18n.json && ng-xi18n --i18nFormat=xmb -p tsconfig-i18n.json && \
-	if [[ -f messages.xlf || -f messages.xmb ]]; then mkdir dist/locale && mv messages* dist/locale/ ; fi && \
+	if [[ -d locale ]]; then cp -rp locale dist/ ; fi && \
 
 echo 'Packaging...' && ts-node tools/packager.ts && \
-echo 'Licensing...' && cp README.md LICENSE dist
-
-
+echo 'Licensing...' && cp README.md LICENSE dist &&
+rimraf tmp

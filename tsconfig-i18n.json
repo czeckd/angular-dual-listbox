@@ -8,9 +8,9 @@
     ]
   },
   "files": [
-    "lib/angular-dual-listbox.module.ts",
-    "lib/basic-list.ts",
-    "lib/dual-list.component.ts"
+    "tmp/angular-dual-listbox.module.ts",
+    "tmp/basic-list.ts",
+    "tmp/dual-list.component.ts"
   ],
   "angularCompilerOptions": {
     "genDir": "locale"
