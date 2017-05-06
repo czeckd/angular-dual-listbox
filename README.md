@@ -71,6 +71,13 @@ The drag-and-drop between multiple ``<dual-list>`` components may cause
 undesired moves. For the time being, if the component is used, then it
 is recommended only have one ``<dual-list>`` visable to the user at a time.
 
+## Contributions
+
+Contributions may be welcomed depending on impact on the core functionality of the project. In order for pull requests to be accepted, they must include a sign-off in git (See [git-commit 
+--signoff](https://git-scm.com/docs/git-commit) certifying the contribution is your own work and are subitting under the MIT License and are agreeing to the [Developer Certificate of 
+Origin](https://developercertificate.org/).
+
+
 ## License
 MIT
 
