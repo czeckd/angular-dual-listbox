@@ -14,13 +14,16 @@
     "typeRoots": [
       "node_modules/@types"
     ],
+    "baseUrl": ".",
+    "paths": {
+      "angular-dual-listbox": [ "dist" ]
+    },
     "lib": [
       "es2016",
       "dom"
     ]
   },
   "include": [
-    "app/**/*",
-    "lib/**/*"
+    "app/**/*"
   ]
 }
