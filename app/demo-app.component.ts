@@ -43,12 +43,6 @@ import { Component, OnInit } from '@angular/core';
 			<div class="col-sm-12">
 				<label>General</label><br/>
 				<form class="form-inline well">
-					<div class="btn-group">
-						<button type="button" class="btn btn-default dropdown-toggle" (click)="setLangMenu()">Select Language <span class="caret"></span></button>
-						<ul class="dropdown-menu" [ngStyle]="{ display: langMenu }">
-							<li *ngFor="let l of languages"><a (click)="setLanguage(l.code)" style="user-select:none">{{l.name}}</a></li>
-						</ul>
-					</div>
 					<button class="btn btn-default" (click)="doFilter()">{{filterBtn()}}</button>
 					<button class="btn btn-default" (click)="doSwap()">Swap source</button>
 					<button class="btn btn-primary" (click)="doReset()">Reset</button>
@@ -60,16 +54,9 @@ import { Component, OnInit } from '@angular/core';
 `
 })
 
-export class DemoAppComponent implements OnInit {
+export class DemoAppComponent implements OnInit{
 
 	tab = 1;
-	langMenu = 'none';
-	languages = [
-		{ name: 'English', code: 'en-US' },
-		{ name: 'French', code: 'fr' },
-		{ name: 'Spanish', code: 'es' }
-	];
-
 	keepSorted = true;
 	key:string;
 	display:string;
@@ -119,7 +106,7 @@ export class DemoAppComponent implements OnInit {
 		{ key: 30, station: 'Elk Park', state: 'CO' },
 		{ key: 31, station: 'Silverton', state: 'CO' },
 		{ key: 32, station: 'Eureka', state: 'CO' }
-	];
+	 ];
 
 	private chessmen:Array<any> = [
 		{ _id: 1, name: 'Pawn' },
@@ -212,21 +199,5 @@ export class DemoAppComponent implements OnInit {
 	filterBtn() {
 		return (this.filter ? 'Hide Filter' : 'Show Filter');
 	}
-
-	setLangMenu() {
-		if (this.langMenu === 'none') {
-			this.langMenu = 'inherit';
-		} else {
-			this.langMenu = 'none';
-		}
-	}
-
-	// http://stackoverflow.com/a/40363782
-	setLanguage(language:string) {
-		localStorage.setItem('localeId', language);
-		location.reload(true);
-		return false;
-	}
-
 
 }

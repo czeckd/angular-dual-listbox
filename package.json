@@ -28,7 +28,6 @@
     "@angular/forms": ">=4.0.0"
   },
   "devDependencies": {
-    "@angular/animations": "^4.0.3",
     "@angular/common": "^4.0.0",
     "@angular/compiler": "^4.0.0",
     "@angular/compiler-cli": "^4.0.0",
@@ -36,7 +35,6 @@
     "@angular/forms": "^4.0.0",
     "@angular/platform-browser": "^4.0.0",
     "@angular/platform-browser-dynamic": "^4.0.0",
-    "@angular/platform-server": "^4.0.3",
     "@types/core-js": "^0.9.39",
     "@types/node": "^6.0.60",
     "bootstrap": "^3.3.7",
