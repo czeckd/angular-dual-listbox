@@ -5,7 +5,8 @@ import { Component, OnInit } from '@angular/core';
 	template: `
 <div class="container-fluid">
 	<p></p>
-	<dual-list [sort]="keepSorted" [source]="source" [key]="key" [display]="display" [filter]="filter" [(destination)]="confirmed" height="265px"></dual-list>
+	<dual-list [sort]="keepSorted" [source]="source" [key]="key" [display]="display" [filter]="filter" 
+		[(destination)]="confirmed" height="265px"></dual-list>
 
 	<ul class="nav nav-tabs" style="margin-top:50px;">
 		<li [class.active]="tab===1"><a (click)="tab=1">Arrays</a><li>
@@ -42,6 +43,12 @@ import { Component, OnInit } from '@angular/core';
 			<div class="col-sm-12">
 				<label>General</label><br/>
 				<form class="form-inline well">
+					<div class="btn-group">
+						<button type="button" class="btn btn-default dropdown-toggle" (click)="setLangMenu()">Select Language <span class="caret"></span></button>
+						<ul class="dropdown-menu" [ngStyle]="{ display: langMenu }">
+							<li *ngFor="let l of languages"><a (click)="setLanguage(l.code)" style="user-select:none">{{l.name}}</a></li>
+						</ul>
+					</div>
 					<button class="btn btn-default" (click)="doFilter()">{{filterBtn()}}</button>
 					<button class="btn btn-default" (click)="doSwap()">Swap source</button>
 					<button class="btn btn-primary" (click)="doReset()">Reset</button>
@@ -53,9 +60,16 @@ import { Component, OnInit } from '@angular/core';
 `
 })
 
-export class DemoAppComponent implements OnInit{
+export class DemoAppComponent implements OnInit {
 
 	tab = 1;
+	langMenu = 'none';
+	languages = [
+		{ name: 'English', code: 'en-US' },
+		{ name: 'French', code: 'fr' },
+		{ name: 'Spanish', code: 'es' }
+	];
+
 	keepSorted = true;
 	key:string;
 	display:string;
@@ -105,15 +119,15 @@ export class DemoAppComponent implements OnInit{
 		{ key: 30, station: 'Elk Park', state: 'CO' },
 		{ key: 31, station: 'Silverton', state: 'CO' },
 		{ key: 32, station: 'Eureka', state: 'CO' }
-	 ];
+	];
 
 	private chessmen:Array<any> = [
-		{ _id: 1, name: "Pawn" },
-		{ _id: 2, name: "Rook" },
-		{ _id: 3, name: "Knight" },
-		{ _id: 4, name: "Bishop" },
-		{ _id: 5, name: "Queen" },
-		{ _id: 6, name: "King" }
+		{ _id: 1, name: 'Pawn' },
+		{ _id: 2, name: 'Rook' },
+		{ _id: 3, name: 'Knight' },
+		{ _id: 4, name: 'Bishop' },
+		{ _id: 5, name: 'Queen' },
+		{ _id: 6, name: 'King' }
 	];
 
 	ngOnInit() {
@@ -125,7 +139,7 @@ export class DemoAppComponent implements OnInit{
 		this.key = 'key';
 		this.display = 'station';
 		this.keepSorted = true;
-		this.source = this.sourceStations;;
+		this.source = this.sourceStations;
 		this.confirmed = this.confirmedStations;
 	}
 
@@ -198,5 +212,21 @@ export class DemoAppComponent implements OnInit{
 	filterBtn() {
 		return (this.filter ? 'Hide Filter' : 'Show Filter');
 	}
+
+	setLangMenu() {
+		if (this.langMenu === 'none') {
+			this.langMenu = 'inherit';
+		} else {
+			this.langMenu = 'none';
+		}
+	}
+
+	// http://stackoverflow.com/a/40363782
+	setLanguage(language:string) {
+		localStorage.setItem('localeId', language);
+		location.reload(true);
+		return false;
+	}
+
 
 }

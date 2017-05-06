@@ -20,6 +20,7 @@
 		
 		<script src="demo/systemjs.config.js"></script>
 		<script>
+			System.config({map:{text:'systemjs-text-plugin.js'}});
 			System.import('app').catch(function(err){ console.error(err); });
 		</script>
 	</head>
