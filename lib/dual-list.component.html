@@ -2,7 +2,7 @@
 	<div class="listbox">
 		<button type="button" name="addBtn" class="btn btn-primary btn-block"
 			(click)="moveItem(available, confirmed)"
-			[disabled]="available.pick.length === 0">Add</button>
+			[disabled]="available.pick.length === 0">{{addText}}</button>
 
 		<form *ngIf="filter" class="filter">
 			<input class="form-control" name="filterSource" [(ngModel)]="available.picker" (ngModelChange)="onFilter(available)">
@@ -21,16 +21,16 @@
 
 		<div class="button-bar">
 			<button type="button" class="btn btn-primary pull-left" (click)="selectAll(available)"
-				[disabled]="isAllSelected(available)">All</button>
+				[disabled]="isAllSelected(available)">{{allText}}</button>
 			<button type="button" class="btn btn-default pull-right" (click)="selectNone(available)"
-				[disabled]="!isAnySelected(available)">None</button>
+				[disabled]="!isAnySelected(available)">{{noneText}}</button>
 		</div>
 	</div>
 
 	<div class="listbox" style="margin-left:10px;">
 		<button type="button" name="removeBtn" class="btn btn-primary btn-block"
 			(click)="moveItem(confirmed, available)"
-			[disabled]="confirmed.pick.length === 0">Remove</button>
+			[disabled]="confirmed.pick.length === 0">{{removeText}}</button>
 
 		<form *ngIf="filter" class="filter">
 			<input class="form-control" name="filterDestination" [(ngModel)]="confirmed.picker" (ngModelChange)="onFilter(confirmed)">
@@ -49,9 +49,9 @@
 
 		<div class="button-bar">
 			<button type="button" class="btn btn-primary pull-left" (click)="selectAll(confirmed)"
-				[disabled]="isAllSelected(confirmed)">All</button>
+				[disabled]="isAllSelected(confirmed)">{{allText}}</button>
 			<button type="button" class="btn btn-default pull-right" (click)="selectNone(confirmed)"
-				[disabled]="!isAnySelected(confirmed)">None</button>
+				[disabled]="!isAnySelected(confirmed)">{{noneText}}</button>
 		</div>
 	</div>
 </div>

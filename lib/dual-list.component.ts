@@ -15,6 +15,10 @@ export class DualListComponent implements DoCheck, OnChanges {
 	static AVAILABLE_LIST_NAME = 'available';
 	static CONFIRMED_LIST_NAME = 'confirmed';
 
+	@Input() allText:string = typeof this.allText !== 'undefined' ? this.allText : 'All';
+	@Input() noneText:string = typeof this.noneText !== 'undefined' ? this.noneText : 'None';
+	@Input() addText:string = typeof this.addText !== 'undefined' ? this.addText : 'Add';
+	@Input() removeText:string = typeof this.removeText !== 'undefined' ? this.removeText : 'Remove';
 	@Input() key:string = typeof this.key !== 'undefined' ? this.key : '_id';
 	@Input() display:string = typeof this.display !== 'undefined' ? this.display : '_name';
 	@Input() height:string = typeof this.height !== 'undefined' ? this.height : '100px';

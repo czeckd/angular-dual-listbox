@@ -46,6 +46,10 @@ sort is not set and compare is set, then sort will be set ``true``.
 - **source** - The source array of objects for the list. This is the universal, master list of all possible objects.
 - **destination** The destination array of objects selected from the list.
 Note, the ``destination`` array can have prexisting elements.
+- **allText** - The text in the button All.
+- **noneText** - The text in the button None.
+- **addText** - The text in the button Add.
+- **removeText** - The text in the button Remove.
 
 For more usage examples, see the [`demo-app.component.ts`](https://github.com/czeckd/angular-dual-listbox/blob/master/app/demo-app.component.ts).
 
