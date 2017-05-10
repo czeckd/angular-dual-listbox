@@ -1,7 +1,7 @@
 {
   "name": "angular-dual-listbox",
   "description": "Angular 2+ component for a dual listbox control.",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/czeckd/angular-dual-listbox.git"
@@ -23,6 +23,10 @@
   "main": "angular-dual-listbox.bundle.js",
   "module": "angular-dual-listbox.module.js",
   "types": "index.d.ts",
+  "keywords": [
+    "angular",
+    "listbox"
+  ],
   "peerDependencies": {
     "@angular/core": ">=4.0.0",
     "@angular/forms": ">=4.0.0"
