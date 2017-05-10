@@ -1,120 +1,33 @@
 import { Component, DoCheck, EventEmitter, Input, IterableDiffers, OnChanges,
 	Output, SimpleChange } from '@angular/core';
 
-type compareFunction = (a:any, b:any) => number;
+import { BasicList } from './basic-list';
 
-class BasicList {
-	/** Name of the list */
-	private _name:string;
-	/** Last element touched */
-	last:any;
-	/** text filter */
-	picker:string;
-
-	dragStart:boolean;
-	dragOver:boolean;
-
-	pick:Array<any>;
-	list:Array<any>;
-	sift:Array<any>;
-
-	constructor(name:string) {
-		this._name = name;
-		this.last = null;
-		this.picker = '';
-		this.dragStart = false;
-		this.dragOver = false;
-
-		// Arrays will contain objects of { _id, _name }.
-		this.pick = [];
-		this.list = [];
-		this.sift = [];
-	}
-
-	get name() : string {
-		return this._name;
-	}
-}
+export type compareFunction = (a:any, b:any) => number;
 
 @Component({
 	selector: 'dual-list',
-	template: `
-<div style="display:-webkit-box;display:flex;flex-direction:row;align-content:flex-start;">
-	<form style="width:50%;margin:0px;">
-		<button type="button" name="addBtn" class="btn btn-primary"
-			style="display:block;width:100%;margin-bottom:8px;"
-			(click)="moveItem(available, confirmed)"
-			[disabled]="available.pick.length === 0">Add&nbsp;&nbsp;&nbsp;&nbsp;&#9654;</button>
-
-		<div *ngIf="filter" class="filter">
-			<input class="form-control" name="filterSource" [(ngModel)]="available.picker" (ngModelChange)="onFilter(available)">
-		</div>
-
-		<div class="record-picker">
-			<ul [ngStyle]="{'max-height': height, 'min-height': height}" [ngClass]="{over:available.dragOver}"
-				(drop)="drop($event, confirmed)" (dragover)="allowDrop($event, available)" (dragleave)="dragLeave()">
-				<li *ngFor="let item of available.sift; let idx=index;"
-					(click)="selectItem(available.pick, item); shiftClick($event, idx, available, item)"
-					[ngClass]="{selected: isItemSelected(available.pick, item)}"
-					draggable="true" (dragstart)="drag($event, item, available)" (dragend)="dragEnd(available)"
-				><label>{{item._name}}</label></li>
-			</ul>
-		</div>
-
-		<div style="margin-top:8px;">
-			<button type="button" class="btn btn-primary"
-				style="width:47%;float:left;" (click)="selectAll(available)"
-				[disabled]="isAllSelected(available)">All</button>
-			<button type="button" class="btn btn-default"
-				style="width:47%;float:right;margin-right:0px;" (click)="selectNone(available)"
-				[disabled]="!isAnySelected(available)">None</button>
-		</div>
-	</form>
-
-	<form style="width:50%;margin:0 0 0 10px;">
-		<button type="button" name="removeBtn" class="btn btn-primary"
-			style="display:block;width:100%;margin-bottom:8px;"
-			(click)="moveItem(confirmed, available)"
-			[disabled]="confirmed.pick.length === 0">&#9664;&nbsp;&nbsp;&nbsp;&nbsp;Remove</button>
-
-		<div *ngIf="filter" class="filter">
-			<input class="form-control" name="filterDestination" [(ngModel)]="confirmed.picker" (ngModelChange)="onFilter(confirmed)">
-		</div>
-
-		<div class="record-picker">
-			<ul [ngStyle]="{'max-height': height, 'min-height': height}" [ngClass]="{over:confirmed.dragOver}"
-				(drop)="drop($event, available)" (dragover)="allowDrop($event, confirmed)" (dragleave)="dragLeave()">
-				<li *ngFor="let item of confirmed.sift; let idx=index;"
-					(click)="selectItem(confirmed.pick, item); shiftClick($event, idx, confirmed, item)"
-					[ngClass]="{selected: isItemSelected(confirmed.pick, item)}"
-					draggable="true" (dragstart)="drag($event, item, confirmed)" (dragend)="dragEnd(confirmed)"
-				><label>{{item._name}}</label></li>
-			</ul>
-		</div>
-		<div style="margin-top:8px;">
-			<button type="button" class="btn btn-primary"
-				style="width:47%;float:left;" (click)="selectAll(confirmed)"
-				[disabled]="isAllSelected(confirmed)">All</button>
-			<button type="button" class="btn btn-default"
-				style="width:47%;float:right;margin-right:0px;" (click)="selectNone(confirmed)"
-				[disabled]="!isAnySelected(confirmed)">None</button>
-		</div>
-	</form>
-</div>
-`
+	styleUrls: [ 'lib/dual-list.component.css' ],
+	templateUrl: 'lib/dual-list.component.html'
 })
 
 export class DualListComponent implements DoCheck, OnChanges {
 	static AVAILABLE_LIST_NAME = 'available';
 	static CONFIRMED_LIST_NAME = 'confirmed';
 
+	static LTR = 'left-to-right';
+	static RTL = 'right-to-left';
+
+	static DEFAULT_FORMAT = { add: 'Add', remove: 'Remove', all: 'All', none: 'None', direction: DualListComponent.LTR };
+
 	@Input() key:string = typeof this.key !== 'undefined' ? this.key : '_id';
 	@Input() display:string = typeof this.display !== 'undefined' ? this.display : '_name';
 	@Input() height:string = typeof this.height !== 'undefined' ? this.height : '100px';
 	@Input() filter:boolean = typeof this.filter !== 'undefined' ? this.filter : false;
+	@Input() format:any = typeof this.format !== 'undefined' ? this.format : DualListComponent.DEFAULT_FORMAT;
 	@Input() sort:boolean = typeof this.sort !== 'undefined' ? this.sort : false;
 	@Input() compare:compareFunction = typeof this.compare !== 'undefined' ? this.compare : undefined;
-	@Input() source:Array<any>; // = typeof this.source !== 'undefined' ? this.source : [];
+	@Input() source:Array<any>;
 	@Input() destination:Array<any>;
 	@Output() destinationChange = new EventEmitter();
 
@@ -127,6 +40,8 @@ export class DualListComponent implements DoCheck, OnChanges {
 	private sorter = (a:any, b:any) => { return (a._name < b._name) ? -1 : ((a._name > b._name) ? 1 : 0); };
 
 	constructor(private differs:IterableDiffers) {
+		this.available = new BasicList(DualListComponent.AVAILABLE_LIST_NAME);
+		this.confirmed = new BasicList(DualListComponent.CONFIRMED_LIST_NAME);
 	}
 
 	ngOnChanges(changeRecord: {[key:string]:SimpleChange}) {
@@ -145,6 +60,30 @@ export class DualListComponent implements DoCheck, OnChanges {
 			}
 		}
 
+		if (changeRecord['format']) {
+			this.format = changeRecord['format'].currentValue;
+
+			if (typeof(this.format.direction) === 'undefined') {
+				this.format.direction = DualListComponent.LTR;
+			}
+
+			if (typeof(this.format.add) === 'undefined') {
+				this.format.add = DualListComponent.DEFAULT_FORMAT.add;
+			}
+
+			if (typeof(this.format.remove) === 'undefined') {
+				this.format.remove = DualListComponent.DEFAULT_FORMAT.remove;
+			}
+
+			if (typeof(this.format.all) === 'undefined') {
+				this.format.all = DualListComponent.DEFAULT_FORMAT.all;
+			}
+
+			if (typeof(this.format.none) === 'undefined') {
+				this.format.none = DualListComponent.DEFAULT_FORMAT.none;
+			}
+		}
+
 		if (changeRecord['source']) {
 			this.available = new BasicList(DualListComponent.AVAILABLE_LIST_NAME);
 			this.updatedSource();
@@ -159,10 +98,10 @@ export class DualListComponent implements DoCheck, OnChanges {
 	}
 
 	ngDoCheck() {
-		if (this.buildAvailable(this.source)) {
+		if (this.source && this.buildAvailable(this.source)) {
 			this.onFilter(this.available);
 		}
-		if (this.buildConfirmed(this.destination)) {
+		if (this.destination && this.buildConfirmed(this.destination)) {
 			this.onFilter(this.confirmed);
 		}
 	}
@@ -240,6 +179,10 @@ export class DualListComponent implements DoCheck, OnChanges {
 		if (this.destination !== undefined) {
 			this.destinationDiffer = this.differs.find(this.destination).create(null);
 		}
+	}
+
+	direction() {
+		return this.format.direction === DualListComponent.LTR;
 	}
 
 	dragEnd(list:BasicList = null) {

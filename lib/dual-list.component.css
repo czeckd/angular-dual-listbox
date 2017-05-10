@@ -105,9 +105,44 @@ div.record-picker::-webkit-scrollbar-thumb:hover {
 	user-select: none;
 }
 
-.record-picker ul.over
-{
+.record-picker ul.over {
 	background-color:lightgray;
+}
+
+.dual-list  {
+	display: -webkit-box;
+	display: flex;
+	flex-direction: row;
+	align-content: flex-start;
+}
+
+.dual-list .listbox {
+	width: 50%;
+	margin: 0px;
+}
+
+.dual-list .button-bar {
+	margin-top: 8px;
+}
+
+/* &nbsp;&nbsp;&nbsp;&#9654; */
+.point-right::after {
+	content: "\00A0\00A0\00A0\25B6";
+}
+
+/* &#9664;&nbsp;&nbsp;&nbsp; */
+.point-left::before {
+	content: "\25C0\00A0\00A0\00A0";
+}
+
+.dual-list .button-bar button {
+	width: 47%;
+}
+
+button.btn-block {
+	display: block;
+	width: 100%;
+	margin-bottom: 8px;
 }
 
 .filter {

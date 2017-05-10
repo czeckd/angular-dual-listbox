@@ -6,13 +6,15 @@
   var map = {
     'app':  'app', // 'dist',
     'rxjs': 'https://unpkg.com/rxjs@5.2.0',
-    '@angular': 'https://unpkg.com/@angular'
+    '@angular': 'https://unpkg.com/@angular',
+    'angular-dual-listbox': 'lib'
   };
 
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
     'app':  { main: 'main.ts',  defaultExtension: 'ts' },
-    'rxjs': { defaultExtension: 'js' }
+    'rxjs': { defaultExtension: 'js' },
+    'angular-dual-listbox': { main: 'index.ts', defaultExtension: 'ts' }
   };
 
   var ngPackageNames = [

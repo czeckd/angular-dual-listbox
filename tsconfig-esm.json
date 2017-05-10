@@ -1,29 +1,32 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "commonjs",
+    "module": "es2015",
     "moduleResolution": "node",
-    "outDir": "./runt",
+    "outDir": "./dist",
     "sourceMap": true,
     "declaration" : true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "removeComments": false,
+    "removeComments": true,
+    "stripInternal": true,
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
     "typeRoots": [
       "node_modules/@types"
     ],
-    "baseUrl": ".",
-    "paths": {
-      "angular-dual-listbox": [ "dist" ]
-    },
     "lib": [
       "es2016",
       "dom"
     ]
   },
-  "include": [
-    "app/**/*"
-  ]
+  "files": [
+    "tmp/angular-dual-listbox.module.ts",
+    "tmp/basic-list.ts",
+    "tmp/dual-list.component.ts",
+    "tmp/index.ts"
+  ],
+  "angularCompilerOptions": {
+    "skipTemplateCodegen": true
+  }
 }
