@@ -1,8 +1,8 @@
 <div class="dual-list">
-	<div class="listbox">
+	<div class="listbox" [ngStyle]="{ 'order' :  direction() ? 1 : 2, 'margin-left' : direction() ? 0 : '10px' }">
 		<button type="button" name="addBtn" class="btn btn-primary btn-block"
-			(click)="moveItem(available, confirmed)"
-			[disabled]="available.pick.length === 0">Add</button>
+			(click)="moveItem(available, confirmed)" [ngClass]="direction() ? 'point-right' : 'point-left'"
+			[disabled]="available.pick.length === 0">{{format.add}}</button>
 
 		<form *ngIf="filter" class="filter">
 			<input class="form-control" name="filterSource" [(ngModel)]="available.picker" (ngModelChange)="onFilter(available)">
@@ -21,16 +21,17 @@
 
 		<div class="button-bar">
 			<button type="button" class="btn btn-primary pull-left" (click)="selectAll(available)"
-				[disabled]="isAllSelected(available)">All</button>
+				[disabled]="isAllSelected(available)">{{format.all}}</button>
 			<button type="button" class="btn btn-default pull-right" (click)="selectNone(available)"
-				[disabled]="!isAnySelected(available)">None</button>
+				[disabled]="!isAnySelected(available)">{{format.none}}</button>
 		</div>
 	</div>
 
-	<div class="listbox" style="margin-left:10px;">
+<!-- style="margin-left:10px;" -->
+	<div class="listbox" [ngStyle]="{ 'order' : direction() ? 2 : 1, 'margin-left' : direction() ? '10px' : 0 }">
 		<button type="button" name="removeBtn" class="btn btn-primary btn-block"
-			(click)="moveItem(confirmed, available)"
-			[disabled]="confirmed.pick.length === 0">Remove</button>
+			(click)="moveItem(confirmed, available)" [ngClass]="direction() ? 'point-left' : 'point-right'"
+			[disabled]="confirmed.pick.length === 0">{{format.remove}}</button>
 
 		<form *ngIf="filter" class="filter">
 			<input class="form-control" name="filterDestination" [(ngModel)]="confirmed.picker" (ngModelChange)="onFilter(confirmed)">
@@ -49,9 +50,9 @@
 
 		<div class="button-bar">
 			<button type="button" class="btn btn-primary pull-left" (click)="selectAll(confirmed)"
-				[disabled]="isAllSelected(confirmed)">All</button>
+				[disabled]="isAllSelected(confirmed)">{{format.all}}</button>
 			<button type="button" class="btn btn-default pull-right" (click)="selectNone(confirmed)"
-				[disabled]="!isAnySelected(confirmed)">None</button>
+				[disabled]="!isAnySelected(confirmed)">{{format.none}}</button>
 		</div>
 	</div>
 </div>

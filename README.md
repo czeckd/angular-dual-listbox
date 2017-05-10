@@ -3,7 +3,8 @@
 Angular Dual-Listbox
 =========
 
-The **angular-dual-listbox** is an Angular 2+ component that provides two lists controls side-by-side that allows items in one list to be moved to the other list via drag-and-drop and/or a button-based interface. The component supports multiple select options from the list and programatic setting of list sources. 
+The **angular-dual-listbox** is an Angular 2+ component that provides two lists controls side-by-side that allows items in one list to be moved to the other list via drag-and-drop and/or a button-based interface. 
+The component supports multiple select options from the list, programatic setting of list sources, and layout with direction and button formatting.
 
 A [working demo](http://czeckd.github.io/angular-dual-listbox/demo/) shows the dual listbox in action.
 
@@ -37,6 +38,7 @@ The following parameters can be set on a dual-list:
 - **display** - The field of each object for displaying the object each the
 lists, default is ``_name``.
 - **height** - The height of the lists, default is ``100px``.
+- **format** - A format object, default is ``{ add: 'Add', remove: 'Remove', all: 'All', none: 'None', direction: 'left-to-right' }``
 - **filter** - A boolean whether or not to display a filter for the lists,
 default is ``false``.
 - **sort** - A boolean whether or not to keep the lists sorted, default is 

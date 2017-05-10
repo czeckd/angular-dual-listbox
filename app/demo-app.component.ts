@@ -1,16 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 
+import { DualListComponent } from 'angular-dual-listbox';
+
+
 @Component({
 	selector: 'demo-app',
 	template: `
 <div class="container-fluid">
 	<p></p>
-	<dual-list [sort]="keepSorted" [source]="source" [key]="key" [display]="display" [filter]="filter" 
-		[(destination)]="confirmed" height="265px"></dual-list>
+	<dual-list [sort]="keepSorted" [source]="source" [key]="key" [display]="display" [filter]="filter"
+		[(destination)]="confirmed" height="265px" [format]="format"></dual-list>
 
 	<ul class="nav nav-tabs" style="margin-top:50px;">
 		<li [class.active]="tab===1"><a (click)="tab=1">Arrays</a><li>
-		<li [class.active]="tab===2"><a (click)="tab=2">Programmatic changes</a></li>
+		<li [class.active]="tab===2"><a (click)="tab=2">Format</a></li>
+		<li [class.active]="tab===3"><a (click)="tab=3">Programmatic changes</a></li>
 	</ul>
 
 	<div class="tab-content">
@@ -22,6 +26,36 @@ import { Component, OnInit } from '@angular/core';
 		</div>
 
 		<div class="tab-pane" [class.active]="tab===2">
+			<form class="form" style="margin:20px 0;">
+				<label>Direction</label><br/>
+				<div class="form-group">
+					<div class="btn-group">
+						<button type="button" class="btn" [ngClass]="{ 'btn-primary' : sourceLeft, 'btn-default' : !sourceLeft }"
+							(click)="swapDirection()">left-to-right</button>
+						<button type="button" class="btn" [ngClass]="{ 'btn-primary' : !sourceLeft, 'btn-default' : sourceLeft }"
+							(click)="swapDirection()">right-to-left</button>
+					</div>
+				</div>
+				<div class="form-group">
+					<label>Add button</label>
+					<input class="form-control col-sm-2" [(ngModel)]="format.add" name="addBtn">
+				</div>
+				<div class="form-group">
+					<label>Remove button</label>
+					<input class="form-control col-sm-2" [(ngModel)]="format.remove" name="rmBtn">
+				</div>
+				<div class="form-group">
+					<label>All button</label>
+					<input class="form-control col-sm-2" [(ngModel)]="format.all" name="allBtn">
+				</div>
+				<div class="form-group">
+					<label>None button</label>
+					<input class="form-control col-sm-2" [(ngModel)]="format.none" name="noneBtn">
+				</div>
+			</form>
+		</div>
+
+		<div class="tab-pane" [class.active]="tab===3">
 			<div class="row" style="margin-top:20px;">
 				<div class="col-sm-6">
 					<label>Modify parent's source</label>
@@ -36,17 +70,18 @@ import { Component, OnInit } from '@angular/core';
 					<form class="form-inline well">
 					<button class="btn btn-default" (click)="doAdd()">Add</button>
 					<button class="btn btn-default" (click)="doRemove()">Remove</button>
-				</form>
+					</form>
+				</div>
 			</div>
-		</div>
-		<div class="row">
-			<div class="col-sm-12">
-				<label>General</label><br/>
-				<form class="form-inline well">
-					<button class="btn btn-default" (click)="doFilter()">{{filterBtn()}}</button>
-					<button class="btn btn-default" (click)="doSwap()">Swap source</button>
-					<button class="btn btn-primary" (click)="doReset()">Reset</button>
-				</form>
+			<div class="row">
+				<div class="col-sm-12">
+					<label>General</label><br/>
+					<form class="form-inline well">
+						<button class="btn btn-default" (click)="doFilter()">{{filterBtn()}}</button>
+						<button class="btn btn-default" (click)="doSwap()">Swap source</button>
+						<button class="btn btn-primary" (click)="doReset()">Reset</button>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -54,8 +89,7 @@ import { Component, OnInit } from '@angular/core';
 `
 })
 
-export class DemoAppComponent implements OnInit{
-
+export class DemoAppComponent implements OnInit {
 	tab = 1;
 	keepSorted = true;
 	key:string;
@@ -64,6 +98,9 @@ export class DemoAppComponent implements OnInit{
 	source:Array<any>;
 	confirmed:Array<any>;
 	userAdd = '';
+
+	sourceLeft = true;
+	format:any = DualListComponent.DEFAULT_FORMAT;
 
 	private sourceStations:Array<any>;
 	private sourceChessmen:Array<any>;
@@ -106,7 +143,7 @@ export class DemoAppComponent implements OnInit{
 		{ key: 30, station: 'Elk Park', state: 'CO' },
 		{ key: 31, station: 'Silverton', state: 'CO' },
 		{ key: 32, station: 'Eureka', state: 'CO' }
-	 ];
+	];
 
 	private chessmen:Array<any> = [
 		{ _id: 1, name: 'Pawn' },
@@ -198,6 +235,11 @@ export class DemoAppComponent implements OnInit{
 
 	filterBtn() {
 		return (this.filter ? 'Hide Filter' : 'Show Filter');
+	}
+
+	swapDirection() {
+		this.sourceLeft = !this.sourceLeft;
+		this.format.direction = this.sourceLeft ? DualListComponent.LTR : DualListComponent.RTL;
 	}
 
 }

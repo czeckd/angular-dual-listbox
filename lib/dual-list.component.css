@@ -126,12 +126,12 @@ div.record-picker::-webkit-scrollbar-thumb:hover {
 }
 
 /* &nbsp;&nbsp;&nbsp;&#9654; */
-button[name='addBtn']::after {
+.point-right::after {
 	content: "\00A0\00A0\00A0\25B6";
 }
 
 /* &#9664;&nbsp;&nbsp;&nbsp; */
-button[name='removeBtn']::before {
+.point-left::before {
 	content: "\25C0\00A0\00A0\00A0";
 }
 
