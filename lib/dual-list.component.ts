@@ -15,10 +15,16 @@ export class DualListComponent implements DoCheck, OnChanges {
 	static AVAILABLE_LIST_NAME = 'available';
 	static CONFIRMED_LIST_NAME = 'confirmed';
 
+	static LTR = 'left-to-right';
+	static RTL = 'right-to-left';
+
+	static DEFAULT_FORMAT = { add: 'Add', remove: 'Remove', all: 'All', none: 'None', direction: DualListComponent.LTR };
+
 	@Input() key:string = typeof this.key !== 'undefined' ? this.key : '_id';
 	@Input() display:string = typeof this.display !== 'undefined' ? this.display : '_name';
 	@Input() height:string = typeof this.height !== 'undefined' ? this.height : '100px';
 	@Input() filter:boolean = typeof this.filter !== 'undefined' ? this.filter : false;
+	@Input() format:any = typeof this.format !== 'undefined' ? this.format : DualListComponent.DEFAULT_FORMAT;
 	@Input() sort:boolean = typeof this.sort !== 'undefined' ? this.sort : false;
 	@Input() compare:compareFunction = typeof this.compare !== 'undefined' ? this.compare : undefined;
 	@Input() source:Array<any>;
@@ -51,6 +57,30 @@ export class DualListComponent implements DoCheck, OnChanges {
 				this.compare = this.sorter;
 			} else if (changeRecord['sort'].currentValue === false) {
 				this.compare = undefined;
+			}
+		}
+
+		if (changeRecord['format']) {
+			this.format = changeRecord['format'].currentValue;
+
+			if (typeof(this.format.direction) === 'undefined') {
+				this.format.direction = DualListComponent.LTR;
+			}
+
+			if (typeof(this.format.add) === 'undefined') {
+				this.format.add = DualListComponent.DEFAULT_FORMAT.add;
+			}
+
+			if (typeof(this.format.remove) === 'undefined') {
+				this.format.remove = DualListComponent.DEFAULT_FORMAT.remove;
+			}
+
+			if (typeof(this.format.all) === 'undefined') {
+				this.format.all = DualListComponent.DEFAULT_FORMAT.all;
+			}
+
+			if (typeof(this.format.none) === 'undefined') {
+				this.format.none = DualListComponent.DEFAULT_FORMAT.none;
 			}
 		}
 
@@ -149,6 +179,10 @@ export class DualListComponent implements DoCheck, OnChanges {
 		if (this.destination !== undefined) {
 			this.destinationDiffer = this.differs.find(this.destination).create(null);
 		}
+	}
+
+	direction() {
+		return this.format.direction === DualListComponent.LTR;
 	}
 
 	dragEnd(list:BasicList = null) {
