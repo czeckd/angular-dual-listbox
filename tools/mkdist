@@ -1,10 +1,20 @@
-rimraf tmp dist && \
-echo 'Inlining...' &&  ts-node tools/inliner.ts && \
-echo 'Sourcing...' && cp lib/angular-dual-listbox.module.ts lib/basic-list.ts lib/index.ts tmp/ && \
-echo 'Transpiling...' && tsc -p tsconfig-esm.json && \
-echo 'Rolling...' && rollup -c rollup.config.js dist/index.js > dist/angular-dual-listbox.bundle.js && \
-echo 'Angularizing...' && ngc -p tsconfig-esm.json && \
-echo 'Packaging...' && ts-node tools/packager.ts && \
-echo 'Licensing...' && cp README.md LICENSE dist
+var shell = require('shelljs');
+var nm = 'node_modules/.bin/';
+
+shell.exec(nm + '/rimraf tmp dist');
+shell.echo('Inlining...');
+shell.exec(nm + 'ts-node tools/inliner.ts');
+shell.echo('Sourcing...');
+shell.cp(['lib/angular-dual-listbox.module.ts', 'lib/basic-list.ts', 'lib/index.ts'], 'tmp/');
+shell.echo('Transpiling...');
+shell.exec(nm + 'tsc -p tsconfig-esm.json');
+shell.echo('Rolling...');
+shell.exec(nm + 'rollup -c rollup.config.js dist/index.js > dist/angular-dual-listbox.bundle.js');
+shell.echo('Angularizing...'); 
+shell.exec(nm + 'ngc -p tsconfig-esm.json');
+shell.echo('Packaging...');
+shell.exec(nm + 'ts-node tools/packager.ts');
+shell.echo('Licensing...');
+shell.cp(['README.md', 'LICENSE'], 'dist');
 
 
