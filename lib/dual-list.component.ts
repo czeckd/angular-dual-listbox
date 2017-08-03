@@ -119,7 +119,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 			sourceChanges.forEachAddedItem((r:any) => {
 				// Do not add duplicates even if source has duplicates.
 				if (this.findItemIndex(this.available.list, r.item, this.key) === -1) {
-					this.available.list.push( { _id: r.item[this.key], _name: this.makeName(r.item) });
+					this.available.list.push( { _id: this.makeId(r.item), _name: this.makeName(r.item) });
 				}
 			});
 
@@ -200,7 +200,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 			this.selectItem(list.pick, item);
 		}
 		list.dragStart = true;
-		event.dataTransfer.setData('text', item[this.key]);
+		event.dataTransfer.setData('text', item['_id']);
 	}
 
 	allowDrop(event:DragEvent, list:BasicList) {
@@ -223,10 +223,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 
 		let id = event.dataTransfer.getData('text');
 
-		/* tslint:disable triple-equals */
-		// Use coercion to filter.
-		let mv = list.list.filter( (e:any) => e[this.key] == id );
-		/* tslint:enable triple-equals */
+		let mv = list.list.filter( (e:any) => e._id === id );
 		if (mv.length > 0) {
 			for (let i = 0, len = mv.length; i < len; i += 1) {
 				list.pick.push( mv[i] );
@@ -239,16 +236,19 @@ export class DualListComponent implements DoCheck, OnChanges {
 		}
 	}
 
-	trueUp() {
+	private trueUp() {
 		let changed = false;
 
 		// Clear removed items.
 		let pos = this.destination.length;
 		while ((pos -= 1) >= 0) {
 			let mv = this.confirmed.list.filter( conf => {
-				return conf._id === this.destination[pos][this.key];
+				if (typeof this.destination[pos] === 'object') {
+					return conf._id === this.destination[pos][this.key];
+				} else {
+					return conf._id === this.destination[pos];
+				}
 			});
-
 			if (mv.length === 0) {
 				// Not found so remove.
 				this.destination.splice(pos, 1);
@@ -256,13 +256,26 @@ export class DualListComponent implements DoCheck, OnChanges {
 			}
 		}
 
+
 		// Push added items.
 		for (let i = 0, len = this.confirmed.list.length; i < len; i += 1) {
-			let mv = this.destination.filter( (d:any) => { return (d[this.key] === this.confirmed.list[i]._id); });
+			let mv = this.destination.filter( (d:any) => {
+				if (typeof d === 'object') {
+					return (d[this.key] === this.confirmed.list[i]._id);
+				} else {
+					return (d === this.confirmed.list[i]._id);
+				}
+			});
 
 			if (mv.length === 0) {
 				// Not found so add.
-				mv = this.source.filter( (o:any) => { return (o[this.key] === this.confirmed.list[i]._id); });
+				mv = this.source.filter( (o:any) => {
+					if (typeof o === 'object') {
+						return (o[this.key] === this.confirmed.list[i]._id);
+					} else {
+						return (o === this.confirmed.list[i]._id);
+					}
+				});
 
 				if (mv.length > 0) {
 					this.destination.push(mv[0]);
@@ -279,14 +292,28 @@ export class DualListComponent implements DoCheck, OnChanges {
 	findItemIndex(list:Array<any>, item:any, key:any = '_id') {
 		let idx = -1;
 
-		// Assumption is that the arrays do not have duplicates.
-		list.filter( (e:any) => {
+		function matchObject(e:any) {
 			if (e._id === item[key]) {
 				idx = list.indexOf(e);
 				return true;
 			}
 			return false;
-		});
+		}
+
+		function match(e:any) {
+			if (e._id === item) {
+				idx = list.indexOf(e);
+				return true;
+			}
+			return false;
+		}
+
+		// Assumption is that the arrays do not have duplicates.
+		if (typeof item === 'object') {
+			list.filter(matchObject);
+		} else {
+			list.filter(match);
+		}
 
 		return idx;
 	}
@@ -451,9 +478,34 @@ export class DualListComponent implements DoCheck, OnChanges {
 		}
 	}
 
+	private makeId(item:any) : string | number {
+		if (typeof item === 'object') {
+			return item[this.key];
+		} else {
+			return item;
+		}
+	}
+
 	// Allow for complex names by passing an array of strings.
 	// Example: [display]="[ '_type.substring(0,1)', '_name' ]"
-	makeName(item:any) : string {
+	private makeName(item:any) : string {
+		const display = this.display;
+
+		function fallback(item:any) {
+			switch (Object.prototype.toString.call(item)) {
+			case '[object Number]':
+				return item;
+			case '[object String]':
+				return item;
+			default:
+				if (item !== undefined) {
+					return item[display];
+				} else {
+					return 'undefined';
+				}
+			}
+		}
+
 		let str = '';
 
 		if (this.display !== undefined) {
@@ -498,20 +550,11 @@ export class DualListComponent implements DoCheck, OnChanges {
 				}
 				return str;
 			} else {
-				return item[this.display];
+				return fallback(item);
 			}
 		}
 
-		switch (Object.prototype.toString.call(item)) {
-		case '[object Number]':
-			return item;
-		case '[object String]':
-			return item;
-		default:
-			if (item !== undefined) {
-				return item[this.display];
-			}
-		}
+		return fallback(item);
 	}
 
 }
