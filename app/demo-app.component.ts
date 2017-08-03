@@ -75,10 +75,23 @@ import { DualListComponent } from 'angular-dual-listbox';
 			</div>
 			<div class="row">
 				<div class="col-sm-12">
+					<label>Array source</label>
+					<form class="form well">
+						<div class="radio" *ngFor="let item of arrayType">
+							<label>
+								<input type="radio" name="sourceType" [value]="item.value" [(ngModel)]="type" (change)="swapSource()">
+								{{item.name}} &mdash; {{item.detail}}
+							</label>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-12">
 					<label>General</label><br/>
 					<form class="form-inline well">
 						<button class="btn btn-default" (click)="doFilter()">{{filterBtn()}}</button>
-						<button class="btn btn-default" (click)="doSwap()">Swap source</button>
 						<button class="btn btn-primary" (click)="doReset()">Reset</button>
 					</form>
 				</div>
@@ -102,13 +115,21 @@ export class DemoAppComponent implements OnInit {
 	sourceLeft = true;
 	format:any = DualListComponent.DEFAULT_FORMAT;
 
+	private sourceTube:Array<string>;
 	private sourceStations:Array<any>;
 	private sourceChessmen:Array<any>;
 
+	private confirmedTube:Array<string>;
 	private confirmedStations:Array<any>;
 	private confirmedChessmen:Array<any>;
 
-	private toggle = true;
+	arrayType = [
+		{ name: 'Rio Grande', detail: '(object array)', value: 'station' },
+		{ name: 'Chessmen', detail: '(object array)', value: 'chess' },
+		{ name: 'Underground', detail: '(string array)', value: 'tube' }
+	];
+
+	type = this.arrayType[0].value;
 
 	private stations:Array<any> = [
 		{ key: 1, station: 'Antonito', state: 'CO' },
@@ -154,21 +175,47 @@ export class DemoAppComponent implements OnInit {
 		{ _id: 6, name: 'King' }
 	];
 
+	private tube:Array<string> = [
+		'Harrow & Wealdstone',
+		'Kenton',
+		'South Kenton',
+		'North Wembley',
+		'Wembley Central',
+		'Stonebridge Park',
+		'Harlesden',
+		'Willesden Junction',
+		'Kensal Green',
+		"Queen's Park",
+		'Kilburn Park',
+		'Maida Vale',
+		'Warwick Avenue',
+		'Paddington',
+		'Edgware Road',
+		'Marylebone',
+		'Baker Street',
+		"Regent's Park",
+		'Oxford Circus',
+		'Piccadilly Circus',
+		'Charing Cross',
+		'Embankment',
+		'Waterloo',
+		'Lambeth North',
+		'Elephant & Castle'
+	];
+
 	ngOnInit() {
 		this.doReset();
 	}
 
 	private useStations() {
-		this.toggle = true;
 		this.key = 'key';
-		this.display = 'station';
+		this.display = 'station'; //[ 'station', 'state' ];
 		this.keepSorted = true;
 		this.source = this.sourceStations;
 		this.confirmed = this.confirmedStations;
 	}
 
 	private useChessmen() {
-		this.toggle = false;
 		this.key = '_id';
 		this.display = 'name';
 		this.keepSorted = false;
@@ -176,25 +223,51 @@ export class DemoAppComponent implements OnInit {
 		this.confirmed = this.confirmedChessmen;
 	}
 
-	doSwap() {
-		if (this.toggle) {
-			this.useChessmen();
-		} else {
+	private useTube() {
+		this.key = undefined;
+		this.display = undefined;
+		this.keepSorted = false;
+		this.source = this.sourceTube;
+		this.confirmed = this.confirmedTube;
+	}
+
+	swapSource() {
+		switch (this.type) {
+		case this.arrayType[0].value:
 			this.useStations();
+			break;
+		case this.arrayType[1].value:
+			this.useChessmen();
+			break;
+		case this.arrayType[2].value:
+			this.useTube();
+			break
 		}
 	}
 
 	doReset() {
 		this.sourceChessmen = JSON.parse(JSON.stringify(this.chessmen));
 		this.sourceStations = JSON.parse(JSON.stringify(this.stations));
+		this.sourceTube = JSON.parse(JSON.stringify(this.tube));
 		this.confirmedChessmen = new Array<any>();
 		this.confirmedStations = new Array<any>();
+		this.confirmedTube = new Array<string>();
 
-		if (this.toggle) {
+		// Preconfirm some items.
+		this.confirmedStations.push( this.stations[31] );
+		this.confirmedTube.push( this.tube[13] );
+		this.confirmedTube.push( this.tube[23] );
+
+		switch (this.type) {
+		case this.arrayType[0].value:
 			this.useStations();
-			this.confirmedStations.push( { key: 32, station: 'Eureka', state: 'CO' } );
-		} else {
+			break;
+		case this.arrayType[1].value:
 			this.useChessmen();
+			break;
+		case this.arrayType[2].value:
+			this.useTube();
+			break;
 		}
 	}
 
@@ -205,17 +278,21 @@ export class DemoAppComponent implements OnInit {
 	}
 
 	doCreate() {
-		let o:any = {};
-		o[this.key] = this.source.length + 1;
-		o[this.display] = this.userAdd;
-		this.source.push( o );
+		if (typeof this.source[0] === 'object') {
+			let o:any = {};
+			o[this.key] = this.source.length + 1;
+			o[this.display] = this.userAdd;
+			this.source.push( o );
+		} else {
+			this.source.push(this.userAdd);
+		}
 		this.userAdd = '';
 	}
 
 	doAdd() {
 		for (let i = 0, len = this.source.length; i < len; i += 1) {
 			let o = this.source[i];
-			let found = this.confirmed.find( (e:any) => e[this.key] === o[this.key] );
+			let found = this.confirmed.find( (e:any) => e === o );
 			if (!found) {
 				this.confirmed.push(o);
 				break;

@@ -27,7 +27,6 @@
 		</div>
 	</div>
 
-<!-- style="margin-left:10px;" -->
 	<div class="listbox" [ngStyle]="{ 'order' : direction() ? 2 : 1, 'margin-left' : direction() ? '10px' : 0 }">
 		<button type="button" name="removeBtn" class="btn btn-primary btn-block"
 			(click)="moveItem(confirmed, available)" [ngClass]="direction() ? 'point-left' : 'point-right'"
