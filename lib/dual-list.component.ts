@@ -20,13 +20,13 @@ export class DualListComponent implements DoCheck, OnChanges {
 
 	static DEFAULT_FORMAT = { add: 'Add', remove: 'Remove', all: 'All', none: 'None', direction: DualListComponent.LTR };
 
-	@Input() key:string = typeof this.key !== 'undefined' ? this.key : '_id';
-	@Input() display:string = typeof this.display !== 'undefined' ? this.display : '_name';
-	@Input() height:string = typeof this.height !== 'undefined' ? this.height : '100px';
-	@Input() filter:boolean = typeof this.filter !== 'undefined' ? this.filter : false;
-	@Input() format:any = typeof this.format !== 'undefined' ? this.format : DualListComponent.DEFAULT_FORMAT;
-	@Input() sort:boolean = typeof this.sort !== 'undefined' ? this.sort : false;
-	@Input() compare:compareFunction = typeof this.compare !== 'undefined' ? this.compare : undefined;
+	@Input() key = '_id';
+	@Input() display = '_name';
+	@Input() height = '100px';
+	@Input() filter = false;
+	@Input() format = DualListComponent.DEFAULT_FORMAT;
+	@Input() sort = false;
+	@Input() compare:compareFunction;
 	@Input() source:Array<any>;
 	@Input() destination:Array<any>;
 	@Output() destinationChange = new EventEmitter();
@@ -331,7 +331,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 		}
 	}
 
-	moveItem(source:BasicList, target:BasicList, item:any = null, trueup:boolean = true) {
+	moveItem(source:BasicList, target:BasicList, item:any = null, trueup = true) {
 		let i = 0;
 		let len = source.pick.length;
 
@@ -499,15 +499,15 @@ export class DualListComponent implements DoCheck, OnChanges {
 	private makeName(item:any) : string {
 		const display = this.display;
 
-		function fallback(item:any) {
-			switch (Object.prototype.toString.call(item)) {
+		function fallback(itm:any) {
+			switch (Object.prototype.toString.call(itm)) {
 			case '[object Number]':
-				return item;
+				return itm;
 			case '[object String]':
-				return item;
+				return itm;
 			default:
-				if (item !== undefined) {
-					return item[display];
+				if (itm !== undefined) {
+					return itm[display];
 				} else {
 					return 'undefined';
 				}
@@ -564,5 +564,4 @@ export class DualListComponent implements DoCheck, OnChanges {
 
 		return fallback(item);
 	}
-
 }
