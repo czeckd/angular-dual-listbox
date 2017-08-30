@@ -134,6 +134,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 	}
 
 	buildConfirmed(destination:Array<any>) : boolean {
+		let moved = false;
 		let destChanges = this.destinationDiffer.diff(destination);
 		if (destChanges) {
 			destChanges.forEachRemovedItem((r:any) => {
@@ -142,7 +143,8 @@ export class DualListComponent implements DoCheck, OnChanges {
 					if (!this.isItemSelected(this.confirmed.pick, this.confirmed.list[idx])) {
 						this.selectItem(this.confirmed.pick, this.confirmed.list[idx]);
 					}
-					this.moveItem(this.confirmed, this.available, this.confirmed.list[idx]);
+					this.moveItem(this.confirmed, this.available, this.confirmed.list[idx], false);
+					moved = true;
 				}
 			});
 
@@ -152,7 +154,8 @@ export class DualListComponent implements DoCheck, OnChanges {
 					if (!this.isItemSelected(this.available.pick, this.available.list[idx])) {
 						this.selectItem(this.available.pick, this.available.list[idx]);
 					}
-					this.moveItem(this.available, this.confirmed, this.available.list[idx]);
+					this.moveItem(this.available, this.confirmed, this.available.list[idx], false);
+					moved = true;
 				}
 			});
 
@@ -161,6 +164,9 @@ export class DualListComponent implements DoCheck, OnChanges {
 			}
 			this.confirmed.sift = this.confirmed.list;
 
+			if (moved) {
+				this.trueUp();
+			}
 			return true;
 		}
 		return false;
@@ -325,7 +331,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 		}
 	}
 
-	moveItem(source:BasicList, target:BasicList, item:any = null) {
+	moveItem(source:BasicList, target:BasicList, item:any = null, trueup:boolean = true) {
 		let i = 0;
 		let len = source.pick.length;
 
@@ -371,7 +377,9 @@ export class DualListComponent implements DoCheck, OnChanges {
 		source.pick.length = 0;
 
 		// Update destination
-		this.trueUp();
+		if (trueup) {
+			this.trueUp();
+		}
 
 		// Delay ever-so-slightly to prevent race condition.
 		setTimeout( () => {
