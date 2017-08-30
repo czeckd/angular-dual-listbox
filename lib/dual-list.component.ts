@@ -20,13 +20,13 @@ export class DualListComponent implements DoCheck, OnChanges {
 
 	static DEFAULT_FORMAT = { add: 'Add', remove: 'Remove', all: 'All', none: 'None', direction: DualListComponent.LTR };
 
-	@Input() key:string = typeof this.key !== 'undefined' ? this.key : '_id';
-	@Input() display:string = typeof this.display !== 'undefined' ? this.display : '_name';
-	@Input() height:string = typeof this.height !== 'undefined' ? this.height : '100px';
-	@Input() filter:boolean = typeof this.filter !== 'undefined' ? this.filter : false;
-	@Input() format:any = typeof this.format !== 'undefined' ? this.format : DualListComponent.DEFAULT_FORMAT;
-	@Input() sort:boolean = typeof this.sort !== 'undefined' ? this.sort : false;
-	@Input() compare:compareFunction = typeof this.compare !== 'undefined' ? this.compare : undefined;
+	@Input() key = '_id';
+	@Input() display = '_name';
+	@Input() height = '100px';
+	@Input() filter = false;
+	@Input() format = DualListComponent.DEFAULT_FORMAT;
+	@Input() sort = false;
+	@Input() compare:compareFunction;
 	@Input() source:Array<any>;
 	@Input() destination:Array<any>;
 	@Output() destinationChange = new EventEmitter();
@@ -134,6 +134,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 	}
 
 	buildConfirmed(destination:Array<any>) : boolean {
+		let moved = false;
 		let destChanges = this.destinationDiffer.diff(destination);
 		if (destChanges) {
 			destChanges.forEachRemovedItem((r:any) => {
@@ -142,7 +143,8 @@ export class DualListComponent implements DoCheck, OnChanges {
 					if (!this.isItemSelected(this.confirmed.pick, this.confirmed.list[idx])) {
 						this.selectItem(this.confirmed.pick, this.confirmed.list[idx]);
 					}
-					this.moveItem(this.confirmed, this.available, this.confirmed.list[idx]);
+					this.moveItem(this.confirmed, this.available, this.confirmed.list[idx], false);
+					moved = true;
 				}
 			});
 
@@ -152,7 +154,8 @@ export class DualListComponent implements DoCheck, OnChanges {
 					if (!this.isItemSelected(this.available.pick, this.available.list[idx])) {
 						this.selectItem(this.available.pick, this.available.list[idx]);
 					}
-					this.moveItem(this.available, this.confirmed, this.available.list[idx]);
+					this.moveItem(this.available, this.confirmed, this.available.list[idx], false);
+					moved = true;
 				}
 			});
 
@@ -161,6 +164,9 @@ export class DualListComponent implements DoCheck, OnChanges {
 			}
 			this.confirmed.sift = this.confirmed.list;
 
+			if (moved) {
+				this.trueUp();
+			}
 			return true;
 		}
 		return false;
@@ -325,7 +331,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 		}
 	}
 
-	moveItem(source:BasicList, target:BasicList, item:any = null) {
+	moveItem(source:BasicList, target:BasicList, item:any = null, trueup = true) {
 		let i = 0;
 		let len = source.pick.length;
 
@@ -371,7 +377,9 @@ export class DualListComponent implements DoCheck, OnChanges {
 		source.pick.length = 0;
 
 		// Update destination
-		this.trueUp();
+		if (trueup) {
+			this.trueUp();
+		}
 
 		// Delay ever-so-slightly to prevent race condition.
 		setTimeout( () => {
@@ -491,15 +499,15 @@ export class DualListComponent implements DoCheck, OnChanges {
 	private makeName(item:any) : string {
 		const display = this.display;
 
-		function fallback(item:any) {
-			switch (Object.prototype.toString.call(item)) {
+		function fallback(itm:any) {
+			switch (Object.prototype.toString.call(itm)) {
 			case '[object Number]':
-				return item;
+				return itm;
 			case '[object String]':
-				return item;
+				return itm;
 			default:
-				if (item !== undefined) {
-					return item[display];
+				if (itm !== undefined) {
+					return itm[display];
 				} else {
 					return 'undefined';
 				}
@@ -556,5 +564,4 @@ export class DualListComponent implements DoCheck, OnChanges {
 
 		return fallback(item);
 	}
-
 }
