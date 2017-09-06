@@ -107,10 +107,10 @@ export class DualListComponent implements DoCheck, OnChanges {
 	}
 
 	buildAvailable(source:Array<any>) : boolean {
-		let sourceChanges = this.sourceDiffer.diff(source);
+		const sourceChanges = this.sourceDiffer.diff(source);
 		if (sourceChanges) {
 			sourceChanges.forEachRemovedItem((r:any) => {
-				let idx = this.findItemIndex(this.available.list, r.item, this.key);
+				const idx = this.findItemIndex(this.available.list, r.item, this.key);
 				if (idx !== -1) {
 					this.available.list.splice(idx, 1);
 				}
@@ -135,10 +135,10 @@ export class DualListComponent implements DoCheck, OnChanges {
 
 	buildConfirmed(destination:Array<any>) : boolean {
 		let moved = false;
-		let destChanges = this.destinationDiffer.diff(destination);
+		const destChanges = this.destinationDiffer.diff(destination);
 		if (destChanges) {
 			destChanges.forEachRemovedItem((r:any) => {
-				let idx = this.findItemIndex(this.confirmed.list, r.item, this.key);
+				const idx = this.findItemIndex(this.confirmed.list, r.item, this.key);
 				if (idx !== -1) {
 					if (!this.isItemSelected(this.confirmed.pick, this.confirmed.list[idx])) {
 						this.selectItem(this.confirmed.pick, this.confirmed.list[idx]);
@@ -149,7 +149,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 			});
 
 			destChanges.forEachAddedItem((r:any) => {
-				let idx = this.findItemIndex(this.available.list, r.item, this.key);
+				const idx = this.findItemIndex(this.available.list, r.item, this.key);
 				if (idx !== -1) {
 					if (!this.isItemSelected(this.available.pick, this.available.list[idx])) {
 						this.selectItem(this.available.pick, this.available.list[idx]);
@@ -227,9 +227,9 @@ export class DualListComponent implements DoCheck, OnChanges {
 		this.dragLeave();
 		this.dragEnd();
 
-		let id = event.dataTransfer.getData('text');
+		const id = event.dataTransfer.getData('text');
 
-		let mv = list.list.filter( (e:any) => e._id === id );
+		const mv = list.list.filter( (e:any) => e._id === id );
 		if (mv.length > 0) {
 			for (let i = 0, len = mv.length; i < len; i += 1) {
 				list.pick.push( mv[i] );
@@ -248,7 +248,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 		// Clear removed items.
 		let pos = this.destination.length;
 		while ((pos -= 1) >= 0) {
-			let mv = this.confirmed.list.filter( conf => {
+			const mv = this.confirmed.list.filter( conf => {
 				if (typeof this.destination[pos] === 'object') {
 					return conf._id === this.destination[pos][this.key];
 				} else {
@@ -325,7 +325,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 	}
 
 	private makeUnavailable(source:BasicList, item:any) {
-		let idx = source.list.indexOf(item);
+		const idx = source.list.indexOf(item);
 		if (idx !== -1) {
 			source.list.splice(idx, 1);
 		}
@@ -344,7 +344,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 			// Is the pick still in list?
 			let mv:Array<any> = [];
 			if (item) {
-				let idx = this.findItemIndex(source.pick, item);
+				const idx = this.findItemIndex(source.pick, item);
 				if (idx !== -1) {
 					mv[0] = source.pick[idx];
 				}
@@ -356,14 +356,9 @@ export class DualListComponent implements DoCheck, OnChanges {
 
 			// Should only ever be 1
 			if (mv.length === 1) {
-				// Move if item wasn't already moved by drag-and-drop.
-				if (item && item._id === mv[0]._id) {
+				// Add if not already in target.
+				if ( target.list.filter( trg => { return trg._id === mv[0]._id; }).length === 0) {
 					target.list.push( mv[0] );
-				} else {
-					// see if it is already in target?
-					if ( target.list.filter( trg => { return trg._id === mv[0]._id; }).length === 0) {
-						target.list.push( mv[0] );
-					}
 				}
 
 				this.makeUnavailable(source, mv[0]);
@@ -397,7 +392,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 
 	shiftClick(event:MouseEvent, index:number, source:BasicList, item:any) {
 		if (event.shiftKey && source.last && !Object.is(item, source.last)) {
-			let idx = source.sift.indexOf(source.last);
+			const idx = source.sift.indexOf(source.last);
 			if (index > idx) {
 				for (let i = (idx + 1); i < index; i += 1) {
 					this.selectItem(source.pick, source.sift[i]);
@@ -412,13 +407,13 @@ export class DualListComponent implements DoCheck, OnChanges {
 	}
 
 	selectItem(list:Array<any>, item:any) {
-		let pk = list.filter( (e:any) => {
+		const pk = list.filter( (e:any) => {
 			return Object.is(e, item);
 		});
 		if (pk.length > 0) {
 			// Already in list, so deselect.
 			for (let i = 0, len = pk.length; i < len; i += 1) {
-				let idx = list.indexOf(pk[i]);
+				const idx = list.indexOf(pk[i]);
 				if (idx !== -1) {
 					list.splice(idx, 1);
 				}
@@ -468,7 +463,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 
 	onFilter(source:BasicList) {
 		if (source.picker.length > 0) {
-			let filtered = source.list.filter( (item:any) => {
+			const filtered = source.list.filter( (item:any) => {
 				if (Object.prototype.toString.call(item) === '[object Object]') {
 					if (item._name !== undefined) {
 						return item._name.toLowerCase().indexOf(source.picker.toLowerCase()) !== -1;
@@ -530,13 +525,13 @@ export class DualListComponent implements DoCheck, OnChanges {
 
 					} else {
 						// Complex, some action needs to be performed
-						let parts = this.display[i].split('.');
+						const parts = this.display[i].split('.');
 
-						let s = item[parts[0]];
+						const s = item[parts[0]];
 						if (s) {
 							// Use brute force
 							if (parts[1].indexOf('substring') !== -1) {
-								let nums = (parts[1].substring(parts[1].indexOf('(') + 1, parts[1].indexOf(')'))).split(',');
+								const nums = (parts[1].substring(parts[1].indexOf('(') + 1, parts[1].indexOf(')'))).split(',');
 
 								switch (nums.length) {
 								case 1:
