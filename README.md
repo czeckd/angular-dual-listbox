@@ -68,11 +68,6 @@ export class CustomDualListComponent extends DualListComponent {
 ```
 See [`dual-list.component.html`](https://github.com/czeckd/angular-dual-listbox/blob/master/lib/dual-list.component.html) and [`dual-list.component.css`](https://github.com/czeckd/angular-dual-listbox/blob/master/lib/dual-list.component.css) for template and style guidance.
 
-## Known issue
-The drag-and-drop between multiple ``<dual-list>`` components may cause 
-undesired moves. For the time being, if the component is used, then it
-is recommended only have one ``<dual-list>`` visable to the user at a time.
-
 ## License
 MIT
 
