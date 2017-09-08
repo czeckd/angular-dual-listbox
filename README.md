@@ -3,8 +3,10 @@
 Angular Dual-Listbox
 =========
 
-The **angular-dual-listbox** is an Angular 2+ component that provides two lists controls side-by-side that allows items in one list to be moved to the other list via drag-and-drop and/or a button-based interface. 
-The component supports multiple select options from the list, programatic setting of list sources, and layout with direction and button formatting.
+The **angular-dual-listbox** is an Angular 4+ component that provides two lists controls 
+side-by-side that allows items in one list to be moved to the other list via drag-and-drop and/or a 
+button-based interface. The component supports multiple select options from the list, programatic 
+setting of list sources, and layout with direction and button formatting.
 
 A [working demo](http://czeckd.github.io/angular-dual-listbox/demo/) shows the dual listbox in action.
 
@@ -70,12 +72,6 @@ See [`dual-list.component.html`](https://github.com/czeckd/angular-dual-listbox/
 The drag-and-drop between multiple ``<dual-list>`` components may cause 
 undesired moves. For the time being, if the component is used, then it
 is recommended only have one ``<dual-list>`` visable to the user at a time.
-
-## Contributions
-
-Contributions may be welcomed depending on impact on the core functionality of the project. In order for pull requests to be accepted, they must include a sign-off in git (See [git-commit
---signoff](https://git-scm.com/docs/git-commit)) certifying the contribution is your own work, are subitting under the project's original license, and agreeing to the [Developer Certificate of
-Origin](https://developercertificate.org/).
 
 ## License
 MIT
