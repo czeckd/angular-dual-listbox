@@ -66,7 +66,10 @@ import { DualListComponent } from 'angular-dual-listbox/index';
 export class CustomDualListComponent extends DualListComponent {
 }
 ```
-See [`dual-list.component.html`](https://github.com/czeckd/angular-dual-listbox/blob/master/lib/dual-list.component.html) and [`dual-list.component.css`](https://github.com/czeckd/angular-dual-listbox/blob/master/lib/dual-list.component.css) for template and style guidance.
+See [`dual-list.component.html`](https://github.com/czeckd/angular-dual-listbox/blob/master/lib/dual-list.component.html) and 
+[`dual-list.component.css`](https://github.com/czeckd/angular-dual-listbox/blob/master/lib/dual-list.component.css) for template and style guidance. 
+There is also an Angular-CLI seed project, [custom-dual-listbox](https://github.com/czeckd/custom-dual-listbox), available with an example of a 
+customized view and extended functionality.
 
 ## License
 MIT
