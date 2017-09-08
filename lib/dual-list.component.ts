@@ -357,7 +357,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 			// Should only ever be 1
 			if (mv.length === 1) {
 				// Add if not already in target.
-				if ( target.list.filter( trg => { return trg._id === mv[0]._id; }).length === 0) {
+				if (target.list.filter(trg => trg._id === mv[0]._id).length === 0) {
 					target.list.push( mv[0] );
 				}
 
@@ -384,7 +384,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 	}
 
 	isItemSelected(list:Array<any>, item:any) {
-		if (list.filter( e => { return Object.is(e, item); }).length > 0) {
+		if (list.filter(e => Object.is(e, item)).length > 0) {
 			return true;
 		}
 		return false;
