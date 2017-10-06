@@ -28,6 +28,8 @@ import { AngularDualListBoxModule } from 'angular-dual-listbox';
 })
 export class AppModule {}
 ```
+See also the [basic-dual-list-demo](https://github.com/czeckd/basic-dual-listbox-demo) for a sample project using this module.
+
 
 ## Usage
 Basic usage is:
@@ -56,7 +58,7 @@ The html template packaged with this component is based on Bootstap 3; however i
 
 ```typescript
 import { Component } from '@angular/core';
-import { DualListComponent } from 'angular-dual-listbox/index';
+import { DualListComponent } from 'angular-dual-listbox/dual-list.component';
 
 @Component({
     selector: 'custom-dual-list',
