@@ -28,6 +28,8 @@ import { AngularDualListBoxModule } from 'angular-dual-listbox';
 })
 export class AppModule {}
 ```
+See also the [basic-dual-list-demo](https://github.com/czeckd/basic-dual-listbox-demo) for a sample project using this module.
+
 
 ## Usage
 Basic usage is:
@@ -56,7 +58,7 @@ The html template packaged with this component is based on Bootstap 3; however i
 
 ```typescript
 import { Component } from '@angular/core';
-import { DualListComponent } from 'angular-dual-listbox/index';
+import { DualListComponent } from 'angular-dual-listbox/dual-list.component';
 
 @Component({
     selector: 'custom-dual-list',
@@ -66,12 +68,10 @@ import { DualListComponent } from 'angular-dual-listbox/index';
 export class CustomDualListComponent extends DualListComponent {
 }
 ```
-See [`dual-list.component.html`](https://github.com/czeckd/angular-dual-listbox/blob/master/lib/dual-list.component.html) and [`dual-list.component.css`](https://github.com/czeckd/angular-dual-listbox/blob/master/lib/dual-list.component.css) for template and style guidance.
-
-## Known issue
-The drag-and-drop between multiple ``<dual-list>`` components may cause 
-undesired moves. For the time being, if the component is used, then it
-is recommended only have one ``<dual-list>`` visable to the user at a time.
+See [`dual-list.component.html`](https://github.com/czeckd/angular-dual-listbox/blob/master/lib/dual-list.component.html) and 
+[`dual-list.component.css`](https://github.com/czeckd/angular-dual-listbox/blob/master/lib/dual-list.component.css) for template and style guidance. 
+There is also an Angular-CLI seed project, [custom-dual-listbox](https://github.com/czeckd/custom-dual-listbox), available with an example of a 
+customized view and extended functionality.
 
 ## License
 MIT

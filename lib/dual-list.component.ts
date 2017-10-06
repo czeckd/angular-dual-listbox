@@ -5,6 +5,8 @@ import { BasicList } from './basic-list';
 
 export type compareFunction = (a:any, b:any) => number;
 
+var nextId = 0;
+
 @Component({
 	selector: 'dual-list',
 	styleUrls: [ 'lib/dual-list.component.css' ],
@@ -20,6 +22,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 
 	static DEFAULT_FORMAT = { add: 'Add', remove: 'Remove', all: 'All', none: 'None', direction: DualListComponent.LTR };
 
+	@Input() id = `dual-list-${nextId++}`;
 	@Input() key = '_id';
 	@Input() display = '_name';
 	@Input() height = '100px';
@@ -206,13 +209,17 @@ export class DualListComponent implements DoCheck, OnChanges {
 			this.selectItem(list.pick, item);
 		}
 		list.dragStart = true;
-		event.dataTransfer.setData('text', item['_id']);
+
+		// Set a custom type to be this dual-list's id.
+		event.dataTransfer.setData(this.id, item['_id']);
 	}
 
 	allowDrop(event:DragEvent, list:BasicList) {
-		event.preventDefault();
-		if (!list.dragStart) {
-			list.dragOver = true;
+		if (event.dataTransfer.types.length && (event.dataTransfer.types[0] === this.id)) {
+			event.preventDefault();
+			if (!list.dragStart) {
+				list.dragOver = true;
+			}
 		}
 		return false;
 	}
@@ -223,22 +230,16 @@ export class DualListComponent implements DoCheck, OnChanges {
 	}
 
 	drop(event:DragEvent, list:BasicList) {
-		event.preventDefault();
-		this.dragLeave();
-		this.dragEnd();
+		if (event.dataTransfer.types.length && (event.dataTransfer.types[0] === this.id)) {
+			event.preventDefault();
+			this.dragLeave();
+			this.dragEnd();
 
-		const id = event.dataTransfer.getData('text');
-
-		const mv = list.list.filter( (e:any) => e._id === id );
-		if (mv.length > 0) {
-			for (let i = 0, len = mv.length; i < len; i += 1) {
-				list.pick.push( mv[i] );
+			if (list === this.available) {
+				this.moveItem(this.available, this.confirmed);
+			} else {
+				this.moveItem(this.confirmed, this.available);
 			}
-		}
-		if (list === this.available) {
-			this.moveItem(this.available, this.confirmed);
-		} else {
-			this.moveItem(this.confirmed, this.available);
 		}
 	}
 
