@@ -50,6 +50,7 @@ sort is not set and compare is set, then sort will be set ``true``.
 - **source** - The source array of objects or strings for the list. (This is the universal, master list of all possible objects.)
 - **destination** The destination array of objects or strings selected from the source.
 Note, the ``destination`` array can have prexisting elements.
+- **disabled** - The dual-list is disabled, default is ``false``.
 
 For more usage examples, see the [`demo-app.component.ts`](https://github.com/czeckd/angular-dual-listbox/blob/master/app/demo-app.component.ts).
 

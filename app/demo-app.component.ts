@@ -9,7 +9,7 @@ import { DualListComponent } from 'angular-dual-listbox';
 <div class="container-fluid">
 	<p></p>
 	<dual-list [sort]="keepSorted" [source]="source" [key]="key" [display]="display" [filter]="filter"
-		[(destination)]="confirmed" height="265px" [format]="format"></dual-list>
+		[(destination)]="confirmed" height="265px" [format]="format" [disabled]="disabled"></dual-list>
 
 	<ul class="nav nav-tabs" style="margin-top:50px;">
 		<li [class.active]="tab===1"><a (click)="tab=1">Arrays</a><li>
@@ -92,6 +92,7 @@ import { DualListComponent } from 'angular-dual-listbox';
 					<label>General</label><br/>
 					<form class="form-inline well">
 						<button class="btn btn-default" (click)="doFilter()">{{filterBtn()}}</button>
+						<button class="btn btn-default" (click)="doDisable()">{{disableBtn()}}</button>
 						<button class="btn btn-primary" (click)="doReset()">Reset</button>
 					</form>
 				</div>
@@ -111,6 +112,7 @@ export class DemoAppComponent implements OnInit {
 	source:Array<any>;
 	confirmed:Array<any>;
 	userAdd = '';
+	disabled = false;
 
 	sourceLeft = true;
 	format:any = DualListComponent.DEFAULT_FORMAT;
@@ -209,7 +211,7 @@ export class DemoAppComponent implements OnInit {
 
 	private useStations() {
 		this.key = 'key';
-		this.display = 'station'; //[ 'station', 'state' ];
+		this.display = 'station'; // [ 'station', 'state' ];
 		this.keepSorted = true;
 		this.source = this.sourceStations;
 		this.confirmed = this.confirmedStations;
@@ -241,7 +243,7 @@ export class DemoAppComponent implements OnInit {
 			break;
 		case this.arrayType[2].value:
 			this.useTube();
-			break
+			break;
 		}
 	}
 
@@ -279,7 +281,7 @@ export class DemoAppComponent implements OnInit {
 
 	doCreate() {
 		if (typeof this.source[0] === 'object') {
-			let o:any = {};
+			const o = {};
 			o[this.key] = this.source.length + 1;
 			o[this.display] = this.userAdd;
 			this.source.push( o );
@@ -291,8 +293,8 @@ export class DemoAppComponent implements OnInit {
 
 	doAdd() {
 		for (let i = 0, len = this.source.length; i < len; i += 1) {
-			let o = this.source[i];
-			let found = this.confirmed.find( (e:any) => e === o );
+			const o = this.source[i];
+			const found = this.confirmed.find( (e:any) => e === o );
 			if (!found) {
 				this.confirmed.push(o);
 				break;
@@ -312,6 +314,14 @@ export class DemoAppComponent implements OnInit {
 
 	filterBtn() {
 		return (this.filter ? 'Hide Filter' : 'Show Filter');
+	}
+
+	doDisable() {
+		this.disabled = !this.disabled;
+	}
+
+	disableBtn() {
+		return (this.disabled ? 'Enable' : 'Disabled');
 	}
 
 	swapDirection() {
