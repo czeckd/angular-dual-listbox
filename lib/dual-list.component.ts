@@ -30,6 +30,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 	@Input() format = DualListComponent.DEFAULT_FORMAT;
 	@Input() sort = false;
 	@Input() compare:compareFunction;
+	@Input() disabled = false;
 	@Input() source:Array<any>;
 	@Input() destination:Array<any>;
 	@Output() destinationChange = new EventEmitter();
