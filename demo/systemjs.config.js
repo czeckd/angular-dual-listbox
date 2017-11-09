@@ -1,11 +1,11 @@
 (function(global) {
 
-  var ngVer = '@4.4.4';
+  var ngVer = '@5.0.0';
 
   // map tells the System loader where to look for things
   var map = {
     'app':  'app', // 'dist',
-    'rxjs': 'https://unpkg.com/rxjs@5.2.0',
+    'rxjs': 'https://unpkg.com/rxjs@5.5.2',
     '@angular': 'https://unpkg.com/@angular',
     'angular-dual-listbox': 'lib'
   };
@@ -36,7 +36,8 @@
   });
 
   var config = {
-	transpiler: 'typescript',
+//	transpiler: 'typescript',
+	transpiler: 'ts',
     typescriptOptions: {
       emitDecoratorMetadata: true
     },
