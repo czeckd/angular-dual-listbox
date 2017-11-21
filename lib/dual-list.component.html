@@ -40,7 +40,7 @@
 			<ul [ngStyle]="{'max-height': height, 'min-height': height}" [ngClass]="{over:confirmed.dragOver}"
 				(drop)="drop($event, available)" (dragover)="allowDrop($event, confirmed)" (dragleave)="dragLeave()">
 				<li *ngFor="let item of confirmed.sift; let idx=index;"
-					(click)="selectItem(confirmed.pick, item); shiftClick($event, idx, confirmed, item)"
+					placement='top' ngbTooltip={{item._name}} (click)="selectItem(confirmed.pick, item); shiftClick($event, idx, confirmed, item)"
 					[ngClass]="{selected: isItemSelected(confirmed.pick, item)}"
 					draggable="true" (dragstart)="drag($event, item, confirmed)" (dragend)="dragEnd(confirmed)"
 				><label>{{item._name}}</label></li>
