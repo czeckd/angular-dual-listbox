@@ -1,7 +1,7 @@
 {
   "name": "angular-dual-listbox",
   "description": "Angular 4+ component for a dual listbox control.",
-  "version": "4.4.0",
+  "version": "4.5.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/czeckd/angular-dual-listbox.git"
@@ -40,18 +40,18 @@
     "@angular/platform-browser": "^4.4.4",
     "@angular/platform-browser-dynamic": "^4.4.4",
     "@types/core-js": "^0.9.43",
-    "@types/node": "^6.0.88",
+    "@types/node": "^8.0.50",
     "bootstrap": "^3.3.7",
     "concurrently": "^2.2.0",
     "core-js": "^2.5.1",
-    "lite-server": "^2.2.2",
+    "lite-server": "^2.3.0",
     "rimraf": "^2.6.2",
-    "rollup": "^0.41.6",
+    "rollup": "^0.51.1",
     "rxjs": "^5.2.0",
     "systemjs": "0.19.47",
-    "ts-node": "^3.0.2",
-    "tslint": "~4.5.0",
-    "typescript": "~2.2.0",
+    "ts-node": "^3.3.0",
+    "tslint": "^5.8.0",
+    "typescript": "~2.4.2",
     "zone.js": "^0.8.18"
   }
 }

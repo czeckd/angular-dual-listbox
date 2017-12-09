@@ -20,7 +20,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 	static LTR = 'left-to-right';
 	static RTL = 'right-to-left';
 
-	static DEFAULT_FORMAT = { add: 'Add', remove: 'Remove', all: 'All', none: 'None', direction: DualListComponent.LTR };
+	static DEFAULT_FORMAT = { add: 'Add', remove: 'Remove', all: 'All', none: 'None', direction: DualListComponent.LTR, draggable: true };
 
 	@Input() id = `dual-list-${nextId++}`;
 	@Input() key = '_id';
@@ -30,6 +30,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 	@Input() format = DualListComponent.DEFAULT_FORMAT;
 	@Input() sort = false;
 	@Input() compare:compareFunction;
+	@Input() disabled = false;
 	@Input() source:Array<any>;
 	@Input() destination:Array<any>;
 	@Output() destinationChange = new EventEmitter();
@@ -84,6 +85,10 @@ export class DualListComponent implements DoCheck, OnChanges {
 
 			if (typeof(this.format.none) === 'undefined') {
 				this.format.none = DualListComponent.DEFAULT_FORMAT.none;
+			}
+
+			if (typeof(this.format.draggable) === 'undefined') {
+				this.format.draggable = DualListComponent.DEFAULT_FORMAT.draggable;
 			}
 		}
 
