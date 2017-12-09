@@ -1,6 +1,5 @@
 export default {
-	format: 'umd',
-	moduleName: 'angular-dual-listbox',
+	name: 'angular-dual-listbox',
 	external: [
 		'@angular/core',
 		'@angular/common',
@@ -14,6 +13,9 @@ export default {
 		if ( skip_codes.indexOf(warning.code) != -1 )
 			return;
 		console.error(warning);
+	},
+	output: {
+		format: 'umd'
 	}
 };
 

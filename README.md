@@ -42,7 +42,7 @@ The following parameters can be set on a dual-list:
 - **display** - The field of each object for displaying the object each the
 lists, default is ``_name``. (With a source of an array of strings, each string is its own display.)
 - **height** - The height of the lists, default is ``100px``.
-- **format** - A format object, default is ``{ add: 'Add', remove: 'Remove', all: 'All', none: 'None', direction: 'left-to-right' }``
+- **format** - A format object, default is ``{ add: 'Add', remove: 'Remove', all: 'All', none: 'None', direction: 'left-to-right', draggable: true }``
 - **filter** - A boolean whether or not to display a filter for the lists, default is ``false``.
 - **sort** - A boolean whether or not to keep the lists sorted, default is ``false``.
 - **compare** - A compare function to be used for sorting the lists. Note if
@@ -50,6 +50,7 @@ sort is not set and compare is set, then sort will be set ``true``.
 - **source** - The source array of objects or strings for the list. (This is the universal, master list of all possible objects.)
 - **destination** The destination array of objects or strings selected from the source.
 Note, the ``destination`` array can have prexisting elements.
+- **disabled** - The dual-list is disabled, default is ``false``.
 
 For more usage examples, see the [`demo-app.component.ts`](https://github.com/czeckd/angular-dual-listbox/blob/master/app/demo-app.component.ts).
 
