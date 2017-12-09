@@ -42,7 +42,7 @@ The following parameters can be set on a dual-list:
 - **display** - The field of each object for displaying the object each the
 lists, default is ``_name``. (With a source of an array of strings, each string is its own display.)
 - **height** - The height of the lists, default is ``100px``.
-- **format** - A format object, default is ``{ add: 'Add', remove: 'Remove', all: 'All', none: 'None', direction: 'left-to-right' }``
+- **format** - A format object, default is ``{ add: 'Add', remove: 'Remove', all: 'All', none: 'None', direction: 'left-to-right', draggable: true }``
 - **filter** - A boolean whether or not to display a filter for the lists, default is ``false``.
 - **sort** - A boolean whether or not to keep the lists sorted, default is ``false``.
 - **compare** - A compare function to be used for sorting the lists. Note if

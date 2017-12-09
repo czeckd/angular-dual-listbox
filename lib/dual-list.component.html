@@ -14,7 +14,7 @@
 				<li *ngFor="let item of available.sift; let idx=index;"
 					(click)="disabled ? null : selectItem(available.pick, item); shiftClick($event, idx, available, item)"
 					[ngClass]="{selected: isItemSelected(available.pick, item), disabled: disabled}"
-					[draggable]="!disabled" (dragstart)="drag($event, item, available)" (dragend)="dragEnd(available)"
+					[draggable]="!disabled && format.draggable" (dragstart)="drag($event, item, available)" (dragend)="dragEnd(available)"
 				><label>{{item._name}}</label></li>
 			</ul>
 		</div>
@@ -42,7 +42,7 @@
 				<li #itmConf *ngFor="let item of confirmed.sift; let idx=index;"
 					(click)="disabled ? null : selectItem(confirmed.pick, item); shiftClick($event, idx, confirmed, item)"
 					[ngClass]="{selected: isItemSelected(confirmed.pick, item), disabled: disabled}"
-					[draggable]="!disabled" (dragstart)="drag($event, item, confirmed)" (dragend)="dragEnd(confirmed)"
+					[draggable]="!disabled && format.draggable" (dragstart)="drag($event, item, confirmed)" (dragend)="dragEnd(confirmed)"
 				><label>{{item._name}}</label></li>
 			</ul>
 		</div>

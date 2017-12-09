@@ -5,6 +5,7 @@ import { DualListComponent } from 'angular-dual-listbox';
 
 @Component({
 	selector: 'demo-app',
+	styles: [ '.form-group { margin-bottom: 16px; }', '.checkbox { margin-top: inherit }' ],
 	template: `
 <div class="container-fluid">
 	<p></p>
@@ -51,6 +52,12 @@ import { DualListComponent } from 'angular-dual-listbox';
 				<div class="form-group">
 					<label>None button</label>
 					<input class="form-control col-sm-2" [(ngModel)]="format.none" name="noneBtn">
+				</div>
+				<div class="form-group">
+					<label>Enable drag-and-drop</label>
+					<div class="checkbox">
+						<label><input type="checkbox" [(ngModel)]="format.draggable" name="drag">draggable</label>
+					</div>
 				</div>
 			</form>
 		</div>
