@@ -2,7 +2,7 @@
 
   // map tells the System loader where to look for things
   var map = {
-    'app':      'runt',
+    'app':      'runt/app',
     'rxjs':     'node_modules/rxjs',
     '@angular': 'node_modules/@angular',
     'angular-dual-listbox': 'dist'

@@ -13,12 +13,12 @@ const template = readFileSync('lib/dual-list.component.html');
 component = component.replace(/templateUrl:.*/, `template: \`\n${template}\n\``);
 
 
-const dir = './tmp';
+const dir = './dist';
 if (!existsSync(dir)) {
 	mkdirSync(dir);
 }
 
-writeFileSync('tmp/dual-list.component.ts', component);
+writeFileSync('dist/dual-list.component.ts', component);
 //createReadStream('lib/angular-dual-listbox.module.ts').pipe(createWriteStream('tmp/angular-dual-listbox.module.ts'));
 //createReadStream('lib/basic-list.ts').pipe(createWriteStream('tmp/basic-list.ts'));
 //createReadStream('lib/index.ts').pipe(createWriteStream('tmp/index.ts'));
