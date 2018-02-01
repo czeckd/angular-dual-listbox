@@ -1,0 +1,29 @@
+{
+  "$schema": "../../node_modules/ng-packagr/package.schema.json",
+  "name": "angular-dual-listbox",
+  "description": "Angular 4+ component for a dual listbox control.",
+  "version": "4.6.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/czeckd/angular-dual-listbox.git"
+  },
+  "bugs": {
+    "url": "https://github.com/czeckd/angular-dual-listbox/issues"
+  },
+  "author": "David Czeck",
+  "license": "MIT",
+  "keywords": [
+    "angular",
+    "listbox"
+  ],
+  "peerDependencies": {
+    "@angular/core": ">=4.0.0",
+    "@angular/forms": ">=4.0.0"
+  },
+  "ngPackage": {
+    "lib": {
+      "entryFile": "index.ts"
+    },
+    "dest": "dist"
+  }
+}

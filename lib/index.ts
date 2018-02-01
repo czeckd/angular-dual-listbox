@@ -1,3 +1,3 @@
-export * from './basic-list';
-export * from './dual-list.component';
-export * from './angular-dual-listbox.module';
+export * from './src/basic-list';
+export * from './src/dual-list.component';
+export * from './src/angular-dual-listbox.module';

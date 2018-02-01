@@ -2,7 +2,7 @@
 
   // map tells the System loader where to look for things
   var map = {
-    'app':      'runt/app',
+    'app':      'runt',
     'rxjs':     'node_modules/rxjs',
     '@angular': 'node_modules/@angular',
     'angular-dual-listbox': 'dist'
@@ -12,7 +12,7 @@
   var packages = {
     'app':   { main: 'main.js',  defaultExtension: 'js' },
     'rxjs':  { defaultExtension: 'js' },
-    'angular-dual-listbox':   { main: 'angular-dual-listbox.bundle.js', defaultExtension: 'js' }
+    'angular-dual-listbox':   { main: 'bundles/angular-dual-listbox.umd.min.js', defaultExtension: 'js' }
   };
 
   var ngPackageNames = [

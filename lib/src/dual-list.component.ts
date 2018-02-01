@@ -3,14 +3,19 @@ import { Component, DoCheck, EventEmitter, Input, IterableDiffers, OnChanges,
 
 import { BasicList } from './basic-list';
 
+// Kludge to make work relative paths with both webpack for distribution builds
+// and SystemJS for gh_pages transpiled demo.
+var __moduleName:string;
+
 export type compareFunction = (a:any, b:any) => number;
 
 var nextId = 0;
 
 @Component({
+	moduleId: __moduleName,
 	selector: 'dual-list',
-	styleUrls: [ 'lib/dual-list.component.css' ],
-	templateUrl: 'lib/dual-list.component.html'
+	templateUrl: './dual-list.component.html',
+	styleUrls: [ './dual-list.component.css' ]
 })
 
 export class DualListComponent implements DoCheck, OnChanges {
@@ -20,7 +25,14 @@ export class DualListComponent implements DoCheck, OnChanges {
 	static LTR = 'left-to-right';
 	static RTL = 'right-to-left';
 
-	static DEFAULT_FORMAT = { add: 'Add', remove: 'Remove', all: 'All', none: 'None', direction: DualListComponent.LTR, draggable: true };
+	static DEFAULT_FORMAT = {
+		add: 'Add',
+		remove: 'Remove',
+		all: 'All',
+		none: 'None',
+		direction: DualListComponent.LTR,
+		draggable: true
+	};
 
 	@Input() id = `dual-list-${nextId++}`;
 	@Input() key = '_id';

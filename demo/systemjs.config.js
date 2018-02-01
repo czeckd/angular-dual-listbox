@@ -7,14 +7,14 @@
     'app':  'app', // 'dist',
     'rxjs': 'https://unpkg.com/rxjs@5.5.2',
     '@angular': 'https://unpkg.com/@angular',
-    'angular-dual-listbox': 'lib'
+    'angular-dual-listbox': 'lib/src'
   };
 
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
     'app':  { main: 'main.ts',  defaultExtension: 'ts' },
     'rxjs': { defaultExtension: 'js' },
-    'angular-dual-listbox': { main: 'index.ts', defaultExtension: 'ts' }
+    'angular-dual-listbox': { main: '../index.ts', defaultExtension: 'ts' }
   };
 
   var ngPackageNames = [
@@ -39,7 +39,14 @@
 //	transpiler: 'typescript',
 	transpiler: 'ts',
     typescriptOptions: {
-      emitDecoratorMetadata: true
+      emitDecoratorMetadata: true,
+      experimentalDecorators: true,
+      module: "commonjs",
+    },
+    meta: {
+      'typescript': {
+        "exports": "ts"
+      }
     },
     map: map,
     packages: packages
