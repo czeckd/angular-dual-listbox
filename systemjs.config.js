@@ -12,7 +12,7 @@
   var packages = {
     'app':   { main: 'main.js',  defaultExtension: 'js' },
     'rxjs':  { defaultExtension: 'js' },
-    'angular-dual-listbox':   { main: 'angular-dual-listbox.bundle.js', defaultExtension: 'js' }
+    'angular-dual-listbox':   { main: 'bundles/angular-dual-listbox.umd.min.js', defaultExtension: 'js' }
   };
 
   var ngPackageNames = [
