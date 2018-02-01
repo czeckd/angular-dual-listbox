@@ -3,16 +3,11 @@ import { Component, DoCheck, EventEmitter, Input, IterableDiffers, OnChanges,
 
 import { BasicList } from './basic-list';
 
-// Kludge to make work relative paths with both webpack for distribution builds
-// and SystemJS for gh_pages transpiled demo.
-var __moduleName:string;
-
 export type compareFunction = (a:any, b:any) => number;
 
 var nextId = 0;
 
 @Component({
-	moduleId: __moduleName,
 	selector: 'dual-list',
 	templateUrl: './dual-list.component.html',
 	styleUrls: [ './dual-list.component.css' ]
