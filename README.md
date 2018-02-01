@@ -59,12 +59,12 @@ The html template packaged with this component is based on Bootstap 3; however i
 
 ```typescript
 import { Component } from '@angular/core';
-import { DualListComponent } from 'angular-dual-listbox/dual-list.component';
+import { DualListComponent } from 'angular-dual-listbox';
 
 @Component({
     selector: 'custom-dual-list',
     templateUrl: './custom-dual-list.component.html',
-    styleUrls: [ './custom-dual-list.component.css' ]
+    styleUrls: [ './custom-dual-list.component.scss' ]
 })
 export class CustomDualListComponent extends DualListComponent {
 }
