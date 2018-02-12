@@ -504,7 +504,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 
 	// Allow for complex names by passing an array of strings.
 	// Example: [display]="[ '_type.substring(0,1)', '_name' ]"
-	private makeName(item:any) : string {
+	protected makeName(item:any, separator = '_') : string {
 		const display = this.display;
 
 		function fallback(itm:any) {
@@ -529,7 +529,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 
 				for (let i = 0; i < this.display.length; i += 1) {
 					if (str.length > 0) {
-						str = str + '_';
+						str = str + separator;
 					}
 
 					if (this.display[i].indexOf('.') === -1) {
