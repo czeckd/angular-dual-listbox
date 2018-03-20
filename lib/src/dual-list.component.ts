@@ -479,12 +479,12 @@ export class DualListComponent implements DoCheck, OnChanges {
 			const filtered = source.list.filter( (item:any) => {
 				if (Object.prototype.toString.call(item) === '[object Object]') {
 					if (item._name !== undefined) {
-						return item._name.toLowerCase().indexOf(source.picker.toLowerCase()) !== -1;
+						return item._name.toLocaleLowerCase().indexOf(source.picker.toLocaleLowerCase()) !== -1;
 					} else {
-						return JSON.stringify(item).toLowerCase().indexOf(source.picker.toLowerCase()) !== -1;
+						return JSON.stringify(item).toLocaleLowerCase().indexOf(source.picker.toLocaleLowerCase()) !== -1;
 					}
 				} else {
-					return item.toLowerCase().indexOf(source.picker.toLowerCase()) !== -1;
+					return item.toLocaleLowerCase().indexOf(source.picker.toLocaleLowerCase()) !== -1;
 				}
 			});
 			source.sift = filtered;
