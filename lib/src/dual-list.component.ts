@@ -9,8 +9,8 @@ var nextId = 0;
 
 @Component({
 	selector: 'dual-list',
-	templateUrl: './dual-list.component.html',
-	styleUrls: [ './dual-list.component.css' ]
+	templateUrl: 'lib/src/dual-list.component.html',
+	styleUrls: [ 'lib/src/dual-list.component.css' ]
 })
 
 export class DualListComponent implements DoCheck, OnChanges {
