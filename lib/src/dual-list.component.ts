@@ -1,4 +1,3 @@
-
 import { Component, DoCheck, EventEmitter, Input, IterableDiffers, OnChanges,
 	Output, SimpleChange } from '@angular/core';
 
@@ -33,7 +32,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 
 	@Input() id = `dual-list-${nextId++}`;
 	@Input() key = '_id';
-	@Input() display = '_name';
+	@Input() display:any = '_name';
 	@Input() height = '100px';
 	@Input() filter = false;
 	@Input() format = DualListComponent.DEFAULT_FORMAT;
@@ -208,7 +207,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 		return this.format.direction === DualListComponent.LTR;
 	}
 
-	dragEnd(list:BasicList = null) {
+	dragEnd(list:BasicList = null) : boolean {
 		if (list) {
 			list.dragStart = false;
 		} else {
@@ -228,7 +227,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 		event.dataTransfer.setData(this.id, item['_id']);
 	}
 
-	allowDrop(event:DragEvent, list:BasicList) {
+	allowDrop(event:DragEvent, list:BasicList) : boolean {
 		if (event.dataTransfer.types.length && (event.dataTransfer.types[0] === this.id)) {
 			event.preventDefault();
 			if (!list.dragStart) {
@@ -276,7 +275,6 @@ export class DualListComponent implements DoCheck, OnChanges {
 				changed = true;
 			}
 		}
-
 
 		// Push added items.
 		for (let i = 0, len = this.confirmed.list.length; i < len; i += 1) {
@@ -398,7 +396,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 		}, 10);
 	}
 
-	isItemSelected(list:Array<any>, item:any) {
+	isItemSelected(list:Array<any>, item:any) : boolean {
 		if (list.filter(e => Object.is(e, item)).length > 0) {
 			return true;
 		}
@@ -447,14 +445,14 @@ export class DualListComponent implements DoCheck, OnChanges {
 		source.pick.length = 0;
 	}
 
-	isAllSelected(source:BasicList) {
+	isAllSelected(source:BasicList) : boolean {
 		if (source.list.length === 0 || source.list.length === source.pick.length) {
 			return true;
 		}
 		return false;
 	}
 
-	isAnySelected(source:BasicList) {
+	isAnySelected(source:BasicList) : boolean {
 		if (source.pick.length > 0) {
 			return true;
 		}
@@ -478,22 +476,30 @@ export class DualListComponent implements DoCheck, OnChanges {
 
 	onFilter(source:BasicList) {
 		if (source.picker.length > 0) {
-			const filtered = source.list.filter( (item:any) => {
-				if (Object.prototype.toString.call(item) === '[object Object]') {
-					if (item._name !== undefined) {
-						// @ts-ignore: remove when d.ts has locale as an  argument.
-						return item._name.toLocaleLowerCase(this.format.locale).indexOf(source.picker.toLocaleLowerCase(this.format.locale)) !== -1;
+			try {
+				const filtered = source.list.filter( (item:any) => {
+					if (Object.prototype.toString.call(item) === '[object Object]') {
+						if (item._name !== undefined) {
+							// @ts-ignore: remove when d.ts has locale as an argument.
+							return item._name.toLocaleLowerCase(this.format.locale).indexOf(source.picker.toLocaleLowerCase(this.format.locale)) !== -1;
+						} else {
+							// @ts-ignore: remove when d.ts has locale as an argument.
+							return JSON.stringify(item).toLocaleLowerCase(this.format.locale).indexOf(source.picker.toLocaleLowerCase(this.format.locale)) !== -1;
+						}
 					} else {
-						// @ts-ignore: remove when d.ts has locale as an  argument.
-						return JSON.stringify(item).toLocaleLowerCase(this.format.locale).indexOf(source.picker.toLocaleLowerCase(this.format.locale)) !== -1;
+						// @ts-ignore: remove when d.ts has locale as an argument.
+						return item.toLocaleLowerCase(this.format.locale).indexOf(source.picker.toLocaleLowerCase(this.format.locale)) !== -1;
 					}
-				} else {
-					// @ts-ignore: remove when d.ts has locale as an  argument.
-					return item.toLocaleLowerCase(this.format.locale).indexOf(source.picker.toLocaleLowerCase(this.format.locale)) !== -1;
+				});
+				source.sift = filtered;
+				this.unpick(source);
+			}
+			catch (e) {
+				if (e instanceof RangeError) {
+					this.format.locale = undefined;
 				}
-			});
-			source.sift = filtered;
-			this.unpick(source);
+				source.sift = source.list;
+			}
 		} else {
 			source.sift = source.list;
 		}
@@ -530,9 +536,13 @@ export class DualListComponent implements DoCheck, OnChanges {
 		let str = '';
 
 		if (this.display !== undefined) {
-			if (Object.prototype.toString.call( this.display ) === '[object Array]' ) {
+			switch (Object.prototype.toString.call(this.display)) {
+			case '[object Function]':
+				str = this.display(item);
+				break;
 
-				for (let i = 0; i < this.display.length; i += 1) {
+			case '[object Array]':
+				for (let i = 0, len = this.display.length; i < len; i += 1) {
 					if (str.length > 0) {
 						str = str + separator;
 					}
@@ -540,7 +550,6 @@ export class DualListComponent implements DoCheck, OnChanges {
 					if (this.display[i].indexOf('.') === -1) {
 						// Simple, just add to string.
 						str = str + item[this.display[i]];
-
 					} else {
 						// Complex, some action needs to be performed
 						const parts = this.display[i].split('.');
@@ -569,12 +578,15 @@ export class DualListComponent implements DoCheck, OnChanges {
 						}
 					}
 				}
-				return str;
-			} else {
-				return fallback(item);
+				break;
+			default:
+				str = fallback(item);
+				break;
 			}
+		} else {
+			str = fallback(item);
 		}
 
-		return fallback(item);
+		return str;
 	}
 }
