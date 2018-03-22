@@ -1,3 +1,4 @@
+
 import { Component, DoCheck, EventEmitter, Input, IterableDiffers, OnChanges,
 	Output, SimpleChange } from '@angular/core';
 
@@ -26,7 +27,8 @@ export class DualListComponent implements DoCheck, OnChanges {
 		all: 'All',
 		none: 'None',
 		direction: DualListComponent.LTR,
-		draggable: true
+		draggable: true,
+		locale: undefined
 	};
 
 	@Input() id = `dual-list-${nextId++}`;
@@ -479,12 +481,15 @@ export class DualListComponent implements DoCheck, OnChanges {
 			const filtered = source.list.filter( (item:any) => {
 				if (Object.prototype.toString.call(item) === '[object Object]') {
 					if (item._name !== undefined) {
-						return item._name.toLocaleLowerCase().indexOf(source.picker.toLocaleLowerCase()) !== -1;
+						// @ts-ignore: remove when d.ts has locale as an  argument.
+						return item._name.toLocaleLowerCase(this.format.locale).indexOf(source.picker.toLocaleLowerCase(this.format.locale)) !== -1;
 					} else {
-						return JSON.stringify(item).toLocaleLowerCase().indexOf(source.picker.toLocaleLowerCase()) !== -1;
+						// @ts-ignore: remove when d.ts has locale as an  argument.
+						return JSON.stringify(item).toLocaleLowerCase(this.format.locale).indexOf(source.picker.toLocaleLowerCase(this.format.locale)) !== -1;
 					}
 				} else {
-					return item.toLocaleLowerCase().indexOf(source.picker.toLocaleLowerCase()) !== -1;
+					// @ts-ignore: remove when d.ts has locale as an  argument.
+					return item.toLocaleLowerCase(this.format.locale).indexOf(source.picker.toLocaleLowerCase(this.format.locale)) !== -1;
 				}
 			});
 			source.sift = filtered;
