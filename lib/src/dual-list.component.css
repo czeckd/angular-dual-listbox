@@ -128,12 +128,14 @@ div.record-picker::-webkit-scrollbar-thumb:hover {
 
 /* &nbsp;&nbsp;&nbsp;&#9654; */
 .point-right::after {
-	content: "\00A0\00A0\00A0\25B6";
+	content: "\25B6";
+	padding-left: 1em;
 }
 
 /* &#9664;&nbsp;&nbsp;&nbsp; */
 .point-left::before {
-	content: "\25C0\00A0\00A0\00A0";
+	content: "\25C0";
+	padding-right: 1em;
 }
 
 .dual-list .button-bar button {

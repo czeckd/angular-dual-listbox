@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 
 import { DualListComponent } from 'angular-dual-listbox';
 
-
 @Component({
 	selector: 'demo-app',
-	styles: [ '.form-group { margin-bottom: 16px; }', '.checkbox { margin-top: inherit }' ],
+	styles: [ 'form { margin-top: 15px; }', '.checkbox { margin-top: inherit; }', 'ul.nav-tabs { cursor: pointer; }' ],
 	template: `
 <div class="container-fluid">
 	<p></p>
@@ -27,9 +26,9 @@ import { DualListComponent } from 'angular-dual-listbox';
 		</div>
 
 		<div class="tab-pane" [class.active]="tab===2">
-			<form class="form" style="margin:20px 0;">
-				<label>Direction</label><br/>
+			<form class="form">
 				<div class="form-group">
+					<label style="display:block;">Direction</label>
 					<div class="btn-group">
 						<button type="button" class="btn" [ngClass]="{ 'btn-primary' : sourceLeft, 'btn-default' : !sourceLeft }"
 							(click)="swapDirection()">left-to-right</button>
@@ -37,27 +36,33 @@ import { DualListComponent } from 'angular-dual-listbox';
 							(click)="swapDirection()">right-to-left</button>
 					</div>
 				</div>
-				<div class="form-group">
-					<label>Add button</label>
-					<input class="form-control col-sm-2" [(ngModel)]="format.add" name="addBtn">
-				</div>
-				<div class="form-group">
-					<label>Remove button</label>
-					<input class="form-control col-sm-2" [(ngModel)]="format.remove" name="rmBtn">
-				</div>
-				<div class="form-group">
-					<label>All button</label>
-					<input class="form-control col-sm-2" [(ngModel)]="format.all" name="allBtn">
-				</div>
-				<div class="form-group">
-					<label>None button</label>
-					<input class="form-control col-sm-2" [(ngModel)]="format.none" name="noneBtn">
-				</div>
+
 				<div class="form-group">
 					<label>Enable drag-and-drop</label>
 					<div class="checkbox">
 						<label><input type="checkbox" [(ngModel)]="format.draggable" name="drag">draggable</label>
 					</div>
+				</div>
+
+				<div class="form-group">
+					<label>Locale</label>
+					<input class="form-control" [(ngModel)]="format.locale" name="locale">
+				</div>
+				<div class="form-group">
+					<label>Add button</label>
+					<input class="form-control" [(ngModel)]="format.add" name="addBtn">
+				</div>
+				<div class="form-group">
+					<label>Remove button</label>
+					<input class="form-control" [(ngModel)]="format.remove" name="rmBtn">
+				</div>
+				<div class="form-group">
+					<label>All button</label>
+					<input class="form-control" [(ngModel)]="format.all" name="allBtn">
+				</div>
+				<div class="form-group">
+					<label>None button</label>
+					<input class="form-control" [(ngModel)]="format.none" name="noneBtn">
 				</div>
 			</form>
 		</div>
@@ -114,7 +119,7 @@ export class DemoAppComponent implements OnInit {
 	tab = 1;
 	keepSorted = true;
 	key:string;
-	display:string;
+	display:any;
 	filter = false;
 	source:Array<any>;
 	confirmed:Array<any>;
@@ -216,9 +221,13 @@ export class DemoAppComponent implements OnInit {
 		this.doReset();
 	}
 
+	private stationLabel(item:any) {
+		return item.station + ', ' + item.state;
+	}
+
 	private useStations() {
 		this.key = 'key';
-		this.display = 'station'; // [ 'station', 'state' ];
+		this.display = this.stationLabel;
 		this.keepSorted = true;
 		this.source = this.sourceStations;
 		this.confirmed = this.confirmedStations;
