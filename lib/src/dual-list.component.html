@@ -12,7 +12,7 @@
 			<ul [ngStyle]="{'max-height': height, 'min-height': height}" [ngClass]="{over:available.dragOver}"
 				(drop)="drop($event, confirmed)" (dragover)="allowDrop($event, available)" (dragleave)="dragLeave()">
 				<li *ngFor="let item of available.sift; let idx=index;"
-					(click)="disabled ? null : selectItem(available.pick, item); shiftClick($event, idx, available, item)"
+					(click)="disabled ? null : selectItemClick($event, available.pick, item); shiftClick($event, idx, available, item)"
 					[ngClass]="{selected: isItemSelected(available.pick, item), disabled: disabled}"
 					[draggable]="!disabled && format.draggable" (dragstart)="drag($event, item, available)" (dragend)="dragEnd(available)"
 				><label>{{item._name}}</label></li>
@@ -40,7 +40,7 @@
 			<ul [ngStyle]="{'max-height': height, 'min-height': height}" [ngClass]="{over:confirmed.dragOver}"
 				(drop)="drop($event, available)" (dragover)="allowDrop($event, confirmed)" (dragleave)="dragLeave()">
 				<li #itmConf *ngFor="let item of confirmed.sift; let idx=index;"
-					(click)="disabled ? null : selectItem(confirmed.pick, item); shiftClick($event, idx, confirmed, item)"
+					(click)="disabled ? null : selectItemClick($event, confirmed.pick, item); shiftClick($event, idx, confirmed, item)"
 					[ngClass]="{selected: isItemSelected(confirmed.pick, item), disabled: disabled}"
 					[draggable]="!disabled && format.draggable" (dragstart)="drag($event, item, confirmed)" (dragend)="dragEnd(confirmed)"
 				><label>{{item._name}}</label></li>
