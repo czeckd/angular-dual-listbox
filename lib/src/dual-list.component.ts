@@ -1,5 +1,4 @@
-import { Component, DoCheck, EventEmitter, Input, IterableDiffers, OnChanges,
-	Output, SimpleChange } from '@angular/core';
+import { Component, DoCheck, EventEmitter, Input, IterableDiffers, OnChanges, Output, SimpleChange } from '@angular/core';
 
 import { BasicList } from './basic-list';
 
@@ -27,7 +26,8 @@ export class DualListComponent implements DoCheck, OnChanges {
 		none: 'None',
 		direction: DualListComponent.LTR,
 		draggable: true,
-		locale: undefined
+		locale: undefined,
+		ctrl_click: false
 	};
 
 	@Input() id = `dual-list-${nextId++}`;
@@ -417,6 +417,15 @@ export class DualListComponent implements DoCheck, OnChanges {
 			}
 		}
 		source.last = item;
+	}
+
+	selectItemClick(event:MouseEvent, list:Array<any>, item:any) {
+		if (this.format.ctrl_click && list.length !== 0 && !event.ctrlKey && !event.shiftKey)  {
+			list.splice(0, list.length);
+			this.selectItem(list, item);
+		} else {
+			this.selectItem(list, item);
+		}
 	}
 
 	selectItem(list:Array<any>, item:any) {
