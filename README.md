@@ -34,13 +34,13 @@ Basic usage is:
 ```html
 <dual-list [source]="source" [(destination)]="confirmed"></dual-list>
 ```
-The following parameters can be set on a dual-list: 
-- **key** - The unique identifier field of each object in the `source` and 
+The following parameters can be set on a dual-list:
+- **key** - The unique identifier field of each object in the `source` and
 `destination` arrays, default is ``_id``. (Note: with a source of an array of strings, each string is its own id.)
 - **display** - The field of each object for displaying the object each the
 lists, default is ``_name``. Or, a function that returns a string that can be used for displaying an object. (Note: with a source of an array of strings, each string is its own display.)
 - **height** - The height of the lists, default is ``100px``.
-- **format** - A format object, default is ``{ add: 'Add', remove: 'Remove', all: 'All', none: 'None', direction: 'left-to-right', draggable: true, locale: undefined }``
+- **format** - A format object, default is ``{ add: 'Add', remove: 'Remove', all: 'All', none: 'None', direction: 'left-to-right', draggable: true, locale: undefined, ctr_click: false }``
 - **filter** - A boolean whether or not to display a filter for the lists, default is ``false``.
 - **sort** - A boolean whether or not to keep the lists sorted, default is ``false``.
 - **compare** - A compare function to be used for sorting the lists. Note if
@@ -81,9 +81,9 @@ import { DualListComponent } from 'angular-dual-listbox';
 export class CustomDualListComponent extends DualListComponent {
 }
 ```
-See [`dual-list.component.html`](https://github.com/czeckd/angular-dual-listbox/blob/master/lib/dual-list.component.html) and [`dual-list.component.css`](https://github.com/czeckd/angular-dual-listbox/blob/master/lib/dual-list.component.css) for template and style guidance. 
+See [`dual-list.component.html`](https://github.com/czeckd/angular-dual-listbox/blob/master/lib/dual-list.component.html) and [`dual-list.component.css`](https://github.com/czeckd/angular-dual-listbox/blob/master/lib/dual-list.component.css) for template and style guidance.
 
-There is also an Angular-CLI seed project, [custom-dual-listbox](https://github.com/czeckd/custom-dual-listbox), available with an example of a 
+There is also an Angular-CLI seed project, [custom-dual-listbox](https://github.com/czeckd/custom-dual-listbox), available with an example of a
 customized view and extended functionality.
 
 ## License
