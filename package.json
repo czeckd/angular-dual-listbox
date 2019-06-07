@@ -1,7 +1,7 @@
 {
-  "name": "angular-dual-listbox",
-  "description": "Angular 4+ component for a dual listbox control.",
-  "version": "4.7.0",
+  "name": "dual-listbox",
+  "description": "Angular dual listbox",
+  "version": "5.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/czeckd/angular-dual-listbox.git"
@@ -11,48 +11,45 @@
   },
   "author": "David Czeck",
   "license": "MIT",
-  "scripts": {
-    "start": "npm run clean && npm run dist && tsc && concurrently \"tsc -w\" \"lite-server\" ",
-    "tsc": "tsc",
-    "tsc:w": "tsc -w",
-    "clean": "rimraf runt dist",
-    "dist": "ng-packagr -p lib/package.json && cp README.md LICENSE dist",
-    "lint": "tslint -c tslint.json -t verbose lib/**/*.ts app/**/*.ts || true",
-    "lite": "lite-server"
-  },
-  "main": "angular-dual-listbox.bundle.js",
-  "module": "angular-dual-listbox.module.js",
-  "types": "index.d.ts",
   "keywords": [
     "angular",
     "listbox"
   ],
-  "peerDependencies": {
-    "@angular/core": ">=4.0.0",
-    "@angular/forms": ">=4.0.0"
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "dist": "ng build angular-dual-listbox",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "~8.0.0",
+    "@angular/common": "~8.0.0",
+    "@angular/compiler": "~8.0.0",
+    "@angular/core": "~8.0.0",
+    "@angular/forms": "~8.0.0",
+    "@angular/platform-browser": "~8.0.0",
+    "@angular/platform-browser-dynamic": "~8.0.0",
+    "@angular/router": "~8.0.0",
+    "rxjs": "~6.4.0",
+    "tslib": "^1.9.0",
+    "zone.js": "~0.9.1"
   },
   "devDependencies": {
-    "@angular/common": "^4.4.4",
-    "@angular/compiler": "^4.4.4",
-    "@angular/compiler-cli": "^4.4.4",
-    "@angular/core": "^4.4.4",
-    "@angular/forms": "^4.4.4",
-    "@angular/platform-browser": "^4.4.4",
-    "@angular/platform-browser-dynamic": "^4.4.4",
-    "@types/core-js": "^0.9.43",
-    "@types/node": "^9.4.0",
-    "bootstrap": "^3.3.7",
-    "concurrently": "^2.2.0",
-    "core-js": "^2.5.1",
-    "lite-server": "^2.3.0",
-    "ng-packagr": "^1.6.0",
-    "rimraf": "^2.6.2",
-    "rollup": "^0.51.1",
-    "rxjs": "^5.2.0",
-    "systemjs": "0.19.47",
-    "ts-node": "^3.3.0",
-    "tslint": "^5.8.0",
-    "typescript": "^2.6.2",
-    "zone.js": "^0.8.18"
+    "@angular-devkit/build-angular": "~0.800.0",
+    "@angular-devkit/build-ng-packagr": "~0.800.0",
+    "@angular/cli": "~8.0.2",
+    "@angular/compiler-cli": "~8.0.0",
+    "@angular/language-service": "~8.0.0",
+    "@types/node": "~8.9.4",
+    "codelyzer": "^5.0.0",
+    "ng-packagr": "^5.1.0",
+    "ts-node": "~7.0.0",
+    "tsickle": "^0.35.0",
+    "tslint": "~5.15.0",
+    "typescript": "~3.4.3"
   }
 }

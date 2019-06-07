@@ -1,6 +1,6 @@
-import { NgModule }      from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule }   from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 import { DualListComponent } from 'angular-dual-listbox';
 import { DemoAppComponent } from './demo-app.component';

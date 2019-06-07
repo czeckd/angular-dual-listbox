@@ -1,8 +1,7 @@
 {
-  "$schema": "../../node_modules/ng-packagr/package.schema.json",
   "name": "angular-dual-listbox",
-  "description": "Angular 4+ component for a dual listbox control.",
-  "version": "4.7.0",
+  "description": "Angular dual listbox",
+  "version": "5.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/czeckd/angular-dual-listbox.git"
@@ -17,13 +16,7 @@
     "listbox"
   ],
   "peerDependencies": {
-    "@angular/core": ">=4.0.0",
-    "@angular/forms": ">=4.0.0"
-  },
-  "ngPackage": {
-    "lib": {
-      "entryFile": "index.ts"
-    },
-    "dest": "dist"
+    "@angular/common": ">=8.0.0",
+    "@angular/core": ">=8.0.0"
   }
 }
