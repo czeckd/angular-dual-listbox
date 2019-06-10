@@ -10,7 +10,7 @@ A [working demo](http://czeckd.github.io/angular-dual-listbox/demo/) shows the d
 
 \* Technically, the dual-list component does not move items from one array to another. Rather it makes a copy from the source array of the item and adds it to the destination array, or removes it from the destination array. Thus, the source array is a master list of all available item and the destintion array is a list of items that have been selected from the master list. Therefore, in order for an item to be in the destination array it must also exist in the source array.
 
-![Dual ListBox](http://czeckd.github.io/angular-dual-listbox/images/dual-listbox.png)
+![Dual ListBox](https://raw.githubusercontent.com/czeckd/angular-dual-listbox/master/images/dual-listbox.png)
 
 ## How to use?
 ```
