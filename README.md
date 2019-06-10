@@ -6,11 +6,11 @@ Angular Dual-Listbox
 The **angular-dual-listbox** is an Angular 8 component that provides two lists controls side-by-side that allows items in one list to be selected and moved* to the other list via drag-and-drop and/or a button-based interface. 
 The component supports multiple select options from the list, programatic setting of list sources, and layout with direction and button formatting.
 
-A [working demo](http://czeckd.github.io/angular-dual-listbox/demo/) shows the dual listbox in action.
+A [working demo](http://czeckd.github.io/angular-dual-listbox/) shows the dual listbox in action.
 
 \* Technically, the dual-list component does not move items from one array to another. Rather it makes a copy from the source array of the item and adds it to the destination array, or removes it from the destination array. Thus, the source array is a master list of all available item and the destintion array is a list of items that have been selected from the master list. Therefore, in order for an item to be in the destination array it must also exist in the source array.
 
-![Dual ListBox](http://czeckd.github.io/angular-dual-listbox/images/dual-listbox.png)
+![Dual ListBox](https://raw.githubusercontent.com/czeckd/angular-dual-listbox/master/images/dual-listbox.png)
 
 ## How to use?
 ```
@@ -35,7 +35,7 @@ Basic usage is:
 ```html
 <dual-list [source]="source" [(destination)]="confirmed"></dual-list>
 ```
-The following parameters can be set on a dual-list: 
+The following parameters are available for the dual-list: 
 - **key** - The unique identifier field of each object in the `source` and 
 `destination` arrays, default is ``_id``. (Note: with a source of an array of strings, each string is its own id.)
 - **display** - The field of each object for displaying the object each the
@@ -51,7 +51,7 @@ sort is not set and compare is set, then sort will be set ``true``.
 - **(destinationChange)** - An event triggered when the destination array changes.
 - **disabled** - The dual-list is disabled, default is ``false``.
 
-For more usage examples, see the [`demo-app.component.ts`](https://github.com/czeckd/angular-dual-listbox/blob/master/app/demo-app.component.ts).
+For more usage examples, see the [`demo-app.component.ts`](https://github.com/czeckd/angular-dual-listbox/blob/master/src/app/demo-app.component.ts).
 
 ## Format
 The format object allows for the text for the add, remove, all, and none buttons to be set. It also can be used to set the layout direction with the source being on the left-hand side as the default, toggling drag-and-drop, and explicitly setting the locale for the filter string comparision. The default locale is undefined and will use host environment's current locale. An example format object:
@@ -83,7 +83,9 @@ import { DualListComponent } from 'angular-dual-listbox';
 export class CustomDualListComponent extends DualListComponent {
 }
 ```
-See [`dual-list.component.html`](https://github.com/czeckd/angular-dual-listbox/blob/master/lib/dual-list.component.html) and [`dual-list.component.css`](https://github.com/czeckd/angular-dual-listbox/blob/master/lib/dual-list.component.css) for template and style guidance. 
+See [`dual-list.component.html`](https://github.com/czeckd/angular-dual-listbox/blob/master/projects/angular-dual-listbox/src/lib/dual-list.component.html)
+and [`dual-list.component.css`](https://github.com/czeckd/angular-dual-listbox/blob/master/projects/angular-dual-listbox/src/lib/dual-list.component.css)
+for template and style guidance. 
 
 There is also an Angular-CLI seed project, [custom-dual-listbox](https://github.com/czeckd/custom-dual-listbox), available with an example of a 
 customized view and extended functionality.
