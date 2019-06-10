@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { DualListComponent } from 'angular-dual-listbox';
 
 @Component({
-	selector: 'demo-app',
+	selector: 'app-demo',
 	styles: [ 'form { margin-top: 15px; }', '.checkbox { margin-top: inherit; }', 'ul.nav-tabs { cursor: pointer; }' ],
 	template: `
 <div class="container-fluid">
@@ -118,24 +118,24 @@ import { DualListComponent } from 'angular-dual-listbox';
 export class DemoAppComponent implements OnInit {
 	tab = 1;
 	keepSorted = true;
-	key:string;
-	display:any;
+	key: string;
+	display: any;
 	filter = false;
-	source:Array<any>;
-	confirmed:Array<any>;
+	source: Array<any>;
+	confirmed: Array<any>;
 	userAdd = '';
 	disabled = false;
 
 	sourceLeft = true;
-	format:any = DualListComponent.DEFAULT_FORMAT;
+	format: any = DualListComponent.DEFAULT_FORMAT;
 
-	private sourceTube:Array<string>;
-	private sourceStations:Array<any>;
-	private sourceChessmen:Array<any>;
+	private sourceTube: Array<string>;
+	private sourceStations: Array<any>;
+	private sourceChessmen: Array<any>;
 
-	private confirmedTube:Array<string>;
-	private confirmedStations:Array<any>;
-	private confirmedChessmen:Array<any>;
+	private confirmedTube: Array<string>;
+	private confirmedStations: Array<any>;
+	private confirmedChessmen: Array<any>;
 
 	arrayType = [
 		{ name: 'Rio Grande', detail: '(object array)', value: 'station' },
@@ -145,7 +145,7 @@ export class DemoAppComponent implements OnInit {
 
 	type = this.arrayType[0].value;
 
-	private stations:Array<any> = [
+	private stations: Array<any> = [
 		{ key: 1, station: 'Antonito', state: 'CO' },
 		{ key: 2, station: 'Big Horn', state: 'NM' },
 		{ key: 3, station: 'Sublette', state: 'NM' },
@@ -180,7 +180,7 @@ export class DemoAppComponent implements OnInit {
 		{ key: 32, station: 'Eureka', state: 'CO' }
 	];
 
-	private chessmen:Array<any> = [
+	private chessmen: Array<any> = [
 		{ _id: 1, name: 'Pawn' },
 		{ _id: 2, name: 'Rook' },
 		{ _id: 3, name: 'Knight' },
@@ -189,7 +189,7 @@ export class DemoAppComponent implements OnInit {
 		{ _id: 6, name: 'King' }
 	];
 
-	private tube:Array<string> = [
+	private tube: Array<string> = [
 		'Harrow & Wealdstone',
 		'Kenton',
 		'South Kenton',
@@ -221,7 +221,7 @@ export class DemoAppComponent implements OnInit {
 		this.doReset();
 	}
 
-	private stationLabel(item:any) {
+	private stationLabel(item: any) {
 		return item.station + ', ' + item.state;
 	}
 
@@ -310,7 +310,7 @@ export class DemoAppComponent implements OnInit {
 	doAdd() {
 		for (let i = 0, len = this.source.length; i < len; i += 1) {
 			const o = this.source[i];
-			const found = this.confirmed.find( (e:any) => e === o );
+			const found = this.confirmed.find( (e: any) => e === o );
 			if (!found) {
 				this.confirmed.push(o);
 				break;
