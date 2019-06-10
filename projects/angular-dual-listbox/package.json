@@ -1,7 +1,7 @@
 {
   "name": "angular-dual-listbox",
   "description": "Angular dual listbox",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/czeckd/angular-dual-listbox.git"

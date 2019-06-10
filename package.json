@@ -1,7 +1,7 @@
 {
   "name": "dual-listbox",
   "description": "Angular dual listbox",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/czeckd/angular-dual-listbox.git"
@@ -19,7 +19,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "dist": "ng build angular-dual-listbox",
+    "dist": "ng build angular-dual-listbox && cp README.md LICENSE ./dist/angular-dual-listbox/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
