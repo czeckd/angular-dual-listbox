@@ -1,7 +1,7 @@
 {
   "name": "dual-listbox",
   "description": "Angular dual listbox",
-  "version": "5.0.1",
+  "version": "6.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/czeckd/angular-dual-listbox.git"
@@ -19,37 +19,36 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "dist": "ng build angular-dual-listbox && cp README.md LICENSE ./dist/angular-dual-listbox/",
+    "dist": "ng build --prod angular-dual-listbox && cp README.md LICENSE ./dist/angular-dual-listbox/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "~8.0.0",
-    "@angular/common": "~8.0.0",
-    "@angular/compiler": "~8.0.0",
-    "@angular/core": "~8.0.0",
-    "@angular/forms": "~8.0.0",
-    "@angular/platform-browser": "~8.0.0",
-    "@angular/platform-browser-dynamic": "~8.0.0",
-    "@angular/router": "~8.0.0",
-    "rxjs": "~6.4.0",
-    "tslib": "^1.9.0",
-    "zone.js": "~0.9.1"
+    "@angular/animations": "~10.0.2",
+    "@angular/common": "~10.0.2",
+    "@angular/compiler": "~10.0.2",
+    "@angular/core": "~10.0.2",
+    "@angular/forms": "~10.0.2",
+    "@angular/platform-browser": "~10.0.2",
+    "@angular/platform-browser-dynamic": "~10.0.2",
+    "@angular/router": "~10.0.2",
+    "rxjs": "~6.6.0",
+    "tslib": "^2.0.0",
+    "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.800.0",
-    "@angular-devkit/build-ng-packagr": "~0.800.0",
-    "@angular/cli": "~8.0.2",
-    "@angular/compiler-cli": "~8.0.0",
-    "@angular/language-service": "~8.0.0",
-    "@types/node": "~8.9.4",
-    "codelyzer": "^5.0.0",
-    "ng-packagr": "^5.1.0",
-    "ts-node": "~7.0.0",
-    "tsickle": "^0.35.0",
-    "tslint": "~5.15.0",
-    "typescript": "~3.4.3"
+    "@angular-devkit/build-angular": "~0.1000.1",
+    "@angular-devkit/build-ng-packagr": "~0.1000.1",
+    "@angular/cli": "~10.0.1",
+    "@angular/compiler-cli": "~10.0.2",
+    "@angular/language-service": "~10.0.2",
+    "@types/node": "^14.0.19",
+    "codelyzer": "^6.0.0",
+    "ng-packagr": "^10.0.0",
+    "ts-node": "~8.10.2",
+    "tslint": "~6.1.0",
+    "typescript": "~3.9.6"
   }
 }

@@ -1,7 +1,7 @@
 {
   "name": "angular-dual-listbox",
   "description": "Angular dual listbox",
-  "version": "5.0.1",
+  "version": "6.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/czeckd/angular-dual-listbox.git"
@@ -16,7 +16,10 @@
     "listbox"
   ],
   "peerDependencies": {
-    "@angular/common": ">=8.0.0",
-    "@angular/core": ">=8.0.0"
+    "@angular/common": ">=10.0.0",
+    "@angular/core": ">=10.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
   }
 }
