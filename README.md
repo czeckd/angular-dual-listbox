@@ -3,7 +3,7 @@
 Angular Dual-Listbox
 =========
 
-The **angular-dual-listbox** is an Angular 8 component that provides two lists controls side-by-side that allows items in one list to be selected and moved* to the other list via drag-and-drop and/or a button-based interface. 
+The **angular-dual-listbox** is an Angular 10 component that provides two lists controls side-by-side that allows items in one list to be selected and moved* to the other list via drag-and-drop and/or a button-based interface. 
 The component supports multiple select options from the list, programatic setting of list sources, and layout with direction and button formatting.
 
 A [working demo](http://czeckd.github.io/angular-dual-listbox/) shows the dual listbox in action.
