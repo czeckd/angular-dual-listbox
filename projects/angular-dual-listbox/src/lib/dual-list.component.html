@@ -2,7 +2,7 @@
 	<div class="listbox" [ngStyle]="{ 'order' :  direction() ? 1 : 2, 'margin-left' : direction() ? 0 : '10px' }">
 		<button type="button" name="addBtn" class="btn btn-primary btn-block"
 			(click)="moveItem(available, confirmed)" [ngClass]="direction() ? 'point-right' : 'point-left'"
-			[disabled]="available.pick.length === 0">{{format.add}}</button>
+			[disabled]="available.pick.length === 0 || disabled == true">{{format.add}}</button>
 
 		<form *ngIf="filter" class="filter">
 			<input class="form-control" name="filterSource" [(ngModel)]="available.picker" (ngModelChange)="onFilter(available)">
