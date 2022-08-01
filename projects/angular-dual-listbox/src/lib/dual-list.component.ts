@@ -479,7 +479,7 @@ export class DualListComponent implements DoCheck, OnChanges {
 			try {
 				const filtered = source.list.filter( (item: any) => {
 					if (Object.prototype.toString.call(item) === '[object Object]') {
-						if (item._name !== undefined) {
+						if (!!item._name) {
 							// @ts-ignore: remove when d.ts has locale as an argument.
 							return item._name.toLocaleLowerCase(this.format.locale).indexOf(source.picker.toLocaleLowerCase(this.format.locale)) !== -1;
 						} else {
