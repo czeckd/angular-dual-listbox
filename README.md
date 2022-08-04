@@ -50,6 +50,7 @@ sort is not set and compare is set, then sort will be set ``true``.
 - **destination** The destination array of objects or strings selected from the source. Note, the ``destination`` array can have prexisting elements.
 - **(destinationChange)** - An event triggered when the destination array changes.
 - **disabled** - The dual-list is disabled, default is ``false``.
+- **destinationChange** - An event listener which is triggered when the destination array changes. (This can be used to trigger events during drag and drop.)
 
 For more usage examples, see the [`demo-app.component.ts`](https://github.com/czeckd/angular-dual-listbox/blob/master/src/app/demo-app.component.ts).
 
