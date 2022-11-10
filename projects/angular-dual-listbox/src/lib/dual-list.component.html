@@ -18,13 +18,6 @@
 				><label>{{item._name}}</label></li>
 			</ul>
 		</div>
-
-		<div class="button-bar">
-			<button type="button" class="btn btn-primary pull-left" (click)="selectAll(available)"
-				[disabled]="disabled || isAllSelected(available)">{{format.all}}</button>
-			<button type="button" class="btn btn-default pull-right" (click)="selectNone(available)"
-				[disabled]="!isAnySelected(available)">{{format.none}}</button>
-		</div>
 	</div>
 
 	<div class="listbox" [ngStyle]="{ 'order' : direction() ? 2 : 1, 'margin-left' : direction() ? '10px' : 0 }">
@@ -47,11 +40,5 @@
 			</ul>
 		</div>
 
-		<div class="button-bar">
-			<button type="button" class="btn btn-primary pull-left" (click)="selectAll(confirmed)"
-				[disabled]="disabled || isAllSelected(confirmed)">{{format.all}}</button>
-			<button type="button" class="btn btn-default pull-right" (click)="selectNone(confirmed)"
-				[disabled]="!isAnySelected(confirmed)">{{format.none}}</button>
-		</div>
 	</div>
 </div>
